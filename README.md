@@ -8,16 +8,19 @@ This repository is for the documentation of our project. Thereby we will first g
 
 ## Contents
 
-- Chapter 1: Scientific backgrounds
+- Chapter 1: Introduction
+	- Purpose & aim of this project 
+	- Defining criteria for evaluation
+- Chapter 2: Scientific backgrounds
 	- Game theory
 	- Used methods
-- Chapter 2: Technical basements
+- Chapter 3: Technical basements
 	- Used libraries
 	- Architecture
-- Chapter 3: Implementation
+- Chapter 4: Implementation
 	- Detailed explanation of written algorithms
 	- Focus on reproducibility
-- Chapter 4: Evaluation
+- Chapter 5: Evaluation
 	- Comparing results to defined functional & non-functional requirements
 	- Evaluate intelligence, if possible by matching the AI with different opponents
 	
