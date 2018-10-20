@@ -5,3 +5,8 @@
 *.bak
 *.orig
 *compile.log
+*.aux
+*.bcf
+*.log
+*.toc
+*.run.xml
