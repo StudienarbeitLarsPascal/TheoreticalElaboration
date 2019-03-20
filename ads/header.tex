@@ -123,26 +123,9 @@
 \addtokomafont{caption}{\small}
 
 % Literaturverweise (sowohl deutsch als auch englisch)
-\iflang{de}{%
-\usepackage[
-	backend=biber,		% empfohlen. Falls biber Probleme macht: bibtex
-	bibwarn=true,
-	bibencoding=utf8,	% wenn .bib in utf8, sonst ascii
-	sortlocale=de_DE,
-	style=\zitierstil,
-]{biblatex}
-}
-\iflang{en}{%
-\usepackage[
-	backend=biber,		% empfohlen. Falls biber Probleme macht: bibtex
-	bibwarn=true,
-	bibencoding=utf8,	% wenn .bib in utf8, sonst ascii
-	sortlocale=en_US,
-	style=\zitierstil,
-]{biblatex}
-}
 
-\ladeliteratur{}
+\usepackage[]{biblatex}
+
 
 % Glossar
 \usepackage[nonumberlist,toc]{glossaries}
