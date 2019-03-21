@@ -320,9 +320,59 @@ Andere Methoden sind die Züge zusätzlich danach zu sortieren, welche Züge bei
 
 Diese Optimierung des Minimax Algorithmus spart bereits einige zu evaluierende Zustände und somit einiges an Rechenkapazitäten. Die Anzahl aller möglichen Spielzüge in Schach bleibt jedoch zu hoch, um über jeden einzelnen in angemessener Zeit zu iterieren. Auf Grund dessen muss die Tiefe, nach der die Züge evaluiert werden, reduziert werden. Ansätze dazu werden in Kapitel 2.4 beschrieben.
 
-\section{Problematik Minimax-Algorithmen komplexerer Spiele}
+\section{Problematik komplexerer Spiele}
+
+Der in Kapitel 2.1.2 beschriebene Minimax-Algorithmus hat - auch mit der Optimierung durch Alpha-Beta-Pruning (Kapitel 2.1.3.) - das Problem, dass zur Entscheidungsfindung alle Pfade bis zum Ende des Spiels abgegangen werden müssen. Beim Spiel Schach beispielsweise gibt es schon nach 40 Spielzügen $10^120$ Möglichkeiten das Spiel zu führen. Selbst unter der sehr optimistischen Annahme, dass eine Million verschiedene Züge pro Sekunde evaluiert werden könnten, würde die Evaluation aller Spielzüge $10^108$ Jahre benötigen. Zum Vergleich - das Alter der Erde wird auf nicht viel mehr als $10^9$ Jahre geschätzt. An dieser Tatsache ändert auch eine Reduzierung der zu evaluierenden Möglichkeiten durch Alpha-Beta Pruning nichts wahrnehmbares.
 
 
+%https://d1yx3ys82bpsa0.cloudfront.net/chess/computer-v-chessplayer.bernstein-roberts.scientific-american.june-1958.062303059.pdf
+%Braterman, Paul S. (2013). "How Science Figured Out the Age of Earth". Scientific American.
+%https://www.scientificamerican.com/article/how-science-figured-out-the-age-of-the-earth/
+
+Die Lösung dieses Problems scheint auf der Hand zu liegen - die Reduzierung der zu evaluierenden Züge, indem die einzelnen Pfade nicht bis zum Ende des Spiels abgegangen werden, sondern nur bis zu einer bestimmten Tiefe.
+
+Das erste Problem bei diesem Ansatz jedoch ist, dass Spiele nicht mehr nach dem Kriterium ``Sieg'', ``Niederlage'' und ``Unentschieden'' bewertet werden können, da dies zu dem gegenbenen Zeitpunkt unter Umständen noch nicht absehbar ist. Deshalb sind bei dieser Methode andere Funktionen zur Evaluierung der einzelnen Zustände nötig. Die verschiedenen Möglichkeiten zur Evaluierung der Zustände des Schachspiels werden in Kapitel 2.5 näher beschrieben.
+
+Zum Abbrechen der redundanten Aufrufe der Funktionen bei einer gewissen Bedinung, beispielsweise einer festgelegten Tiefe, muss diese in die Abbruchbedinung der rekursiven Funktion(en) hinzugefügt werden.
+
+Im simpelsten Ansatz einer festgelegten Tiefe, die die einzelnen Pfade maximal durchlaufen werden, kann dies mittels einer Funktion cutoffTest gemacht werden, die die Parameter des aktuellen Spielzustands sowie die Tiefe übermittelt bekommt. Sie gibt den Wert wahr zurück, wenn der mitgegebene Zustand ein Endzustand oder wenn die Tiefe größer oder gleich der festgelegten Tiefe ist.
+
+Wichtig ist dabei, dass bei jedem rekursiven Aufruf der Funktion der festgelgte Tiefen-Parameter stets um eins steigt, damit dieser Wert für die Abbruchfunktion zuverlässiv verwendet werden kann. Als Beispiel ist hier eine modifizierte Version der maxValue Funktion aus Figur 2.3.3 zu sehen.
+
+\begin{lstlisting}
+function maxValue(state, $\alpha$, $\beta$, depth) returns value
+	if cutoffTest(state, depth) then return utility(state)
+	v $\leftarrow - \infty$
+	for each a in actions(state) do
+		v $\leftarrow$ max(v, minValue(restultState(state, a), $\alpha$, $\beta$, depth + 1))
+		if v $\geq$ $\beta$ then return v
+		$\alpha$ $\leftarrow$ max($\alpha$, v)
+	return v
+	
+function cutoffTest(state, depth) returns boolean
+	if terminalTest(state) then return True
+	if depth >= MAX_DEPTH then return True
+	return False
+\end{lstlisting}
+
+Ein weiterer Ansatz an Stelle einer festgelegten Tiefe ist, eine Zeit festzulegen, nach der die Rekursion abgebrochen wird. Dies hat den Vorteil, dass sich die Tiefe von selbst anpasst, je nachdem wie komplex das Spiel ist. Im Anfang des Spiels, wenn noch viele verschiedene Züge möglich sind, ist es in akzeptabler Zeit nicht möglich, sehr weit in die Teife zu schauen. Wenn jedoch gegen Ende des Spiels nur noch wenige Züge durchführbar sind, ist es von großem Vorteil, diese in höherem Detail zu begutachten, um den besten Zug auswählen zu können. Bei einer fixen Tiefe müsste sich auf einen Kompromiss der Tiefe geeinigt werden, um zugleich eine akzeptable Berechnungszeit zu Anfang des Spiels und eine möglichst detaillierte Betrachtung gegen Ende zu ermöglichen.
+
+Um diese zeitbasierte Abbruchbedinung zu ermöglichen, wird ``Iterative Deepening'' verwendet. Dabei wird die Tiefe stückweise erhöht. Zunächst werden Züge also lediglich mit einer Tiefe von 1 betrachtet. Ist danach noch Zeit übrig wird die Rekursion um eine Stufe tiefer durchgeführt. Dies wiederholt sich so lange bis das Zeitlimit abgelaufen ist.
+
+%pseudo code?
+
+Dieses stückweise Vertiefen hilft zusätzlich dabei die zu betrachtenden Züge zu sortieren, um das Alpha-Beta-Pruning zu optimieren, wie in Kapitel 2.3 beschrieben.
+ 
+Eine Gefahr bei diesen Methoden, die das Spiel nicht ganz betrachten, ist, dass die Evaluierungsfunktionen meist nur Aufschluss über den aktuellen Zustand geben, aber nicht potentielle Gefahren für die Zukunft betrachten. Gewinnt ein Spieler beispielsweise mit einem Zug einen Bauern erscheint das einer simplen, heuristischen Berechnung des Zustandes zunächst als Gewinn. Stellt der Spieler dabei jedoch beispielsweise seine Dame in eine Position, in der diese geschlagen werden kann, würde er im nächsten Zug sehr wahrscheinlich eine Figur von wesentlich höherem Wert verlieren.
+ 
+Eine Möglichkeit dabei ist von vornherein nur ruhende Zustände zu betrachten. Diese Methode nennt sich ``quiescence search''. Dabei werden alle Züge des zu betrachtenden Zustands, die ein Schlagen einer Figur zur Folge haben, durchgespielt. Ist keine Figur mehr zu schlagen sondern lediglich noch Bewegungszüge möglich, so wird der Zustand als ruhig bewertet und dieser mittels der entsprechenden Funktionen evaluiert.
+
+%pseudo code?
+
+Eine andere Möglichkeit ist, die Evaluierungsfunktion dahingehend anzupassen, dass nicht nur der nächste Zustand heuristisch berechnet wird, sondern beispielsweise auch attackierte Figuren oder Schwachstellen in der Verteidigung in die Evaluation mit einzubeziehen. Darauf und generell auf möglich Evaluierungsfunktionen wird näher in dem hier folgenden Kapitel 2.5 eingegangen.
+ 
+ %schluss?
+ 
 
 % Einleitung: Alle Züge evaluierbar
 % Evaluerungsmöglichkeiten
@@ -345,8 +395,6 @@ Diese Optimierung des Minimax Algorithmus spart bereits einige zu evaluierende Z
 % andere attackierte figuren evaluation?
 % defense evaluation
 % controlling evaluation?
-
-
 
 \section{Evaluierungsfunktionen}
 
