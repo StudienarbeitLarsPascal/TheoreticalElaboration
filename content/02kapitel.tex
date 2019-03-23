@@ -72,6 +72,8 @@ An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nich
 %deep blue
 %stockfish
 
+\section{Einordnung Spieltyp Schach}
+
 \section{Minimax-Algorithmus}
 
 %Theorem
@@ -398,14 +400,222 @@ Eine andere Möglichkeit ist, die Evaluierungsfunktion dahingehend anzupassen, d
 
 \section{Evaluierungsfunktionen}
 
+Entscheidend für eine Schach-spielende-KI ist - neben der Anzahl der betrachtbaren Spielzuge - die Art der Evaluation, die Aufschluss darüber geben soll, wie aussichtsreich eine bestimmte Position ist. In diesem Kapitel werden verschiedene Ansätze aufgeführt und erklärt. Dabei wird zunächst auf die Spieleröffnung eingegangen, der eine Sonderrolle im Schachspiel zukommt. Danach erfolgen die beispielhafte Nennung verschiedener Evaluierungsfunktionen im Mittelspiel ehe zum Schluss auf Strategien für das Endspiel eingegangen wird.
+
 \subsection{Eröffnungsstrategie}
 
 \subsection{Figurenbewertung (+ Position)}
 
+Der wohl simpelste und gängigste, aber auch wichtigste Ansatz zur Evaluierung eines Schachbretts ist die heuristische Bewertung der auf dem Brett vorzufindenden Materialien. Dies bedeutet, dass die Figuren beider Spieler gezählt und voneinander subtrahiert werden. Das Ergebnis dieser Rechnung gibt Aufschluss darüber, welcher Spieler sich momentan in der aussichtsreichere Position befindet.
+
+Da jedoch nicht alle Figuren vom gleichen Wert sind, ist es vorteilhaft den einzelnen Figuren einen Faktor zuzuweisen, der Aufschluss über diesen gibt. Dies nähert die Funktion der Wertschätzung des Schachbretts an den tatsächlichen Wert an, da zwei Türme beispielsweise wichtiger als zwei Bauern sind. Im Ansatz ohne Faktorisierung der verschiedenen Spielfiguren würde dies keine Beachtung finden.
+
+Claude Shannon hat dazu 1949 den einzelnen Figuren folgende Werte zugewiesen, die seitdem als Richtwerte für Evaluierungen gelten.
+
+\begin{tabular}{ l c r }
+  \textbf{Bauer} & 1\\
+  \textbf{Springer} & 3 \\
+  \textbf{Läufer} & 3 \\
+  \textbf{Turm} & 5 \\
+  \textbf{Dame} & 9 \\
+  \textbf{König} & 200
+\end{tabular}
+
+%https://www.pi.infn.it/~carosi/chess/shannon.txt
+
+Die Berechnung des Wertes eines Schachbretts kann dann wie folgt aussehen:
+
+\begin{equation}
+\begin{aligned}
+f() = 200*(K_w-K_b) + 9*(Q_w-Q_b) + 5*(R_w-R_b) + \\3*(B_w-B_b) + 3*(N_w-N_b) + 1*(P_w-P_b)
+\end{aligned}
+\end{equation}
+
+%https://www.pi.infn.it/~carosi/chess/shannon.txt
+
+wobei K für König steht, Q für Dame, R für Turm, B für Läufer, N für Springer und P für Bauer. Die untergestellten Zeichen w und b stehen für weiß und schwarz.
+
+Diese Berechnung gibt bereits einen recht guten Aufschluss über das Wert des Spiels. Noch besser wird diese heuristische Berechnung jedoch, wenn dabei auch die Positionen dieser Figuren mit einbezogen werden. Dazu hat Tomasz Michniewski folgende Matrizen vorgeschlagen
+
+\begin{table}[htbp]
+\tiny
+\newcolumntype{P}{>{\centering\arraybackslash}p}
+\begin{tabular}{@{}P{\textwidth/100*47} P{\textwidth/100*47}}
+\textbf{Bauer} & \textbf{Springer}\\
+\begin{tabular}{@{}c c c c c c c c}
+0&0&0&0&0&0&0&0\\
+50&50&50&50&50&50&50&50\\
+10&10&20&30&30&20&10&10\\
+5&5&10&25&25&10&5&5\\
+0&0&0&20&20&0&0&0\\
+5&-5&-10&0&0&-10&-5&5\\
+5&10&10&-20&-20&10&10&5\\
+0&0&0&0&0&0&0&0
+\end{tabular}
+&
+\begin{tabular}{c c c c c c c c}
+-50&-40&-30&-30&-30&-30&-40&-50\\
+-40&-20&0&0&0&0&-20&-40\\
+-30&0&10&15&15&10&0&-30\\
+-30&5&15&20&20&15&5&-30\\
+-30&0&15&20&20&15&0&-30\\
+-30&5&10&15&15&10&5&-30\\
+-40&-20&0&5&5&0&-20&-40\\
+-50&-40&-30&-30&-30&-30&-40&-50\\
+\end{tabular}
+\end{tabular}\\
+\begin{tabular}{@{}P{\textwidth/100*47} P{\textwidth/100*47}}
+\textbf{Läufer} & \textbf{König}\\
+\begin{tabular}{@{}c c c c c c c c}
+-20&-10&-10&-10&-10&-10&-10&-20\\
+-10&0&0&0&0&0&0&-10\\
+-10&0&5&10&10&5&0&-10\\
+-10&5&5&10&10&5&5&-10\\
+-10&0&10&10&10&10&0&-10\\
+-10&10&10&10&10&10&10&-10\\
+-10&5&0&0&0&0&5&-10\\
+-20&-10&-10&-10&-10&-10&-10&-20
+\end{tabular}
+&
+\begin{tabular}{c c c c c c c c}
+-30&-40&-40&-50&-50&-40&-40&-30\\
+-30&-40&-40&-50&-50&-40&-40&-30\\
+-30&-40&-40&-50&-50&-40&-40&-30\\
+-30&-40&-40&-50&-50&-40&-40&-30\\
+-20&-30&-30&-40&-40&-30&-30&-20\\
+-10&-20&-20&-20&-20&-20&-20&-10\\
+20&20&0&0&0&0&20&20\\
+20&30&10&0&0&10&30&20
+\end{tabular}
+\end{tabular}\\
+\begin{tabular}{@{}P{\textwidth/100*47} P{\textwidth/100*47}}
+\textbf{Dame} & \textbf{Turm}\\
+\begin{tabular}{@{}c c c c c c c c}
+-20&-10&-10&-5&-5&-10&-10&-20\\
+-10&0&0&0&0&0&0&-10\\
+-10&0&5&5&5&5&0&-10\\
+-5&0&5&5&5&5&0&-5\\
+0&0&5&5&5&5&0&-5\\
+-10&5&5&5&5&5&0&-10\\
+-10&0&5&0&0&0&0&-10\\
+-20&-10&-10&-5&-5&-10&-10&-20
+\end{tabular}
+&
+\begin{tabular}{c c c c c c c c}
+0&0&0&0&0&0&0&0\\
+5&10&10&10&10&10&10&5\\
+-5&0&0&0&0&0&0&-5\\
+-5&0&0&0&0&0&0&-5\\
+-5&0&0&0&0&0&0&-5\\
+-5&0&0&0&0&0&0&-5\\
+-5&0&0&0&0&0&0&-5\\
+0&0&0&5&5&0&0&0
+\end{tabular}
+\end{tabular}
+\end{table}
+
+Diese Matrizen können ergänzend zur Berechnung des Spielwertes genommen werden, um die Positionen der einzelnen Schachfiguren mit einbeziehen zu können. Dazu wird für alle Figuren der Wert aus der entsprechenden Position genommen und diese Werte zusammenaddiert.
+
+Mittels Kombination aus diesen heuristischen Messmethoden kann bereits eine aufschlussreiche Zahl berechnet werden, wie aussichtsreich das aktuelle Spiel für den jeweiligen Spieler ist. Verstärkt werden kann dies jedoch durch weitere Funktionen, die auch Angriff, Verteidigung und Beweglichkeit des Spiels mit einbeziehen.
+
+%https://www.chessprogramming.org/Simplified_Evaluation_Function
+
 \subsection{Verteidigung}
+
+%König Angriff
+Um die Stärke der Verteidigung eines Spielers zu messen, gilt vor Allem die Verteidigung des Königs als Messwert dafür. Dabei gibt es verschiedne Strategie.
+
+Eine dabei ist die Position der Bauern zu messen, um herauszufinden, inwiefern das sogenannte ``Bauern Schild'' intakt ist. Ein Bauern Schild existiert dann, wenn der König durch vorstehende Bauern geschützt ist und keine Figur den König bedrohen kann, ohne vorher an diesem vorbei zu kommen. Eine Lücke in einem solchen Schild sollte dabei zu einer negativen Bewertung des Spielzustands führen. Dies kann noch dahingehend erweitert werden, dass eine Lücke in dem Bauern Schild umso höher in die Bewertung mit einfließt, desto mehr Material, also Figuren multipliziert mit ihren Werten, der Gegner noch auf dem Schachbrett hat. Dies führt dazu, dass die KI in dem Fall einer Lücke eher zu einem Figurentausch neigt, um Gefahren für den König zu eliminieren, wenn es an seiner eigenen Verteidigung mangelt.
+
+Ein weiterer Ansatz ist den Angriff auf die Königs-Zone zu messen und entsprechend zu bewerten. Die Königszeine wird dabei definiert auf die um den König umliegenden Felder plus zwei bis drei weitere Felder voraus in Richtung des Gegenspielers. In Figur 2.6.1 sieht man diese Felder blau markiert.
+
+% bild
+
+Dann wird die Zahl der Figuren des Gegners gemessen, die diese Felder angreifen können. Dies wird in einer Variable ``attacking\_pieces\_counter'' gespeichert. An Hand dieser Zahl wird das Gewicht ``attack\_weight'' bestimmt. Dies kann folgender Tabelle entnommen werden:
+
+\begin{tabular}{c c}
+\textbf{attacking\_pieces\_counter} & \textbf{attack\_weight}\\
+1 & 0\\
+2 & 50\\
+3 & 75\\
+4 & 88\\
+5 & 94\\
+6 & 97\\
+7 & 99
+\end{tabular}
+
+Zusätzlich wird der Wert der Angriffe berechnet. Dazu wird für jede Figur, die die König-Zone angreifen kann, gezählt, wie viele Felder innerhalb dieser die Figur erreichen kann. Dies wird dann mit einer Konstante multipliziert abhängig vom Typ der Figur - 20 für einen Springer, 20 für einen Läufer, 40 für einen Turm und 80 für eine Dame. Für jede angreifende Figur wird diese Berechnung durchgeführt und das Ergebnis zur Variable ``value\_of\_attacks'' hinzugefügt. 
+
+Abschließend werden diese berechneten Werte ``attack\_weight'' und ``value\_of\_attacks'' miteinander multipliziert und das Ergebnis durch 100 dividiert, wie in folgender Gleichung zu sehen:
+
+\begin{equation}
+(value\_of\_attacks * attack\_weight[attacking\_pieces\_counter]) / 100)
+\end{equation}
+
+Dieser Wert gibt dann guten Aufschluss darüber, wie gut oder schlecht die Sicherheit des Königs gewährleistet wird. Dabei werden jedoch nur Offiziersfiguren betrachtet.
+
+Ein alternativer Ansatz dazu ist die Anzahl der attackierten Felder außer Acht zu lassen und stattdessen alle Figuren mit in die Berechnungen mit einzubeziehen. Dieser Ansatz wird beispielsweise von der Schach KI Stockfish genutzt. Dabei erhalten die verschiedenen Figuren verschiedene Werte für den Angriff zugeordnet. Ein Turm erhält dabei 3 Punkte, eine Dame 5. Alle anderen Figuren erhalten 2 Punkte. Zusätzlich können noch weitere Faktoren einbezogen werden, die im Königsangriff eine Rolle spielen. Dann werden alle Punkte zusammen gezählt und an Hand folgender Liste der Wert des Angriffs bestimmt.
+
+\begin{lstlisting}
+static const int SafetyTable[100] = {
+    0,  0,   1,   2,   3,   5,   7,   9,  12,  15,
+  18,  22,  26,  30,  35,  39,  44,  50,  56,  62,
+  68,  75,  82,  85,  89,  97, 105, 113, 122, 131,
+ 140, 150, 169, 180, 191, 202, 213, 225, 237, 248,
+ 260, 272, 283, 295, 307, 319, 330, 342, 354, 366,
+ 377, 389, 401, 412, 424, 436, 448, 459, 471, 483,
+ 494, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+ 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+ 500, 500, 500, 500, 500, 500, 500, 500, 500, 500,
+ 500, 500, 500, 500, 500, 500, 500, 500, 500, 500
+};
+\end{lstlisting}
+
+Mittels dieser Ansätze ist es möglich die Sicherheit seines eigenen Königs zu berechnen. Dies ist ein besonders wichtiger Ansatz bei der Evaluation eines Spielzustandes, damit die KI den eigenen König nicht unbedacht offen stellt, was langfristige, negative Folgen für sein Spiel haben kann. 
+
+%https://www.chessprogramming.org/King_Safety
 
 \subsection{Angriff}
 
+Neben der Verteidigung spielen auch die Möglichkeiten zum Angriff auf den Gegner eine Rolle, um einen Spielzustand zu evaluieren.
+
+Ein erster, simpler Ansatz ist dabei neben dem Wert der Materialien auch die möglichen Angriffe auf Figuren mit in die Evaluation mit einzubeziehen. Auch dabei gilt es den Wert der angegriffenen Funktion mit einzuberechnen sowie die Anzahl der angreifenden Figuren. Am Ende müssen diese Werte sowohl für von schwarz angegriffene als auch von weiß angegriffene Figuren berechnet und voneinander subtrahiert werden, um den Vorteil im Angriff berechnen zu können. Diese Möglichkeit der Evaluation ist nur dann möglich, wenn es sich nicht um einen ruhigen Zustand handelt, wie in Kapitel 2.5 erklärt. 
+
+Ein weiterer, wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle des Zentrums. beim Zentrum handelt es sich dabei um die Felder d4, d5, e4 und e5. Dies ist ein wichtiger Ansatz bei in Kapitel 2.6.1 beschriebenen ``Opening-books'', sowie bei in Kapitel 2.6.2 beschriebenen Matrizen zur Bewertung der Positionierung der Figuren auf einem Schachbrett. Um dies dennoch extra zu evaluieren, können alle Figuren gezählt werden, di edas Zentrum erreichen können, mit deren Werten multipliziert werden und anschließend die Differenz der weißen sowie schwarzen Figuren berechnet. 
+
+%https://www.chessprogramming.org/Center_Control
+
+Um Angriffe effizient aufbauen zu können, ist auch Mobilität ein wichtiger Faktor im Spiel. In einer Studie von Eliot Slater wurde deutlich, dass die Anzahl der durchführbaren Züge bei gleichzeitiger Gleichheit der verfügbaren Materialien eine deutliche Korrelation mit der Anzahl der gewonnen Spiele zeigt.
+
+Der simpelste Ansatz, um diese messbar zu machen, ist schlicht den benannten Wert der Anzahl der Züge zur Hilfe zu nehmen und diese für beide Spieler zu vergleichen.
+
+Dies kann jedoch noch um verschiedene Faktoren erweitert werden. Dies ist beispielsweise Vorwärtsbewegungen höher zu bewerten als Rückwärtsbewegungen oder vertikale Bewegungen höher als horizontale. Ebenso können auch Züge mit gezählt werden, die auf ein Feld führen, das bereits von einer befreundeten Figur belegt ist. Dies stellt zwar keinen legalen Zug dar, sichert jedoch die befreundete Figur ab.
+
+%https://www.chessprogramming.org/Mobility
+
+Zudem kann zur Bewertung eines Angriffs auch die Sicherheit des gegnerischen Königs zur Hilfe genommen werden. Wie diese berechnet wird, ist in Kapitel 2.6.3 aufgeführt.
+
+All diese Kriterien führen zu einer guten Möglichkeit Angriffe beziehungsweise den Aufbau von Angriffen bewerten zu können und gehen somit über die in Kapitel 2.6.3 beschriebene Defensivstrategie hinaus.
+
+%Blockierte Bauern?
+%Trap?
+
 \subsection{Spielverlauf}
+
+Neben der bisher beschriebenen heuristischen Funktionen zur Bewertung eines Spiels, kann auch statistische Bewertung Einfluss auf diese nehmen.
+
+Dazu ist es wichtig, eine möglichst große Historie an Spielen aufzubauen. Dazu kann im Laufe eines Spiels jeder einzelne Zustand abgespeichert werden, so dass dieser eindeutig identifizierbar ist. Am Ende des Spiels muss dazu dann ein Wert hinzugefügt werden, der Aufschluss über Sieg, Unentschieden oder Niederlag gibt. Dazu können die Werte 1, 0 und -1 dienen.
+
+Beim Zusammenfügen der Historie des aktuellen Spiels mit der aufzubauenden Gesamthistorie aller Spiele gilt es dann über die Historien zu iterieren und nach gleichen Zuständen zu suchen. Diese gilt es dann zu migrieren, um eine Staistik aufzubauen, die Aufschluss über die Anzahl aller Siege und Niederlagen ausgehend von dem speziellen Zustand zu gewinnen.
+
+Die Aussagekraft ist vor Allem dann kräftig, umso höher die Zahl ist. Wenn es sich um lediglich eine positivie Bilanz von ein oder zwei Siegen mehr als Niederlagen handelt, kann dies schlicht an der geringen Zahl an Vorkommnissen des Zustands liegen. Ist dieser jedoch sehr hoch, ist ein Zufall eher unwahrscheinlich.
+
+Deshalb gilt es eine möglichst große Historie aufzubauen, die vor Allem in der Anfangsphase, in der noch nicht so viele verschiedene Zustände erreichbar sind, guten Aufschluss über die Qualität des Zustands geben kann. Umso fortgeschrittener jedoch das Spiel ist, desto schwieriger wird es eine angemessene Anzahl an Iterationen über die speziellen Zustände zu erreichen, da diese immer häufiger vorkommen.
+
+Da im Spiel Schach $10^40$ verschiedene Spielzustände existieren, ist es kaum möglich alle Zustände in angemessener Anzahl durchgegangen zu sein und abzuspeichern. Selbst unter der Annahme, dass ein Zustand inklusive dessen Bilanz in nur 20 Bit gespeichert werden kann (12 Bits für Schachspiel und 8 Bits für Bilanz), würde dies $10^40 * 20 Bits = 2 * 10^41 Bits = 2,5 * 10^40 Bytes = 2,5 * 10^25 Petabytes$ an Speicherplatz benötigen, was eine unverhältnismäßige Größe darstellt. Zudem würde die Ansammlung dieser Daten unverhältnismäßig lange dauern.
+
+%https://codegolf.stackexchange.com/questions/19397/smallest-chess-board-compression
+
+Aus diesem Grund stellt dies zwar eine gute Größe für den Beginn des Spiels dar, verliert jedoch im späteren Spielverlauf auf Grund fehlender Vorkommnisse der Zustände an Aussagekraft.
 
 \subsection{Finishing strategy}
