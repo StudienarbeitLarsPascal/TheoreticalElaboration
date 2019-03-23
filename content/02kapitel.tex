@@ -5,7 +5,59 @@
 
 \chapter{Theoretische Hintergründe}
 
-Vor dem Erstellen einer Schach-\acs{KI} (\acl{KI}) muss zunächst betrachtet werden, wie der Aufbau von KIs für spiel-mechanische Abläufe ist, welche Funktionen diese enthalten müssen und wie diese speziell auf das Spiel ``Schach'' angewandt werden können. Dazu werden zunächst Grundlagen der Spieltheorie betrachtet ehe näher auf Möglichkeiten zur Nutzung dieser im Kontext des Schachspiels eingegangen wird. Im zweiten Teil werden die verwendeten Methoden für die in dieser Arbeit beschriebene KI erläutert und die Wahl begründet.
+In diesem Kapitel werden die theoretischen Hintergründe zur Spieletheorie im Generelln und vor Allem der Entwicklung von Spiele spielenden Computern eingegangen. Dies wird im Verlauf der Kapitel stets auf das Spiel Schach spezialisiert, da sich der Schwerpunkt dieser Arbeit auf dieses Spiel fokussiert. 
+Zunächst werden die klassischen Spieletypen nach der Spieletheorie betrachtet und Schach in diese Kategorien eingeordnet. Darauf folgend wird als Hinführung zu Spiele-\acs{KI}s (\acl{KI}) die Geschichte der Entwicklung dieser betrachtet, um Zusammenhänge mit technischen und mathematischen Fortschritten besser zum Verständnis zu bringen.
+
+Anschließend wird speziell auf Algorithmen zur Entwicklung einer Spiele-KI von sequenziellen Nullsummenspielen wie Schach eingegangen. Dabei wird zuerst der grundlegende ``Minimax-Algorithmus'' betrachtet und zudem auf die Optimierung dieses durch ``Alpa-Beta Pruning'' eingegangen. Darauf folgend werden zudem die Problematiken der Anwendung dieser auf komplexe Spiele beschrieben und mögliche Lösungen vorgeschlagen. 
+
+Abschließend für dieses Kapitel werden durch genannte Problematiken nötig werdende Evaluierungsfunktionen der einzelnen Spielzustände im Spiel Schach genannt und beschrieben, womit die theoretische Grundlagenschaffung für das Entwickeln einer Schach-KI abgeschlossen ist.
+
+\section{Einordnung der Spieltypen für Schach}
+
+In der klassischen Spieletheorie werden Spiele an Hand von fünf Kategorien unterschieden und eingeordnet. Diese fünf Kategorien sind
+\begin{itemize}
+\item Symmetrische / Asymmetrische Spiele
+\item Perfekte / Imperfekte Informationslage
+\item Kooperative / Nicht-kooperativ Spiele
+\item Simultane / Sequentielle Spiele
+\item Nullsummenspiele / Nicht-Nullsummenspiel
+\end{itemize}
+
+Diese werden nun alle einzeln beschrieben sowie der Unterschied erläutert. Außerdem wird das Spiel Schach jeweils einer der Spieltypen zugeordnet.
+
+Im ersten Schritt wird zwischen symmetrischen und asymmetrischen Spielen unterschieden. Bei symmetrischen Spielen hat jeder Spieler die selben Ziele, um das Spiel zu gewinnen. Der Sieg ist dabei abhängig von den gewählten Strategien. Bei asymmetrischen Spielen dagegen verfolgen die teilnehmenden Parteien unterschiedliche Ziele. Ein klassisches Beispiel ist dabei das Spiel des Jägers und des Gejagten - während der Jäger versucht zu den Gejagten zu fangen, versucht der Gejagte zu entkommen. Unter Umständen wird auch der Erfolg im Nachhinein an Hand verschiedener Kriterien evaluiert, so dass unter Umständen beide Seiten für sich einen Sieg erringen können.
+
+Schach stellt dabei ein klassisches Beispiel eines symmetrischen Spiels dar - Beide Seiten versuchen jeweils den gegnerischen König in Schachmatt zu setzen, ohne dabei selbst zuvor in Schachmatt gesetzt zu werden.
+
+Perfekte und Imperfekte Informationslagen in Spielen kategorisieren Spiele nach dem Wissen, den der Spieler über das Spiel hat. Bei perfekter Informationslage kann der Spieler über alle Züge, sowohl seiner eigenen als auch die des Gegners, Bescheid und kann die Möglichkeiten des Gegners evaluieren, um so selbst eine bessere Entscheidung zu treffen. Bei imperfekter Informationslage ist dies nicht der Fall. Bei vielen Kartenspielen beispielsweise, wie Poker oder Black Jack, hat ein Spieler keine Informationen über die Karten in der Hand der anderen Spieler. Dies ist dann als imperfekte Informationslage zu bezeichnen.
+
+Im Spiel Schach jedoch sind die Figuren und dessen Positionen beider Spieler für alle Seiten offen gelegt und einsehbar. Dadurch können sich beide Spieler ein Gesamtbild über die Situation machen, ohne, dass ein Mangel an Information herrscht.
+
+Bei kooperativen Spielen handelt es sich um Spiele, in denen mehrere Spieler zusammen an einem Ziel arbeiten können oder gar müssen, um ihr Ergebnis zu verbessern. Dies kann in Bündnissen münden, die mehrere Spieler zusammen eingehen, um an einem Ziel zu arbeiten, dass alle gemeinsam erreichen können. Ein Beispiel dafür sind Wahlen, die nach Mehrheitsentscheid gewonnen werden können. Dabei gilt es für die Teilnehmer Allianzen zu formen, um gemeinsam eine Möglichkeit durchzusetzen. In Nicht-kooperativen Spielen dagegen ist es verboten oder nicht zielführend Allianzen zu formen, da kein gemeinsamer Sieg errungen werden kann. 
+
+%https://homepages.cwi.nl/~apt/coop/10.pdf
+
+Schach stellt dabei ein Nicht-kooperatives Spiel dar, da die Spieler sich nicht miteinander verbünden können und kein Sieg für beide Parteien gleichzeitig möglich ist.
+
+Simultane Spiele sind Spiele, bei denen alle Spieler gleichzeitig Aktionen unternehmen können. Ein Beispiel stellt dabei ein Kampf dar, in der beide Seiten sich gleichzeitig bewegen können und in Echtzeit auf die Bewegungen des Gegner reagieren müssen. Bei sequenziellen Spiele dagegen wechseln sich alle Seiten mit ihren Zügen ab. Dies bedeutet auch, dass die Spieler über die vorangegangenen Züge ihrer Gegner Bescheid wissen.
+
+Wie die meisten Brettspiele stellt Schach dabei ein sequentielles Spiel dar - Die Spieler wechseln sich mit ihren Zügen ab und wissen über die durch den Gegner bewegten Figuren Bescheid
+
+Als letzte Unterscheidung gelten Nullsummenspiele und Nicht-Nullsummenspiele. Bei Nullsummenspielen bedeutet ist Gewinn für den einen Spieler immer einhergehend mit einem gleichzeitigen Verlust für einen anderen Spieler. Dies bedeutet, dass Werte für Gewinn und Verluste für alle Spieler zusammen gerechnet immer auf Null hinausläuft. Bei Nicht-Nullsummenspielen ist dies nicht der Fall. Dabei können von einer Aktion eines Akteurs mehrere Akteure gleichzeitig profitieren, ohne, dass andere darunter leiden. Ein Beispiel dafür ist das Gefangenendilemma. Dabei können zwei Gefangene jeweils die Entscheidung treffen, ob sie ihr Verbrechen gestehen oder Schweigen. Von ihrem Handeln sowie dem Handeln der anderen Partei hängt die Länge ihrer Strafe ab. Diese ist folgender Tabelle zu entnehmen:
+
+\begin{tabular}{l c c}
+& \textbf{B schweigt} & \textbf{B gesteht} \\
+\textbf{A schweigt} & A: 2 Jahre; B: 2 Jahre & A: 6 Jahre; B: 1 Jahr \\
+\textbf{A gesteht} & A: 1 Jahr; B: 6 Jahre & A: 4 Jahre; B: 4 Jahre
+\end{tabular}
+
+%Tweedale, G. (1993). William Poundstone, Prisoner's Dilemma: John von Neumann, Game Theory, and the Puzzle of the Bomb. Oxford: Oxford University Press, 1992. Pp. xi 290. ISBN 0-19-286162-X. £7.99 (paperback edition). The British Journal for the History of Science, 26(3), 375-376. doi:10.1017/S0007087400031332
+
+Dies ist als klassisches Nicht-Nullsummenspiel bekannt, da beide Seiten je nach Reaktion zusammengerechnet minimal 4 Jahre und maximal 8 Jahre Strafe bekommen. Somit ist das Gesamtergebnis nicht stets das gleiche und beide Seiten können von gegenseitigem Schweigen profitieren.
+
+Anders ist dies bei Schach. Schach ist als Nullsummenspiel zu betrachten, da das Schlagen einer Figur zwar Gewinn auf der einen Seite auslöst, gleichzeitig aber einen ebenso hohen Verlust auf der anderen Seite, wodurch sich das Gesamtspiel wieder ausgleicht.
+
+Nachdem nun Schach in die Spieletheorie-Typen eingeordnet ist, wird in folgenden Kapiteln näher auf die Möglichkeiten zur Durchführung des Schach Spiels durch einen Computer eingegangen.
 
 \section{Geschichte der Spieltheorie}
 
@@ -71,8 +123,6 @@ An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nich
 %alpha beta
 %deep blue
 %stockfish
-
-\section{Einordnung Spieltyp Schach}
 
 \section{Minimax-Algorithmus}
 
