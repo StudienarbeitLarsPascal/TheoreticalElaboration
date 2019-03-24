@@ -14,10 +14,11 @@
 %%Datum: 27.03.2017
 %%**************************************************************
 
+	\bibliographystyle{unsrt}
 \input{ads/header}
 
-\begin{document}
 
+\begin{document}
 	% Deckblatt
 	\begin{spacing}{1}
 		\input{ads/deckblatt}
@@ -82,7 +83,10 @@
 	
 	% Literaturverzeichnis
 	\cleardoublepage
-	\nocite{*}
-	\printbibliography
+	\bibliography{literature}
+	
+		% Appendix
+	\cleardoublepage
+	\input{ads/appendix}
 	
 \end{document}

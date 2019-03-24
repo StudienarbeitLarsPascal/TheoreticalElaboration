@@ -1,6 +1,79 @@
 % !TeX root = ../dokumentation.tex
 
+\appendix
+\addappheadtotoc
+\appendixpage
 
-\begin{thebibliography}{..........}
+\begin{algorithm}[h]
+\caption{Minimax Algorithmus}
+\label{alg:minimax}
+\begin{algorithmic}
+\Function{$minimax\_decision$}{$state$}
+	\ForAll{$a in actions(state)$}
+		\State $value \gets \Call{$min\_value$}{$result\_state(state, a)$}$
+		\If{$value > best\_value$}
+			\State $best\_value \gets value$
+			\State $best\_move \gets a$
+		\EndIf
+		\State \Return $best\_move$
+	\EndFor
+\EndFunction
+\\
+\Function{$max\_value$}{$state$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets -\infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets max(v, \Call{$min\_value$}{$result\_state(state, a)$})$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\\
+\Function{$min\_value$}{$state$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets \infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets min(v, \Call{$max\_value$}{$result\_state(state, a)$})$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
-\end{thebibliography}
+\begin{algorithm}[h]
+\caption{Alpha Beta Algorithmus}
+\label{alg:alpha_beta}
+\begin{algorithmic}
+\Function{$alpha\_beta\_search$}{$state$}
+	\ForAll{$a in actions(state)$}
+		\State $value \gets \Call{$min\_value$}{result\_state(state, a), -\infty, +\infty}$
+		\If{$value > best\_value$}
+			\State $best\_value \gets value$
+			\State $best\_move \gets a$
+		\EndIf
+		\State \Return $best\_move$
+	\EndFor
+\EndFunction
+\\
+\Function{$max\_value$}{$state, \alpha, \beta$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets -\infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets max(v, \Call{$min\_value$}{result\_state(state, a), \alpha, \beta})$
+		\If{$v \geq \beta$} \State \Return $v$ \EndIf
+		\State $\alpha \gets max(\alpha, v)$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\\
+\Function{$min\_value$}{$state, \alpha, \beta$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets \infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets min(v, \Call{$max\_value$}{result\_state(state, a), \alpha, \beta})$
+		\If{$v \leq \alpha$} \State \Return $v$ \EndIf
+		\State $\beta \gets min(\beta, v)$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
