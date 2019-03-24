@@ -9,4 +9,4 @@
 *.bcf
 *.log
 *.toc
-*.run.xml
+*.run.xml*.bbl*.blg
