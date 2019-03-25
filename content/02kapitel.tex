@@ -235,7 +235,7 @@ Diesen Endzuständen werden dann Werte zugewiesen, die aufsteigend rekursiv mite
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth/5*4]{images/minimax_algorithm_tree.png}
+\includegraphics[width=\textwidth/5*4]{images/minimax_algorithm_tree.PNG}
 
 \caption{Minimax Baum \cite{Russell2010}}\label{fig:minimax_tree}
 \end{figure}
@@ -385,9 +385,9 @@ Eine andere Möglichkeit ist, die Evaluierungsfunktion dahingehend anzupassen, d
 Entscheidend für eine Schach-spielende-KI ist - neben der Anzahl der zu betrachtenden Spielzüge - die Art der Evaluation, die Aufschluss darüber geben soll, wie aussichtsreich eine bestimmte Position ist. In diesem Kapitel werden verschiedene Ansätze aufgeführt und erklärt. Dabei wird zunächst auf die Spieleröffnung eingegangen, der eine Sonderrolle im Schachspiel zukommt. Danach erfolgen die beispielhafte Nennung verschiedener Evaluierungsfunktionen im Mittelspiel ehe zum Schluss auf Strategien für das Endspiel eingegangen wird.
 
 \subsection{Eröffnungsstrategie}\label{opening_evaluation}
-Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es sehr viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet sollten die ersten Züge ebenso Bedacht gewählt werden, wie Züge im weiteren Spielverlauf. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.
+Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet sollten besonders die ersten Züge mit Bedacht gewählt werden. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.
 
-Ein Beispiel für eine gute Ausgangssituation ist es die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass durch ihre Lage, ein jede Schachfigur die größtmögliche Reichweite für deren Züge besitzt und somit die, für diese Figur, gefährlichste Position besitzt. Ein Springer auf dem Feld d4 kontrolliert acht Felder, wohingegen ein Springer auf dem Feld b1 oder g1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels, nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet. 
+Ein Beispiel für eine gute Ausgangssituation ist es, die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass ihre Lage jeder Schachfigur die jeweils größtmögliche Reichweite ermöglicht. Somit ist dies für jede Figur mitunter die gefährlichste Position im Spiel. Zum Beispiel kontrolliert ein Springer auf dem Feld d4 acht Felder, wohingegen ein Springer auf dem Feld b1 oder g1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet. 
 
 \begin{figure}[h]
 \centering
@@ -404,13 +404,13 @@ Wie bereits Stuart Russell und Peter Norvig in Artificial Intelligence – A Mod
 
 Die Lösung zur Implementierung eines Eröffnungsspiels, ohne die Verwendung von komplexen Suchverfahren, liegt in den sogenannten Opening-Books. Opening-Books sind eine Ansammlung von verschiedenen dokumentierten Eröffnungsstrategien, die es ermöglichen auf eine aktuelle Spielsituation, in der Eröffnung, den passenden Zug zu finden.
 
-Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller in der Berechnung der besten Züge sind. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie „Ruy Lopez“, oder auch die „Spanische Eröffnung“ genannt, die bereits 1561 im Zuge der veröffentlich des Buchs "Libro de la invención liberal y arte del juego del ajedrez" von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, ob ein Zug positiv in dieser Situation oder nicht ist, sondern es wird auf eine Datenbank an, bereits als gut deklarierten Zügen, zurückgegriffen. 
+Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller in der Berechnung der besten Züge sind. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie „Ruy Lopez“, oder auch die „Spanische Eröffnung“ genannt, die bereits 1561 im Zuge der veröffentlich des Buchs "Libro de la invención liberal y arte del juego del ajedrez" von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.
 
 % https://www.chess.com/article/view/the-ruy-lopez-chess-opening-explained
 
-Sobald eine Strategie abgeschlossen ist, oder das Opening-Book keinen sinnvollen Zug mehr auf eine komplexe Spielsituation hat, kommen die bereits eingeführten Suchverfahren zum Einsatz.
+Sobald eine Strategie abgeschlossen ist oder das Opening-Book keinen sinnvollen Zug mehr auf eine komplexe Spielsituation hat, kommen die bereits eingeführten Suchverfahren zum Einsatz.
 
-Der Nachteil der Opening-Books ist, dass diese nicht für jeden im Eröffnungsspiel getätigten Zug des Gegners eine passende Strategie besitzen. Die Opening-Books gehen davon aus, dass der Gegner ein Spieler ist, der auch Eröffnungsstrategien spielen möchte und somit möglichst schnell die besten Felder mit seinen Figuren zu kontrollieren. Wenn es dazu kommt, dass ein Spieler durch Unwissenheit, oder bewusst nicht die vermeintlich besten Züge zur Eröffnung spielt, sondern eigentlich kontraproduktive Züge, dann gibt es keine Strategie zu der aktuellen Spielsituation und das Opening-Book kann nicht mehr eingesetzt werden. 
+Der Nachteil der Opening-Books ist, dass diese nicht für jeden im Eröffnungsspiel getätigten Zug des Gegners eine passende Strategie besitzen. Die Opening-Books gehen davon aus, dass der Gegner ein Spieler ist, der auch professionelle Eröffnungsstrategien spielen wird und somit möglichst schnell die besten Felder mit seinen Figuren zu kontrollieren. Wenn es dazu kommt, dass ein Spieler durch Unwissenheit, oder bewusst nicht die vermeintlich besten Züge zur Eröffnung spielt, sondern Züge, die nicht im Opening-Book vorkommen, dann gibt es keine Strategie zu der aktuellen Spielsituation und das Opening-Book kann nicht mehr eingesetzt werden. 
 
 Damit das Schachspiel trotz der Tatsache, dass das Opening-Book keine sinnvolle Strategie liefern kann, fortgesetzt werden kann, muss Gebrauch von Suchverfahren gemacht werden. Hierbei ist zu beachten, dass dies, im Gegensatz zu Opening-Books, negative Auswirkungen, auf die im Eröffnungsspiel benötigte Zeit zur Berechnung von Zügen hat.
 
