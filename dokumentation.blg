@@ -1,53 +1,53 @@
-This is BibTeX, Version 0.99d (TeX Live 2016/W32TeX)
+This is BibTeX, Version 0.99d (TeX Live 2018)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: dokumentation.aux
 The style file: unsrt.bst
 Database file #1: literature.bib
-Warning--empty journal in Bernstein1958
-Warning--empty publisher in Dresher1961
-Warning--empty booktitle in Slater1988
-Warning--empty institution in Apt
 Warning--empty publisher in Russell2010
 Warning--empty publisher in O.V.2013
-You've used 26 entries,
+Warning--empty journal in Bernstein1958
+Warning--empty institution in Apt
+Warning--empty booktitle in Slater1988
+Warning--empty publisher in Dresher1961
+You've used 29 entries,
             1791 wiz_defined-function locations,
-            594 strings with 7066 characters,
-and the built_in function-call counts, 4058 in all, are:
-= -- 336
-> -- 147
+            604 strings with 7340 characters,
+and the built_in function-call counts, 4408 in all, are:
+= -- 359
+> -- 159
 < -- 2
-+ -- 64
-- -- 38
-* -- 138
-:= -- 649
-add.period$ -- 72
-call.type$ -- 26
-change.case$ -- 22
++ -- 70
+- -- 41
+* -- 140
+:= -- 699
+add.period$ -- 78
+call.type$ -- 29
+change.case$ -- 25
 chr.to.int$ -- 0
-cite$ -- 32
-duplicate$ -- 216
-empty$ -- 476
-format.name$ -- 38
-if$ -- 932
+cite$ -- 35
+duplicate$ -- 231
+empty$ -- 530
+format.name$ -- 41
+if$ -- 1015
 int.to.chr$ -- 0
-int.to.str$ -- 26
+int.to.str$ -- 29
 missing$ -- 21
-newline$ -- 124
-num.names$ -- 26
-pop$ -- 139
+newline$ -- 136
+num.names$ -- 29
+pop$ -- 158
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 100
+skip$ -- 115
 stack$ -- 0
 substring$ -- 76
-swap$ -- 39
+swap$ -- 42
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 6
-while$ -- 34
-width$ -- 28
-write$ -- 248
+while$ -- 37
+width$ -- 31
+write$ -- 271
 (There were 6 warnings)

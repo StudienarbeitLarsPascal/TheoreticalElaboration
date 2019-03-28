@@ -385,26 +385,28 @@ Eine andere Möglichkeit ist, die Evaluierungsfunktion dahingehend anzupassen, d
 Entscheidend für eine Schach-spielende-KI ist - neben der Anzahl der zu betrachtenden Spielzüge - die Art der Evaluation, die Aufschluss darüber geben soll, wie aussichtsreich eine bestimmte Position ist. In diesem Kapitel werden verschiedene Ansätze aufgeführt und erklärt. Dabei wird zunächst auf die Spieleröffnung eingegangen, der eine Sonderrolle im Schachspiel zukommt. Danach erfolgen die beispielhafte Nennung verschiedener Evaluierungsfunktionen im Mittelspiel ehe zum Schluss auf Strategien für das Endspiel eingegangen wird.
 
 \subsection{Eröffnungsstrategie}\label{opening_evaluation}
-Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet sollten besonders die ersten Züge mit Bedacht gewählt werden. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.
+Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet sollten besonders die ersten Züge mit Bedacht gewählt werden. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.\cite{O.V.}
 
-Ein Beispiel für eine gute Ausgangssituation ist es, die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass ihre Lage jeder Schachfigur die jeweils größtmögliche Reichweite ermöglicht. Somit ist dies für jede Figur mitunter die gefährlichste Position im Spiel. Zum Beispiel kontrolliert ein Springer auf dem Feld d4 acht Felder, wohingegen ein Springer auf dem Feld b1 oder g1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet. 
+% https://www.chesscentral.com/pages/learn-chess-play-better/chess-strategy-for-chess-openings-and-chess-principles.html
+
+Ein Beispiel für eine gute Ausgangssituation ist es, die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass ihre Lage jeder Schachfigur die jeweils größtmögliche Reichweite ermöglicht. Somit ist dies für jede Figur mitunter die gefährlichste Position im Spiel. Zum Beispiel kontrolliert ein Springer auf dem Feld d4 acht Felder, wohingegen ein Springer auf dem Feld b1 oder g1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet.\cite{O.V.2017}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth/2]{images/opening-books-strong-center-example.png}
 
-\caption{Beispielhafte Reichweite eines Springers auf dem Feld d5 \cite{}}\label{fig:knight_reach}
+\caption{Beispielhafte Reichweite eines Springers auf dem Feld d5}\label{fig:knight_reach}
 \end{figure}
 
 Durch die Verfügbarkeit von Minimax-, oder der Alpha-Beta-Suche, stellt sich die Frage, ob solche im Vorhinein festgelegten Eröffnungsstrategien nicht überflüssig sind und durch die Suche des optimalen Zugs, unter der Beachtung der vermeintlichen nächsten n-Züge, das beste Ergebnis zu Stande kommt.
 
-Wie bereits Stuart Russell und Peter Norvig in Artificial Intelligence – A Modern Approach beschreiben, ist das Verwenden von solchen Algorithmen während der Eröffnung eines Schachspiels zu überdimensioniert und gleicht dem metaphorischen „Mit Kanonen auf Spatzen schießen“. Denn die Suche eines passenden Eröffnungszuges aus einer Anzahl von etwa einer Milliarden Spielständen ist sehr zeitaufwendig und überflüssig, wenn bspw. dies der erste Zug des kompletten Spiels ist. Ebenfalls ist die Wahrscheinlichkeit, dass die Eröffnungszüge eines Spiels bereits bekannt und dokumentiert sind höher, als im späteren Spielverlauf, in dem sehr viele verschiedene mögliche Züge zur Auswahl stehen.\cite{Russell2010}
+Wie bereits Stuart Russell und Peter Norvig in Artificial Intelligence – A Modern Approach beschreiben, ist das Verwenden von solchen Algorithmen während der Eröffnung eines Schachspiels zu überdimensioniert und gleicht dem metaphorischen „Mit Kanonen auf Spatzen schießen“. Denn die Suche eines passenden Eröffnungszuges aus einer Anzahl von etwa einer Milliarden Spielständen ist sehr zeitaufwendig und überflüssig, wenn bspw. dies der erste Zug des kompletten Spiels ist.\cite{Russell2010} Ebenfalls ist die Wahrscheinlichkeit, dass die Eröffnungszüge eines Spiels bereits bekannt und dokumentiert sind höher, als im späteren Spielverlauf, in dem sehr viele verschiedene mögliche Züge zur Auswahl stehen.
 
 % Hier Quelle zu Kapitel 5.4.4 Search versus lookup
 
 Die Lösung zur Implementierung eines Eröffnungsspiels, ohne die Verwendung von komplexen Suchverfahren, liegt in den sogenannten Opening-Books. Opening-Books sind eine Ansammlung von verschiedenen dokumentierten Eröffnungsstrategien, die es ermöglichen auf eine aktuelle Spielsituation, in der Eröffnung, den passenden Zug zu finden.
 
-Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller in der Berechnung der besten Züge sind. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie „Ruy Lopez“, oder auch die „Spanische Eröffnung“ genannt, die bereits 1561 im Zuge der veröffentlich des Buchs "Libro de la invención liberal y arte del juego del ajedrez" von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.
+Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller in der Berechnung der besten Züge sind. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie „Ruy Lopez“, oder auch die „Spanische Eröffnung“ genannt, die bereits 1561 im Zuge der veröffentlich des Buchs "Libro de la invención liberal y arte del juego del ajedrez" von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.\cite{Chess.comTeamInternational2018}
 
 % https://www.chess.com/article/view/the-ruy-lopez-chess-opening-explained
 
@@ -414,9 +416,6 @@ Der Nachteil der Opening-Books ist, dass diese nicht für jeden im Eröffnungssp
 
 Damit das Schachspiel trotz der Tatsache, dass das Opening-Book keine sinnvolle Strategie liefern kann, fortgesetzt werden kann, muss Gebrauch von Suchverfahren gemacht werden. Hierbei ist zu beachten, dass dies, im Gegensatz zu Opening-Books, negative Auswirkungen, auf die im Eröffnungsspiel benötigte Zeit zur Berechnung von Zügen hat.
 
-
-% https://www.chesscentral.com/pages/learn-chess-play-better/chess-strategy-for-chess-openings-and-chess-principles.html
-% https://www.ichess.net/blog/chess-opening-strategy-get-great-position/ Ziel der Eröffnungsstrategien
 % https://www.thesprucecrafts.com/most-common-chess-openings-611517 Nur versch. Strategien
 % http://www.thechesswebsite.com/chess-openings/ Nur versch. Strategien
 
@@ -612,7 +611,7 @@ Ein weiterer, wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle d
 
 %https://www.chessprogramming.org/Center_Control
 
-Um Angriffe effizient aufbauen zu können, ist auch Mobilität ein wichtiger Faktor im Spiel. In einer Studie von Eliot Slater wurde deutlich, dass die Anzahl der durchführbaren Züge bei gleichzeitiger Gleichheit der verfügbaren Materialien eine deutliche Korrelation mit der Anzahl der gewonnen Spiele zeigt. \cite{Slater1988}
+Um Angriffe effizient aufbauen zu können, ist auch Mobilität ein wichtiger Faktor im Spiel. In einer Studie von Eliot Slater wurde deutlich, dass die Anzahl der durchführbaren Züge bei gleichzeitiger Gleichheit der verfügbaren Materialien eine deutliche Korrelation mit der Anzahl der gewonnenen Spiele zeigt. \cite{Slater1988}
 
 Der simpelste Ansatz, um diese messbar zu machen, ist schlicht den benannten Wert der Anzahl der Züge zur Hilfe zu nehmen und diese für beide Spieler zu vergleichen.
 
