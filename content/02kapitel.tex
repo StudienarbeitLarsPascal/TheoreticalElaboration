@@ -647,3 +647,48 @@ Aus diesem Grund stellt dies zwar eine gute Größe für den Beginn des Spiels d
 Computer Chess Compendium
 
 \subsection{Finishing strategy}\label{finishing_evaluation}
+Nach dem Eröffnungsspiel und dem Mittelteil einer Schachpartie, folgt das Endspiel. Das Endspiel beschreibt dabei eine Situation, bei der sich nur eine geringe Anzahl an schwarzen und weißen Figuren auf dem Schachbrett befinden. 
+
+Zum zielstrebigen Gewinnen des Spiels, ohne überflüssige Züge, ist es hilfreich sich grundlegende Muster anschauen, die es ermöglichen den Gegner Schachmatt zu setzen. Neben der Möglichkeit zielstrebig und effizient das Spiel gewinnen zu können, kann das Wissen über solche Muster auch dazu beitragen den Gegner vom Gewinnen abzuhalten, da ersichtlicher wird was dessen Strategie ist.
+
+In Abbildung \ref{fig:RKvk} findet man eine simple Endspielsituation vor, in der die Partei mit den weißen Figuren die gegnerische Partei trivial Schachmatt setzen kann, da die schwarze Partei nur noch den König als Figur besitzt und sich einem Turm und einem König gegenüber sieht.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth/5*4]{images/RKvk.PNG}
+
+\caption{Endspielsituation RKvk}\label{fig:RKvk}
+\end{figure}
+
+Ein Ausweg aus der drohenden Niederlage ist die 50-Züge-Regel, mittels der die schwarze Partei ein Remis erzielen kann. Für die Erfüllung dieser Regel muss nachgewiesen werden, dass in den letzten 50 Zügen keine Figur geschlagen oder ein Bauer gezogen wurde.\cite{Alt2018} Um das Spiel zu gewinnen muss somit die weiße Partei zielstrebig den schwarzen König Schachmatt setzen.
+
+% Quelle Regel: FIDE-Regeln-2018-Final-DEU.pdf https://www.schachbund.de/satzung-ordnungen.html?file=files/dsb/srk/downloads/FIDE-Regeln-2017-Final-DEU-ENG.PDF
+
+Im Laufe der Jahre seitdem es das Schachspiel gibt wurden bereits einige Endspiele analysiert und evaluiert um daraus mögliche Muster und Strategien zu erhalten, die zu einem Sieg in einem Endspiel führen können. Diese vorliegenden Analysen helfen bei der Umsetzung einer Schach-KI, da mittels solcher Informationen schnell evaluiert werden kann welcher Zug am Gewinnbringendsten für den Spieler ist. 
+
+Theoretisch lässt sich auch durch die Verwendung von Suchalgorithmen, wie das bereits vorgestellte Alpha-Beta-Pruning, der beste Zug ermitteln, jedoch kann dies deutlich länger dauern als das Zurückgreifen auf bereits durchgeführte Analysen. Dies hat den Grund, da beispielsweise bereits bei drei verschiedenen Figuren, die sich zu Ende des Spiels auf dem Brett befinden, eine sehr große Anzahl an verschiedenen Zugmöglichkeiten ergibt. Dies ist unter anderem darin begründet, dass diese drei verbliebenen Figuren aus einer unterschiedlichen Konstellation aus Steinen bestehen. Neben den beiden Königen kann der dritte Stein jeder beliebige andere als ein König sein. Dabei hat diese dritte Figur pro Stein unterschiedliche Sprungeigenschaften, wie bspw. Distanz und Richtung. Ebenfalls hat die Position, auf der sich die Figuren befinden einen großen Einfluss auf die Möglichkeiten. Somit ergibt sich in Summe für ein Endspiel mit drei Figuren bereits eine Anzahl von 368.079 (siehe \ref{table:nulp}) verschiedenen Positionen.
+
+\begin{center}
+\begin{tabular}{| p{5cm} | p{5cm} |}
+\hline
+\textbf{Anzahl der Figuren} & \textbf{Mögliche Positionen}\\ \hline
+2 & 462\\ \hline
+3 & 368.079\\ \hline
+4 & 125.246.598\\ \hline
+5 & 25.912.594.054\\ \hline
+6 & 3.787.154.440.416\\ \hline
+7 & 423.836.835.667.331\\ \hline
+8 & 38.176.306.877.748.245 \cite{Kryukov2014}\\
+\hline
+\end{tabular}
+\label{table:nulp}
+\end{center}
+% http://kirill-kryukov.com/chess/nulp/results.html
+
+Zum aktuellen Zeitpunkt wurden alle möglichen Züge der letzten sieben Steine auf einem Schachbrett berechnet und liefert somit der zu programmierenden KI eine Datenbank mit vielen verschiedenen Zügen und den jeweils besten davon.
+
+
+% Was ist das Endgame?
+% Einer versucht zu gewinnen, der andere versucht ein Remi zu erreichen
+% Was ist das besondere an dem Endgame?
+% Wieso sollte man hier keine Such-Algorithmen verwenden?

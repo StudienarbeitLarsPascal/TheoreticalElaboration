@@ -1,25 +1,140 @@
 \begin{thebibliography}{10}
 
-\bibitem{O.V.}
+\bibitem{Dresher1961}
+Melvin Dresher and Hans~Paul K{\"{u}}nzi.
+\newblock {\em {Strategische Spiele : Theorie und Praxis}}.
+\newblock 1961.
+
+\bibitem{O.V.2013}
 O.V.
-\newblock {Chess Strategy For Chess Openings And Chess Principles}.
+\newblock {\em {Computer Chess Compendium}}.
+\newblock 2013.
+
+\bibitem{Newell2010}
+Allen Newell, J~C Shaw, and H~A Simon.
+\newblock {Chess-Playing Programs and the Problem of Complexity}.
+\newblock {\em IBM Journal of Research and Development}, 2010.
+
+\bibitem{Russell2010}
+Stuart Russell and Peter Norvig.
+\newblock {\em {Artificial Intelligence A Modern Approach Third Edition}}.
+\newblock 2010.
+
+\bibitem{Bernstein1958}
+Alex Bernstein and Michael de~V Roberts.
+\newblock {Computer v. Chess-Player}.
+\newblock 198:2--6, 1958.
+
+\bibitem{Slater1988}
+Eliot Slater.
+\newblock {Statistics for the Chess Computer and the Factor of Mobility BT -
+  Computer Chess Compendium}.
+\newblock pages 113--117. Springer New York, New York, NY, 1988.
+
+\bibitem{Bonsdorff1978}
+Eero. Bonsdorff, Karl. Fabel, and Olavi. Riihimaa.
+\newblock {\em {Schach und Zahl}}.
+\newblock Rau, Duesseldorf, 1978.
+
+\bibitem{Speight}
+Adam Speight.
+\newblock {Smallest chess board compression}, 2017.
+
+\bibitem{Hartikka}
+Lauri Hartikka.
+\newblock {A step-by-step guide to building a simple chess AI}, 2017.
+
+\bibitem{O.V.2019b}
+Chessprogramming.org.
+\newblock {King Safety}, 2019.
+
+\bibitem{Chess.comTeamInternational2018}
+{Chess.com Team International}.
+\newblock {The Ruy Lopez Chess Opening Explained}, 2018.
+
+\bibitem{Buhlmann1975}
+Hans B{\"{u}}hlmann, Hans Loeffel, and Erwin Nievergelt.
+\newblock {Gemischte Strategie und gemischte Erweiterung}.
+\newblock In {\em Entscheidungs- und Spieltheorie}, page 183. Springer Verlag,
+  1975.
+
+\bibitem{O.V.2019a}
+Chessprogramming.org.
+\newblock {Simplified Evaluation Function}, 2019.
+
+\bibitem{Tweedale1993}
+Geoffrey Tweedale.
+\newblock {William Poundstone, Prisoner's Dilemma: John von Neumann, Game
+  Theory, and the Puzzle of the Bomb. Oxford: Oxford University Press, 1992.
+  Pp. xi + 290. ISBN 0-19-286162-X. {\pounds}7.99 (paperback edition).}
+\newblock {\em The British Journal for the History of Science}, 26(3):375--376,
+  1993.
 
 \bibitem{O.V.2017}
 O.V.
 \newblock {Chess Opening Strategy for Beginners: How to get a Great Position.},
   2017.
 
-\bibitem{Chess.comTeamInternational2018}
-{Chess.com Team International}.
-\newblock {The Ruy Lopez Chess Opening Explained}, 2018.
+\bibitem{Kaplan2017}
+J~Kaplan.
+\newblock {\em {K{\"{u}}nstliche Intelligenz: Eine Einf{\"{u}}hrung}}.
+\newblock mitp Professional. MITP, 2017.
+
+\bibitem{Stroetmann2018}
+Karl Stroetmann.
+\newblock {An Introduction to Artificial Intelligence}, 2018.
+
+\bibitem{Apt}
+Krzysztof~R Apt.
+\newblock {Cooperative Games}.
+\newblock Technical report, 2009.
 
 \bibitem{Kurenkov2019}
 Angrey Kurenkov.
 \newblock {A 'Brief' History of Game AI Up To AlphaGo}, 2019.
 
-\bibitem{Hartikka}
-Lauri Hartikka.
-\newblock {A step-by-step guide to building a simple chess AI}, 2017.
+\bibitem{O.V.}
+O.V.
+\newblock {Chess Strategy For Chess Openings And Chess Principles}.
+
+\bibitem{Schaeffer1996}
+Jonathan Schaeffer, Robert Lake, Paul Lu, and Martin Bryant.
+\newblock {CHINOOK the world man-machine checkers champion}.
+\newblock {\em AI Magazine}, 1996.
+
+\bibitem{Braterman}
+Paul~S Braterman.
+\newblock {How Science Figured Out the Age of Earth}.
+\newblock {\em Scientific American}, 2013.
+
+\bibitem{Shannon1950}
+Claude~E Shannon.
+\newblock {Programming a Computer for Playing Chess}.
+\newblock {\em Philosophical Magazine}, 1950.
+
+\bibitem{O.V.2019}
+Chessprogramming.org.
+\newblock {Center Control}, 2019.
+
+\bibitem{O.V:2019}
+Chessprogramming.org.
+\newblock {Mobility}, 2019.
+
+\bibitem{Samuel1959}
+Arthur~L Samuel.
+\newblock {Some Studies in Machine Learning}.
+\newblock {\em IBM Journal of Research and Development}, 1959.
+
+\bibitem{Fischer}
+Lars Fischer.
+\newblock {K{\"{u}}nstliche Intelligenz schl{\"{a}}gt besten Schachcomputer der
+  Welt}.
+\newblock {\em Spektrum.de}, 2017.
+
+\bibitem{Rodriguez}
+Jesus Rodriguez.
+\newblock {What Data Scientists Should Know About Game Theory: Types of Games}.
+\newblock {\em Towards Data Science}, 2018.
 
 \bibitem{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
 David~Silver {Oriol Vinyals, Igor Babuschkin, Junyoung Chung, Michael Mathieu,
@@ -29,119 +144,13 @@ David~Silver {Oriol Vinyals, Igor Babuschkin, Junyoung Chung, Michael Mathieu,
 \newblock {AlphaStar: Mastering the Real-Time Strategy Game StarCraft II},
   2019.
 
-\bibitem{Stroetmann2018}
-Karl Stroetmann.
-\newblock {An Introduction to Artificial Intelligence}, 2018.
+\bibitem{Alt2018}
+Ralph Alt, Klaus Deventer, Dr.~J{\"{u}}rgen Kl{\"{u}}ners, Thomas Strobl, and
+  Thomas Wiedmann.
+\newblock {Die FIDE – Schachregeln}, 2018.
 
-\bibitem{Russell2010}
-Stuart Russell and Peter Norvig.
-\newblock {\em {Artificial Intelligence A Modern Approach Third Edition}}.
-\newblock 2010.
-
-\bibitem{O.V.2019}
-Chessprogramming.org.
-\newblock {Center Control}, 2019.
-
-\bibitem{Newell2010}
-Allen Newell, J~C Shaw, and H~A Simon.
-\newblock {Chess-Playing Programs and the Problem of Complexity}.
-\newblock {\em IBM Journal of Research and Development}, 2010.
-
-\bibitem{Schaeffer1996}
-Jonathan Schaeffer, Robert Lake, Paul Lu, and Martin Bryant.
-\newblock {CHINOOK the world man-machine checkers champion}.
-\newblock {\em AI Magazine}, 1996.
-
-\bibitem{O.V.2013}
-O.V.
-\newblock {\em {Computer Chess Compendium}}.
-\newblock 2013.
-
-\bibitem{Bernstein1958}
-Alex Bernstein and Michael de~V Roberts.
-\newblock {Computer v. Chess-Player}.
-\newblock 198:2--6, 1958.
-
-\bibitem{Apt}
-Krzysztof~R Apt.
-\newblock {Cooperative Games}.
-\newblock Technical report, 2009.
-
-\bibitem{Buhlmann1975}
-Hans B{\"{u}}hlmann, Hans Loeffel, and Erwin Nievergelt.
-\newblock {Gemischte Strategie und gemischte Erweiterung}.
-\newblock In {\em Entscheidungs- und Spieltheorie}, page 183. Springer Verlag,
-  1975.
-
-\bibitem{Braterman}
-Paul~S Braterman.
-\newblock {How Science Figured Out the Age of Earth}.
-\newblock {\em Scientific American}, 2013.
-
-\bibitem{O.V.2019b}
-Chessprogramming.org.
-\newblock {King Safety}, 2019.
-
-\bibitem{Fischer}
-Lars Fischer.
-\newblock {K{\"{u}}nstliche Intelligenz schl{\"{a}}gt besten Schachcomputer der
-  Welt}.
-\newblock {\em Spektrum.de}, 2017.
-
-\bibitem{Kaplan2017}
-J~Kaplan.
-\newblock {\em {K{\"{u}}nstliche Intelligenz: Eine Einf{\"{u}}hrung}}.
-\newblock mitp Professional. MITP, 2017.
-
-\bibitem{O.V:2019}
-Chessprogramming.org.
-\newblock {Mobility}, 2019.
-
-\bibitem{Shannon1950}
-Claude~E Shannon.
-\newblock {Programming a Computer for Playing Chess}.
-\newblock {\em Philosophical Magazine}, 1950.
-
-\bibitem{Bonsdorff1978}
-Eero. Bonsdorff, Karl. Fabel, and Olavi. Riihimaa.
-\newblock {\em {Schach und Zahl}}.
-\newblock Rau, Duesseldorf, 1978.
-
-\bibitem{O.V.2019a}
-Chessprogramming.org.
-\newblock {Simplified Evaluation Function}, 2019.
-
-\bibitem{Speight}
-Adam Speight.
-\newblock {Smallest chess board compression}, 2017.
-
-\bibitem{Samuel1959}
-Arthur~L Samuel.
-\newblock {Some Studies in Machine Learning}.
-\newblock {\em IBM Journal of Research and Development}, 1959.
-
-\bibitem{Slater1988}
-Eliot Slater.
-\newblock {Statistics for the Chess Computer and the Factor of Mobility BT -
-  Computer Chess Compendium}.
-\newblock pages 113--117. Springer New York, New York, NY, 1988.
-
-\bibitem{Dresher1961}
-Melvin Dresher and Hans~Paul K{\"{u}}nzi.
-\newblock {\em {Strategische Spiele : Theorie und Praxis}}.
-\newblock 1961.
-
-\bibitem{Rodriguez}
-Jesus Rodriguez.
-\newblock {What Data Scientists Should Know About Game Theory: Types of Games}.
-\newblock {\em Towards Data Science}, 2018.
-
-\bibitem{Tweedale1993}
-Geoffrey Tweedale.
-\newblock {William Poundstone, Prisoner's Dilemma: John von Neumann, Game
-  Theory, and the Puzzle of the Bomb. Oxford: Oxford University Press, 1992.
-  Pp. xi + 290. ISBN 0-19-286162-X. {\pounds}7.99 (paperback edition).}
-\newblock {\em The British Journal for the History of Science}, 26(3):375--376,
-  1993.
+\bibitem{Kryukov2014}
+Kirill Kryukov.
+\newblock {NULP (Number of Unique Legal Positions in chess endgames)}, 2014.
 
 \end{thebibliography}
