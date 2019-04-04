@@ -1,8 +1,30 @@
 %!TEX root = ../dokumentation.tex
 
 \chapter{Technische Grundlagen}
+In dem dritten Kapitel dieser wissenschaftlichen Arbeit werden einerseits die Kriterien erläutert, die erfüllt sein müssen, dass das Projekt nach dem Abschluss als erfolgreich oder nicht erfolgreich bezeichnet werden kann. Die Auswertung mit dem Bezug auf die Kriterienformulierung wird in Kapitel \ref{evaluation} stattfinden.
+
+Andererseits wird die zu verwendende Bibliothek vorgestellt und evaluiert. Dabei werden die Eigenschaften, Vor- und Nachteile dieser aufgeschlüsselt und diese anhand von Beispielen erläutert.
+
+% Die zu verwendende Bibliothek vorgestellt und evaluiert. Dabei werden Eigenschaften, Vor- und Nachteile dieser aufgeschlüsselt.
 
 \section{Kriterienformulierung}\label{kriterienformulierung}
+Nachdem in Kapitel \ref{zweck_und_ziel} bereits auf das Ziel der wissenschaftlichen Arbeit eingegangen wurde, in Kapitel \ref{game_types} bis \ref{evaluation_func} das benötigte Grundwissen vermittelt wurde, das für das Verständnis der Umsetzung notwending ist, werden nun die Merkmale und Eigenschaften dargelegt, die erfüllt werden sollen.
+
+Grundlegend wird eine Künstliche Intelligenz für das Spiel Schach entwickelt worden sein. Der Fokus dieser Implementierung liegt dabei die in Kapitel \ref{theoretische_hintergründe} vorgestellten Algorithmen und deren Wirkungsweise zu demonstrieren.
+
+Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist.\cite{E.V.} Berechnet wird der Elo Wert indem dieser als Erwartungswert($E_{A}$) des Punktestands für Spieler A aus der bisherigen Elo-Zahl von Spieler A($R_{A}$) und Spieler B($R_{B}$) evaluiert wird.
+
+\begin{equation}
+\begin{aligned}
+E_{A} = \frac{1}{1 + 10^({R_{A} - R_{B}})/400}
+\cite{Elo1987}
+\end{aligned}
+\end{equation}
+
+Dabei wird zur Ermittlung des Elo Werts Gebrauch gemacht von dem in den Statuten der Fédération Internationale des Échecs verwendeten \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}. Hierbei ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat.\cite{FIDE2017}
+
+Die Benutzinteraktionen wird durch Verwendung von \acs{ASCII} (American Standard Code for Information Interchange) Zeichen in einer Konsole visualisiert werden. Zukünftige Erweiterungen des Programms werden durch eine gute Dokumentation des Codes garantiert werden. Ebenfalls wird nach der erfolgreichen Beendigung dieser Arbeit ein beliebig erweiterbares Grundgerüst für eine Schach-KI vorliegen.
+
 % Wie kann überprüft werden, ob das Porjekt erfolgreich verlaufen ist?
 
 \iffalse
@@ -15,7 +37,7 @@
    zu entwickeln.  Bei der Entwicklung dieser Heuristik sollen Techniken des Machine-Learnings eingesetzt
    werden.
 
-Anforferungen:
+Anforderungen:
 	Keine hohe ELO Zahl
 	klarer/cleaner Code
 	Techniken aus Vorlesung erkennbar
@@ -29,8 +51,8 @@ Anforferungen:
 
     \section{Python-Chess Evaluierung}\label{python-chess-evaluierung}
 
-In diesem Notebook wird die "python-chess-library", oder auch "chess
-core" genannt, Bibliothek evaluiert. Der "chess core" soll Funktionen
+In diesem Notebook wird die ``python-chess-library``, oder auch ``chess
+core`` genannt, Bibliothek evaluiert. Der ``chess core`` soll Funktionen
 zum Erstellen des Schachbretts, berechnen der erlaubten/möglichen Züge,
 durchführen der Züge etc. bereitstellen.
 
@@ -78,7 +100,7 @@ um die aufgelisteten Aktionen mit der Bibliothek durchzuführen.
 \subsection{Vorraussetzungen}\label{vorraussetzungen}
 
 Folgend werden die allgemeinen Vorraussetzungen für die Verwendung und
-Installation der "python-chess-library" erläutert.
+Installation der ``python-chess-library`` erläutert.
 
 \begin{itemize}
 \tightlist
@@ -109,7 +131,7 @@ Installation der "python-chess-library" erläutert.
     \href{https://jupyter.org/install}{Installationsanleitung}
   \end{itemize}
 \item
-  "python-chess-library"
+  ``python-chess-library``
 
   \begin{itemize}
   \tightlist
@@ -197,7 +219,7 @@ entnommen werden:
     Die Zuordnung der Felder findet mittels einer Kombination aus einem
 Buchstaben und einer Zahl statt. Die Buchstaben A-H geben dabei die
 horizontale Reihe an, die Zahlen 1-8 die vertikalen Reihen. Jedem Feld
-wird eine namensäquivalente Variable in der statischen Klasse "chess"
+wird eine namensäquivalente Variable in der statischen Klasse ``chess``
 zugeordnet, wie beispielhaft in Zeile 16 im oberen Code Snippet erkannt
 werden kann.
 
@@ -206,12 +228,12 @@ KI}\label{alternierende-eingaben-von-nutzer-ki}
 
 Damit ein Schachspiel zustande kommen kann, ist es zwingend
 erforderlich, dass Nutzer und KI abwechselnd Züge auswählen und zum
-Board "pushen" können. Dafür muss zunächst überprüft werden, welcher
+Board ``pushen`` können. Dafür muss zunächst überprüft werden, welcher
 Spieler an der Reihe ist und dieser muss einen Zug auswählen können, der
 daraufhin von dem Schachbrett übernommen wird. Auf diesem Schachbrett
 kann dann der nächste Spieler seinen Zug auswählen.
 
-Bei der \emph{"python-chess"} Bibliothek kann der zu agierende Spieler
+Bei der \emph{``python-chess``} Bibliothek kann der zu agierende Spieler
 über die \texttt{board.turn} Variable ermittelt werden. Diese steht auf
 \texttt{True} wenn Spieler 1 an der Reihe ist und auf \texttt{False},
 wenn Spieler 2 den nächsten Zug machen muss. Beim Ausführen einer
@@ -230,7 +252,7 @@ Züge ausgegeben, die zum einen vom aktuellen Schachbrett aus
 durchführbar sind und zum anderen nicht zu einer unmittelbaren
 Niederlage führen. Das bedeutet, dass bei den legalen Zügen keine Züge
 ausgegeben werden, bei der sich der Spieler beispielsweise selbst ins
-"Schach" stellt oder ein durch den Gegner verursachtes "Schach"
+``Schach`` stellt oder ein durch den Gegner verursachtes ``Schach``
 ignoriert. Mittels der \texttt{board.uci()} Funktion können diese in
 die, aus 4 Zeichen bestehende, leserlichere Form gebracht werden. Die
 ersten beiden Zeichen stellen dabei das startende Feld dar, während die
@@ -398,13 +420,13 @@ SVG}\label{ausgeben-des-boards-als-svg}
 
 Um eine bessere Darstellung und Erklärung der Implementation in der
 theoretischen Ausarbeitung zu ermöglichen, wäre eine visuelle
-Darstellung des Schachbretts wünschenswert. Die "python-chess-library"
+Darstellung des Schachbretts wünschenswert. Die ``python-chess-library``
 ermöglicht dies durch ein Konvertieren des Boards zu einer SVG-Datei.
 Diese kann dann mittels der python-eigenen \texttt{SVG()} Funktion im
 Python-Notebook angezeigt werden.
 
 Um dies zu ermöglichen, muss zunächst die SVG library aus
-\emph{"IPython"} importiert werden. Anschließend kann das Board über die
+\emph{``IPython``} importiert werden. Anschließend kann das Board über die
 \texttt{chess.svg.board()} Funktion konvertiert und anschließend als SVG
 ausgegeben werden.
 
@@ -541,13 +563,13 @@ zufällig aus der Liste der legalen Züge gewählt wird.
 \end{Verbatim}
 
 
-    Nach jedem Zug wird das Spielbrett in der "FEN" Darstellung einer Liste
-hinzugefügt. Die "FEN" Darstellung ist eine gekürzte Form der
+    Nach jedem Zug wird das Spielbrett in der ``FEN`` Darstellung einer Liste
+hinzugefügt. Die ``FEN`` Darstellung ist eine gekürzte Form der
 Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig
 identifizierbar bleibt. Dabei wird neben dem aktuellen Spielbrett auch
 die Farbe der nächste zu spielenden Figur, die Anzahl der Züge beider
 Seiten und weitere Informationen angegeben. Um diese aus der Darstellung
-zu kürzen, wird die auf die "FEN" Darstellung des Boards die
+zu kürzen, wird die auf die ``FEN`` Darstellung des Boards die
 \texttt{split} Funktion angewandt und nur das erste Element aus der
 daraus entstehenden Liste gespeichert, da die einzelnen Merkmale in
 dieser Darstellung per Leerzeichen getrennt werden.
@@ -563,7 +585,7 @@ dieser Darstellung per Leerzeichen getrennt werden.
 
 
     Nach Ende des Spiels wird über der zu spielenden Farbe ermittelt, wer
-der Sieger des Spiels ist und dementsprechend der Wert "+1" oder "-1"
+der Sieger des Spiels ist und dementsprechend der Wert ``+1`` oder ``-1``
 zurückgegeben. Mit diesem wird dann eine Key-Value Liste erstellt, die
 zu jedem Spielbrett des vergangenen Spiels den Wert zuweist, der Aussage
 über den Sieger gibt.
@@ -597,8 +619,8 @@ gewinnen. Umso höher der Wert in den positiven Bereich fällt, desto
 wahrscheinlicher ist ein Sieg für Spieler 1. Umso höher der Wert in den
 negative Bereich fällt, desto besser sind die Aussichten für Spieler 2.
 
-Diese Erkenntnis kann dann von der KI genutzt werde, um beim "iterative
-Deepening" Prozess alle möglichen Schachbretter zu evaluieren und sich
+Diese Erkenntnis kann dann von der KI genutzt werde, um beim ``iterative
+Deepening`` Prozess alle möglichen Schachbretter zu evaluieren und sich
 so für den besten Zug zu entscheiden.
 
 Der folgende Code koordiniert die Abläufe der Funktionen um die Datei
@@ -752,13 +774,13 @@ grundlegenden Definition dieser nicht möglich ist.
 
 Die Schachfigur eines Bauers darf normalerweise nur dann eine andere
 Figur schlagen, wenn sich diese direkt in dem diagonal vor dem Bauern
-angrenzenden Feld befindet. Durch die sogenannte Regel "en passant", im
-deutschen "im Vorbeigehen", wird diese Regel erweitert. Eingesetzt
-werden kann "en passant", wenn auf einen Bauern die Sonderregel des
+angrenzenden Feld befindet. Durch die sogenannte Regel ``en passant``, im
+deutschen ``im Vorbeigehen``, wird diese Regel erweitert. Eingesetzt
+werden kann ``en passant``, wenn auf einen Bauern die Sonderregel des
 Doppelschritts aus der Grundstellung angewendet wird. Steht in diesem
 Fall der mit Doppelschritt herausgerückte Bauern neben einem des
-Gegners, dann kann dieser den neu herausgerückten Bauern durch "en
-passant" schlagen. Hierbei springt der angreifende Bauer des Gegners
+Gegners, dann kann dieser den neu herausgerückten Bauern durch ``en
+passant`` schlagen. Hierbei springt der angreifende Bauer des Gegners
 direkt hinter den herausgerückten und schlägt ihn somit.
 
 Damit die Schach-KI alle möglichen Züge des Gegners bedenken und ebenso

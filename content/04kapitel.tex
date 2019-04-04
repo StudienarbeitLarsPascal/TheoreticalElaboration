@@ -1,6 +1,7 @@
 %!TEX root = ../dokumentation.tex
 
 \chapter{Implementierung}
+In dem folgenden Kapitel wird der entwickelte Code und die Umsetzung der Schach-Künstlichen Intelligenz besprochen. Hierbei wird jedoch nicht jede einzelne Zeile Code explizit erklärt, sondern der Fokus auf die Schlüsselmerkmale gelegt werden, sowie kompliziertere Abschnitte erläutert werden. Ein besonderes Augenmerk wird dabei auf die Umsetzung, der in Kapitel \ref{theoretische_hintergründe} eingeführten Algorithmen und Techniken gelegt.
 
 \section{Erstellen des Spiels und der
 Spieler}\label{erstellen-des-spiels-und-der-spieler}
@@ -52,8 +53,8 @@ Nutzerschnittstelle abgefragt. Dies sieht wie folgt aus:
 durchgegangen, der alle Einstellungen abfragt und diese entsprechend
 speichet.
 
-Nach der Abfrage der Informationen "Name" und "Spielertyp" wird im
-Falle, dass dieser Spielertyp "2", der der KI entspricht, gleicht, auch
+Nach der Abfrage der Informationen ``Name`` und ``Spielertyp`` wird im
+Falle, dass dieser Spielertyp ``2``, der der KI entspricht, gleicht, auch
 noch der Schwierigkeitsgrad abgefragt, sollte dieser nicht bereits als
 Startparameter übergeben wordne sein.
 
@@ -164,7 +165,7 @@ dazu ist im folgenden Code Snippet zu sehen.
 \end{Verbatim}
 
     Dabei wird zuerst das Ergebnis an Hand der \texttt{get\_board\_result}
-Funktion aus der Hilfsklasse "Tools" ermittelt. Diese sieht wie folgt
+Funktion aus der Hilfsklasse ``Tools`` ermittelt. Diese sieht wie folgt
 aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -263,8 +264,8 @@ Nachdem das Dictionary der neu einzupflegenden Züge angelegt ist, wird
 die vorhandene Historie aus der entsprechenden Datei ausgelesen. Dies
 wird mittels der in \texttt{panda} enthaltenden Funktion
 \texttt{pd.read\_csv} durchgeführt. Anschließend wird auch daraus ein
-Dictionary erstellt, indem die Zeile "board" als Schlüssel und die Zeile
-"value" als Wert verwendet wird.
+Dictionary erstellt, indem die Zeile ``board`` als Schlüssel und die Zeile
+``value`` als Wert verwendet wird.
 
 Nun werden die beiden Dictionaries zusammengefügt. Dazu wird für jeden
 Schlüssel aus dem Dictionary der neu einzupflegenden Spielzüge oder dem
@@ -276,8 +277,8 @@ wodurch der neu berechnete Wert Aufschluss über den wahrscheinlichen
 Sieger ausgehend von einem bestimmten Zustand geben kann.
 
 Anschließend wird dieses Dictionary in ein Panda Dataframe umgewandelt,
-wobei der Schlüssel für die Zeile "board" und der Wert für die Zeile
-"value" verwendet wird, um das DataDrame anschließend wieder zu der
+wobei der Schlüssel für die Zeile ``board`` und der Wert für die Zeile
+``value`` verwendet wird, um das DataDrame anschließend wieder zu der
 CSV-Datei zu speichern.
 
 Dies ermöglicht nicht nur eine Verwaltung des Spiels, sondern
@@ -303,7 +304,7 @@ wird anfangs die Tiefe auf 1 gesetzt und dann mittels des
 Minimax-Algorithmus die Züge evaluiert. Danach wird die Tiefe um 1
 erhöht und erneut der Minimax-Algorithmus angewandt. Dies wird solange
 wiederholt, bis die angegebene Zeit abgelaufen ist. Dieser Algorithmus
-nennt sich "Iterative Deepening". Nähere Informationen dazu sind in
+nennt sich ``Iterative Deepening``. Nähere Informationen dazu sind in
 Kapitel INSERT aufgeführt.
 
 Dem Algorithmus muss dazu der aktuelle Zustand sowie eine maximale Tiefe
@@ -361,8 +362,8 @@ wird für den schwarzen Spieler der Wert -1 zurückgegeben, falls er noch
 ausreichende Materialien besitzt, da dieser noch einen Sieg erreichen
 kann und der Wert -1 für einen Sieg von Schwarz steht.
 
-Nach dieser Abfrage wird der eigentliche Algorithmus des "Iterative
-Deepening" durchgeführt.
+Nach dieser Abfrage wird der eigentliche Algorithmus des ``Iterative
+Deepening`` durchgeführt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor} }]:} \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
@@ -397,12 +398,12 @@ oder aber die maximale Tiefe erreicht ist.
 In dieser Schleife wird ein Dictionary aller Züge mit ihren berechneten
 Werte erstellt. Zudem werden Anfangswerte für die besten Züge und dessen
 Wert festgelegt. Der Anfangswert des besten Zugs wird auf den ersten Zug
-festgesetzt. Der Wert dieses wird auf den Wert "- Unendlich" gesetzt.
+festgesetzt. Der Wert dieses wird auf den Wert ``- Unendlich`` gesetzt.
 
 Nun wird über alle legalen Züge iteriert und für jeden Zug ein
-temporärer "board" angelegt, das erreichbaren Zustand widerspiegelt. Nun
+temporärer ``board`` angelegt, das erreichbaren Zustand widerspiegelt. Nun
 wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
-Dabei wird als Alpha "- Unendlich" und als Beta "Unendlich" mitgegeben.
+Dabei wird als Alpha ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben.
 Was die Werte Alpha und Beta aussagen, wird im Kapitel INSERT
 beschrieben. Zudem wird die Tiefe auf einen Wert festgelegt, der um
 einen Wert geringer ist als die maximale Tiefe, da durch Aufruf der
@@ -841,7 +842,7 @@ kann, wurde in Kapitel INSERT besprochen.
 
     Abgefragt werden kann diese, indem zunächst die Daten aus der Datei
 geladen werden. Dann wird die Reihe abstrahiert, dessen Wert in der
-Spalte "board" dem mitgegebenen Zustand (in fen Notation konvertiert)
+Spalte ``board`` dem mitgegebenen Zustand (in fen Notation konvertiert)
 gleicht. Dazu wird der entsprechende Wert ausgelesen und zurückgegeben.
 Beim Zurückgeben wird der Wert noch negiert, falls der angegebene
 Spieler der der schwarzen Figuren ist, da in der Historie die Werte aus

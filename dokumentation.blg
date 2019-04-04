@@ -4,50 +4,51 @@ The top-level auxiliary file: dokumentation.aux
 The style file: unsrt.bst
 Database file #1: literature.bib
 Warning--empty publisher in Russell2010
-Warning--empty publisher in Dresher1961
+Warning--empty publisher in Elo1987
+Warning--empty institution in Apt
 Warning--empty booktitle in Slater1988
 Warning--empty publisher in O.V.2013
 Warning--empty journal in Bernstein1958
-Warning--empty institution in Apt
-You've used 32 entries,
+Warning--empty publisher in Dresher1961
+You've used 35 entries,
             1791 wiz_defined-function locations,
-            635 strings with 8859 characters,
-and the built_in function-call counts, 4973 in all, are:
-= -- 426
-> -- 184
+            651 strings with 9176 characters,
+and the built_in function-call counts, 5374 in all, are:
+= -- 458
+> -- 196
 < -- 2
-+ -- 80
-- -- 48
-* -- 154
-:= -- 808
-add.period$ -- 98
-call.type$ -- 32
-change.case$ -- 28
++ -- 86
+- -- 51
+* -- 160
+:= -- 869
+add.period$ -- 107
+call.type$ -- 35
+change.case$ -- 30
 chr.to.int$ -- 0
-cite$ -- 38
-duplicate$ -- 249
-empty$ -- 580
-format.name$ -- 48
-if$ -- 1148
+cite$ -- 42
+duplicate$ -- 269
+empty$ -- 635
+format.name$ -- 51
+if$ -- 1243
 int.to.chr$ -- 0
-int.to.str$ -- 32
-missing$ -- 22
-newline$ -- 162
-num.names$ -- 32
-pop$ -- 163
+int.to.str$ -- 35
+missing$ -- 24
+newline$ -- 177
+num.names$ -- 35
+pop$ -- 182
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 112
+skip$ -- 122
 stack$ -- 0
 substring$ -- 76
-swap$ -- 45
+swap$ -- 48
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 6
-while$ -- 40
-width$ -- 34
-write$ -- 323
-(There were 6 warnings)
+warning$ -- 7
+while$ -- 43
+width$ -- 37
+write$ -- 351
+(There were 7 warnings)
