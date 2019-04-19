@@ -12,16 +12,27 @@ Nachdem in Kapitel \ref{zweck_und_ziel} bereits auf das Ziel der wissenschaftlic
 
 Grundlegend wird eine Künstliche Intelligenz für das Spiel Schach entwickelt worden sein. Der Fokus dieser Implementierung liegt dabei die in Kapitel \ref{theoretische_hintergründe} vorgestellten Algorithmen und deren Wirkungsweise zu demonstrieren.
 
-Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist.\cite{E.V.} Berechnet wird der Elo Wert indem dieser als Erwartungswert($E_{A}$) des Punktestands für Spieler A aus der bisherigen Elo-Zahl von Spieler A($R_{A}$) und Spieler B($R_{B}$) evaluiert wird.
+Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein, ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist.\cite{E.V.} 
+
+Jeder Schachspieler erhält einen Elo-Wert zugewiesen, der Aufschluss über die Stärke eines Spielers gibt. Umso höher der Elo-Wert eines Spielers, desto besser ist dieser. Sobald zwei Konkurrenten gegeneinander antreten lässt sich aus den ihn zugewiesenen Elo-Zahlen, mittels des Erwartungswertes, eine Punktezahl errechnen, die Aufschluss über den Ausgang des Spiels gibt. 
+Berechnet wird der Erwartungswert($E_{A}$) des Punktestands für Spieler A vor einem Spiel, indem dieser aus der bisherigen Elo-Zahl von Spieler A($R_{A}$) und Spieler B($R_{B}$) evaluiert wird.
 
 \begin{equation}
 \begin{aligned}
-E_{A} = \frac{1}{1 + 10^({R_{A} - R_{B}})/400}
+E_{A} = \frac{1}{1 + 10^{({R_{B} - R_{A}})/400}}
+\end{aligned}
+\end{equation}
+
+Nachdem ein Spiel beendet wurde, wird die Diskrepanz zwischen dem zuvor berechneten Erwartungswert und dem Ergebnis ermittelt und auf dieser Grundlage die Elo-Werte der Spieler angepasst. Hierbei ergibt sich der neue Elo-Wert($R'_{A}$) von Spieler A aus dem alten Elo-Wert, einem Faktor $K$, der gewichtet wie stark sich neu erzielte Ergebnisse auswirken, dem Ergebnispunktestand des Spiels ($S_{A}$) und dem Erwartungswert. Der Faktor $K$ wird an die Stärke eines Spielers angepasst.
+
+\begin{equation}
+\begin{aligned}
+R'_{A} = R_{A} + K \cdot (S_{A} - E_{A})
 \cite{Elo1987}
 \end{aligned}
 \end{equation}
 
-Dabei wird zur Ermittlung des Elo Werts Gebrauch gemacht von dem in den Statuten der Fédération Internationale des Échecs verwendeten \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}. Hierbei ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat.\cite{FIDE2017}
+Zur Ermittlung eines Elo-Werts eines neuen Spielers wird dessen Wert geschätzt. In dem \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}, das in den Statuten der Fédération Internationale des Échecs verwendet wird, ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat. Alle Spieler mit einem geringeren Wert werden nicht gelistet.\cite{FIDE2017}
 
 Die Benutzinteraktionen wird durch Verwendung von \acs{ASCII} (American Standard Code for Information Interchange) Zeichen in einer Konsole visualisiert werden. Zukünftige Erweiterungen des Programms werden durch eine gute Dokumentation des Codes garantiert werden. Ebenfalls wird nach der erfolgreichen Beendigung dieser Arbeit ein beliebig erweiterbares Grundgerüst für eine Schach-KI vorliegen.
 
@@ -194,10 +205,10 @@ N
     \end{Verbatim}
 
     Dabei ist einzusehen, dass die Figuren durch einen Buchstaben abgekürzt
-werden. Figuren des ersten Spielers werden als Kleinbuchstaben
-dargestellt, Figuren des zweiten Spielers als äquivalente
+werden. Figuren des Spielers der schwarzen Steine werden als Kleinbuchstaben
+dargestellt, Figuren des Spielers der weißen Steine als äquivalente
 Großbuchstaben. Leere Felder werden mit einem Punkt dargestellt. Aus
-folgender Liste kann die Zurodnung der Buchstaben zu den Schachfiguren
+folgender Liste kann die Zuordnung der Buchstaben zu den Schachfiguren
 entnommen werden:
 
 \begin{itemize}
@@ -218,7 +229,7 @@ entnommen werden:
 
     Die Zuordnung der Felder findet mittels einer Kombination aus einem
 Buchstaben und einer Zahl statt. Die Buchstaben A-H geben dabei die
-horizontale Reihe an, die Zahlen 1-8 die vertikalen Reihen. Jedem Feld
+vertikalen Reihe an, die Zahlen 1-8 die horizontalen Reihen. Jedem Feld
 wird eine namensäquivalente Variable in der statischen Klasse ``chess``
 zugeordnet, wie beispielhaft in Zeile 16 im oberen Code Snippet erkannt
 werden kann.
@@ -454,11 +465,11 @@ Thema Visualisierung wird im folgenden Kapitel gegeben.
 Um diesen Fall simulieren zu können, wird in diesem Beispiel eine
 bestimmte Situation während eines Schachspiels importiert, in der ein
 Schachmatt vorliegt. Das Schachmatt auf der Position \texttt{E8} wird in
-diesem Codeausschnitt manuell, durch den Übergabeparamter
+diesem Codeausschnitt manuell, durch den Übergabeparameter
 \texttt{chess.E8}, hervorgehoben.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1R2k3/R7/8/8/8/8/8/4K3 b KQkq \PYZhy{} 0 1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1R2k3/R7/8/8/8/8/8/4K3 b - \PYZhy{} 0 1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
         \PY{n}{SVG}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{svg}\PY{o}{.}\PY{n}{board}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{check}\PY{o}{=}\PY{n}{chess}\PY{o}{.}\PY{n}{E8}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
@@ -474,9 +485,9 @@ diesem Codeausschnitt manuell, durch den Übergabeparamter
 Felds}\label{berechnen-ausgeben-legaler-zuxfcge-eines-speziellen-felds}
 
 Für eine bessere, visuelle Darstellung in der theoretischen Ausarbeitung
-wurde die Möglichkeit geprüft spezielle Felder auf dem ausgegebenen SVG
+wurde die Möglichkeit geprüft, spezielle Felder auf dem ausgegebenen SVG
 markieren zu können. Solche Felder können beispielsweise die errechneten
-erlaubten Züge einer speziellen Figur / eines speziellen Felds
+erlaubten Züge einer speziellen Figur 
 darstellen, um anzuzeigen, welche Möglichkeiten eine Figur in der
 aktuellen Situation besitzt.
 
@@ -504,7 +515,7 @@ a2
     \end{Verbatim}
 
     Diese herausgefilterten Züge werden dann zu deren Zielfelder zugeordnet.
-Diese können mit der Funktion \texttt{move.to\_square} ausgelsen werden.
+Diese können mit der Funktion \texttt{move.to\_square} ausgelesen werden.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}10}]:} \PY{n}{square\PYZus{}nums} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{move}\PY{p}{:} \PY{n}{move}\PY{o}{.}\PY{n}{to\PYZus{}square}\PY{p}{,} 
@@ -545,7 +556,7 @@ das die höchste Chance auf einen Sieg bietet.
 
 Zur Erweiterung der Liste wird zuerst das Modul Pandas genutzt, das es
 ermöglicht Informationen als Datenbank in einer Variable zu speichern.
-Ebenso wird angegeben unter welchem Pfad sich die Zughistorie befinden
+Ebenso wird angegeben, unter welchem Pfad sich die Zughistorie befinden
 soll.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -569,7 +580,7 @@ Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig
 identifizierbar bleibt. Dabei wird neben dem aktuellen Spielbrett auch
 die Farbe der nächste zu spielenden Figur, die Anzahl der Züge beider
 Seiten und weitere Informationen angegeben. Um diese aus der Darstellung
-zu kürzen, wird die auf die ``FEN`` Darstellung des Boards die
+zu kürzen, wird auf die ``FEN`` Darstellung des Boards die
 \texttt{split} Funktion angewandt und nur das erste Element aus der
 daraus entstehenden Liste gespeichert, da die einzelnen Merkmale in
 dieser Darstellung per Leerzeichen getrennt werden.
@@ -690,17 +701,17 @@ Spielende}\label{uxfcberpruxfcfung-auf-ein-schach-oder-spielende}
 
 Damit der Spielverlauf korrekt nach den Regeln des Spiels verlaufen
 kann, muss während jedes Zuges darauf geprüft werden, ob ein Schach,
-Schachmatt oder Patt vorliegt. Schach ist hierbei eine Stellung während
+Schachmatt oder Remis vorliegt. Schach ist hierbei eine Stellung während
 des Spiels, bei dem der König in Bedrängnis geraten ist. Ein Schach kann
 im weiteren Verlauf zu einem Schachmatt führen. Hierbei liegt der
 Unterschied darin, dass der Spieler, der sich im Schachmatt befindet mit
 keinem regelkonformen Zug sich aus dem Schachmatt befreien kann und
 somit das Spiel verloren hat. Steht der König Schach kann er mit einem
-gezielten Zug sich aus dieser Lage befreien. Ein Patt ist eine
+gezielten Zug sich aus dieser Lage befreien. Ein Remis ist eine
 Endposition beim Schach, die die Eigenschaft hat, dass keiner der beiden
 Spieler ein Schachmatt erreichen kann.
 
-Da ein Schachmatt oder Patt das Schachspiel beendet ist diese Prüfung
+Da ein Schachmatt oder Remis das Schachspiel beendet ist, diese Prüfung
 ein essenzieller Aspekt der zu entwickelnden KI. Um diese Prüfung
 durchzuführen bietet die verwendete Bibliothek bereits einige
 Funktionen. Ebenso ist es wichtig zu überprüfen, ob ein Schach vorliegt,
@@ -709,26 +720,26 @@ diese Prüfung durchzuführen steht jeweils für die Überprüfung eines
 Schachs oder Spielendes eine Funktion zur Verfügung, die das aktuelle
 Spiel auf diesen Aspekt überprüft. Um herauszufinden, ob es sich um ein
 Schach handelt, kann die folgende Funktion verwendet werden.
-\texttt{is\_check()} Überprüft die aktuellen Begebenheiten auf ein
+\texttt{is\_check()} überprüft die aktuellen Begebenheiten auf ein
 mögliches Schach
 
 Hingegen gibt es die Funktion \texttt{is\_game\_over}, die die
 gespielten Züge auf jegliche Arten einer benötigten Beendigung des
 Spiels überprüft. Hierbei beinhaltet \texttt{is\_game\_over} einige
-mögliche Überprüfungen auf Schachmatt oder Patt.
-\texttt{is\_game\_over()} Stellt sicher, ob das Spiel auf Grund eines
-Schachmatts oder anderer spielbeendender Umstände vorbei ist Hierbei
-wird überprüft, ob ein Schachmatt (\texttt{is\_checkmate()}), ein Patt
-(\texttt{is\_stalemate()}), eine Tote Stellung
-(\texttt{is\_insufficient\_material()}), die 75-Züge-Regel
-(\texttt{is\_seventyfive\_moves()}), eine Figur fünfmal auf der gleichen
-Position sich befindet (\texttt{fivefold\_repetition}), oder eine
+mögliche Überprüfungen auf Schachmatt oder Remis.
+\texttt{is\_game\_over()} stellt sicher, ob das Spiel auf Grund eines
+Schachmatts oder anderer spielbeendender Umstände vorbei ist. Hierbei
+wird überprüft, ob ein Schachmatt (\texttt{is\_checkmate()}), ein Remis
+(\texttt{is\_stalemate()}), eine tote Stellung
+(\texttt{is\_insufficient\_material()}), die 50-Züge-Regel
+(\texttt{can\_claim\_fifity\_moves()}), eine Figur sich fünfmal auf der gleichen
+Position befindet (\texttt{fivefold\_repetition}), oder eine
 spezielle Endbedingung vorliegt.
 
 Um herauszufinden, ob ein Spieler tatsächlich gewonnen hat kann eine
 Teilfunktion der zuvor genannten genutzt werden. Diese Funktion
 überprüft lediglich, ob ein Schachmatt vorliegt.
-\texttt{is\_checkmate()} * Stellt fest, ob es sich nach den bereits
+\texttt{is\_checkmate()} Stellt fest, ob es sich nach den bereits
 gespielten Zügen ein Schachmatt vorliegt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -907,6 +918,11 @@ werden kann. Dies geschieht, indem das Opening-Book das aktuelle Board
 übergeben bekommt und anhand der Positionen der Figuren einen passenden
 Zug auswählt.
 
+Das verwendete Opening-Book Performance ist neben weiteren Books auf der Homepage
+von \href{http://rebel13.nl/download/books.html}{Rebel13} zu finden.
+
+% http://rebel13.nl/download/books.html
+
 Der ausgewählte Zug wird als nächstes auf dem Schachbrett ausgeführt und
 somit wird in diesem Beispiel der weiße Bauer von \texttt{e2} nach
 \texttt{e4} gezogen.
@@ -959,7 +975,7 @@ Selected move: e7e5
     { \hspace*{\fill} \\}
     
 
-    \subsection{Chess Endgame}\label{chess-endgame}
+    \subsection{Schach Endspiel}\label{chess-endgame}
 
 Nach der Eröffnungsphase mittels Opening-Books und dem Hauptteil des
 Spiels, welches durch Alpha-Beta-Pruning umgesetzt wird, kommt es zum
@@ -972,18 +988,18 @@ Ergebnis ermittelt.
 Analog zu dem Opening-Book gibt es für das Endgame ebenfalls Datenbanken
 an analysierten Zügen, der letzten \emph{n} Figuren. Hierbei wurden für
 jeden möglichen Zug bereits die Chancen auf einen Sieg, eine Niederlage,
-oder ein Patt berechnet und können auf der Basis eines aktuellen
+oder ein Patt berechnet und diese können auf der Basis eines aktuellen
 Schachbretts abgerufen werden.
 
 Für das Abfragen der Chancen gibt es verschiedene Tabellentypen.
-Speziell erwähnt wird hier die traditionelle Nalimov-Datenbank und das
-neue Format Syzygy. Beide Datenbanken geben dem Nutzer aufgrund der
+Speziell erwähnt wird hier die traditionelle Nalimov-Datenbank\cite{Chessprogramming.org2019} und das
+neue Format Syzygy\cite{Chessprogramming.org2019a}. Beide Datenbanken geben dem Nutzer aufgrund der
 aktuellen Spielsituation ein Ergebnis, welches aussagt, welche der
 spielenden Parteien am Gewinnen ist und welche nicht. Das Ziel der sich
-im Vorteil befindenden Partei liegt offensichtlicher Weise darin die
+im Vorteil befindenden Partei liegt offensichtlicher Weise darin, die
 gegnerische Partei Schachmatt zu setzen, wohingegen die gegnerische
 Partei versucht die Niederlage durch ein Patt, oder individuelle Fehler
-des Gegners zu gewinnen.
+des Gegners abzuwenden.
 
 Durch die sehr große Anzahl an Möglichkeiten Figuren im Verlauf des
 Endspiels zu ziehen und somit zu einem Ende der Partie zu gelangen sind
@@ -993,7 +1009,7 @@ Zeit. Aktuell sind alle Züge evaluiert wurden, die möglich sind, wenn
 sich auf dem Brett sieben Figuren befinden.
 
 Syzygy bietet dabei ein Vorteil im Gegensatz zu Nalimov, die dazu
-beigetragen haben die zuerst genannte Datenbank zu verwenden. Der
+beigetragen haben, die zuerst genannte Datenbank zu verwenden. Der
 deutlichste Vorteil von Syzygy ist die geringere Speichergröße bei der
 gleichen Anzahl von Figuren. Syzygy benötigt für die Datenbank von sechs
 Figuren etwa 150 GB, wohingegen die Nalimov-Datenbank 1,2 TB benötigt.
@@ -1013,7 +1029,7 @@ berücksichtigt.
 Als Antwort auf eine Anfrage an WDL gibt diese Tabelle eine \texttt{2}
 zurück, falls die Partei, die aktuell am Zug ist, am Gewinnen ist.
 Hingegen wird eine \texttt{-2} zurückgegeben, wenn die gegnerische
-Partei am Gewinnen ist und eine \texttt{0}, wenn es auf ein
+Partei gewinnt und eine \texttt{0}, wenn es auf ein
 Unentschieden hinausläuft. Neben diesen drei verschiedenen Werten kann
 auch eine \texttt{1} oder \texttt{-1} zurückgegeben werden, wenn eine
 der Parteien einen Sieg oder eine Niederlage erreichen kann, der
@@ -1082,6 +1098,10 @@ benötigte Modul aus der Chess-Bibliothek importiert und daraufhin die
 Datenbank in die Variable \texttt{tablebase} importiert. Ebenfalls wird
 eine fiktive Spielsituation erstellt und der Variable \texttt{board}
 zugewiesen, wobei Schwarz am Zug ist.
+
+Die verwendete Datenbank Syzygy ist unter dieser \href{http://oics.olympuschess.com/tracker/index.php}{Adresse} aufzufinden. Mittels eines Torrent-Clients lässt sich die Datenbank herunterladen.
+
+% http://oics.olympuschess.com/tracker/index.php
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}26}]:} \PY{k+kn}{import} \PY{n+nn}{chess}\PY{n+nn}{.}\PY{n+nn}{syzygy}
@@ -1196,7 +1216,7 @@ Zunächst wurde das Programm der Aufgaben entsprechend in einzelne Klassen unter
 \textsuperscript{Figur 3.2.1 Klassendiagramm Architektur ChessAI}
 \end{figure}
 
-Als zentrales, Verbindungselement steht zunächst der ``Controlle''. Dieser übernimmt die Abfrage aller Optionen, falls diese nicht beim Start des Programms mit übermittelt werden. Zudem initialisiert der Controller die Spielteilnehmer sowie den ``ChessMaster''. Bei letzterem übergibt der Controller diesem die initialisierten Spielteilnehmer. Die Aufgaben des ``ChessMaster'' wird später genauer beschrieben.
+Als zentrales, Verbindungselement steht zunächst der ``Controller''. Dieser übernimmt die Abfrage aller Optionen, falls diese nicht beim Start des Programms mit übermittelt werden. Zudem initialisiert der Controller die Spielteilnehmer sowie den ``ChessMaster''. Bei letzterem übergibt der Controller diesem die initialisierten Spielteilnehmer. Die Aufgaben des ``ChessMaster'' wird später genauer beschrieben.
 
 Zur Abfrage der Optionen steht dem Controller eine `Settings' Schnittstelle zur Verfügung. Diese wird für Eingaben des Nutzers einerseits über eine Konsole als auch optional über eine grafische Nutzeroberfläche implementiert. Dabei wird abgefragt, welchen Typ die jeweiligen Spielteilnehmer annehmen sollen und es können zudem zusätzliche Optionen für die einzelnen Spieler definiert werden. Als Beispiel kann für Spieler 1 der Typ ``User'' gewählt werden und für Spieler 2 der Typ ``AI''. Dies ermöglicht ein Spiel des Nutzers gegen die im Rahmen dieser Arbeit entwickelte KI. Für die KI wird darauf folgend noch der Schwierigkeitsgrad abgefragt. Zusätzlich kann für jeden Spieler ein Name festgelegt werden.
 
@@ -1224,7 +1244,7 @@ In Figur 3.2.2 ist der sequenteille Ablauf der Funktionsaufrufe erkennbar.
 \centering
 \includegraphics[width=\textwidth]{images/architecture_sequence_diagram.png}
 
-\textsuperscript{Figur 3.2.2 Sequenzdiganagramm Architektur ChessAI}
+\textsuperscript{Figur 3.2.2 Sequenzdiagramm Architektur ChessAI}
 \end{figure}
 
 Dabei wird zunächst über die ``Settings'' Schnittstelle nach den Spielertypen sowie Namen gefragt. initialisiert der ``Controller'' die Spieler, in diesem Fall einerseits den ``User'', der wiederum die ``UserIO'' Schnittstelle implementiert, und außerdem den ``AI'' Player. 
@@ -1233,7 +1253,7 @@ Darauffolgend spricht der ``Controller'' den ``ChessMaster'' an. Dieser startet 
 
 Nach jedem Zug fügt der ``ChessMaster'' diesen zum Schachbrett hinzu und speichert dieses in einen Spielverlauf. Nach Ende des Spiels wird dieser in das ``board\_history.csv'' eingepflegt wie weiter oben bei der Beschreibung der Klasse bereits erläutert.
 
-Abschließend beendet der ``ChessMaster'' das Spiel, wenn keine Revance gewünscht ist, und so wird auch das Programm im Anschluss daran geschlossen.
+Abschließend beendet der ``ChessMaster'' das Spiel, wenn keine Revanche gewünscht ist, und so wird auch das Programm im Anschluss daran geschlossen.
 
 
 %TODO: CSV zur Architektur hinzufügen; Funktionsnamen python way
