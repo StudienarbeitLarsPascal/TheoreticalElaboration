@@ -16,7 +16,7 @@ In der klassischen Spieletheorie werden Spiele anhand von fünf Kategorien unter
 \begin{itemize}
 \item Symmetrische / Asymmetrische Spiele
 \item Perfekte / Imperfekte Informationslage
-\item Kooperative / Nicht-kooperativ Spiele
+\item Kooperative / Nicht-kooperative Spiele
 \item Simultane / Sequentielle Spiele
 \item Nullsummenspiele / Nicht-Nullsummenspiel \cite{Rodriguez}
 \end{itemize} 
@@ -29,13 +29,13 @@ Schach stellt dabei ein klassisches Beispiel eines symmetrischen Spiels dar. Bei
 
 Perfekte und Imperfekte Informationslagen in Spielen kategorisieren Spiele nach dem Wissen, den der Spieler über das Spiel hat. Bei perfekter Informationslage kann der Spieler über alle Züge, sowohl seiner eigenen als auch die des Gegners, Bescheid und kann die Möglichkeiten des Gegners evaluieren, um so selbst eine bessere Entscheidung zu treffen. Bei imperfekter Informationslage ist dies nicht der Fall. \cite{Rodriguez} Bei vielen Kartenspielen beispielsweise, wie Poker oder Black Jack, hat ein Spieler keine Informationen über die Karten in der Hand der anderen Spieler. Dies ist dann als imperfekte Informationslage zu bezeichnen.
 
-Im Spiel Schach jedoch sind die Figuren und dessen Positionen beider Spieler für alle Seiten offengelegt und einsehbar. Dadurch können sich beide Spieler ein Gesamtbild über die Situation machen, ohne, dass ein Mangel an Information herrscht.
+Im Spiel Schach jedoch sind die Figuren und dessen Positionen beider Spieler für alle Seiten offengelegt und einsehbar. Dadurch können sich beide Spieler ein Gesamtbild über die Situation machen, ohne dass ein Mangel an Information herrscht.
 
 Bei kooperativen Spielen handelt es sich um Spiele, in denen mehrere Spieler zusammen an einem Ziel arbeiten können oder gar müssen, um ihr Ergebnis zu verbessern. Dies kann in Bündnissen münden, die mehrere Spieler zusammen eingehen, um an einem Ziel zu arbeiten, dass alle gemeinsam erreichen können. \cite{Rodriguez} Ein Beispiel dafür sind Wahlen, die nach Mehrheitsentscheid gewonnen werden können. Dabei gilt es für die Teilnehmer Allianzen zu formen, um gemeinsam eine Möglichkeit durchzusetzen. \cite{Apt} In Nicht-kooperativen Spielen dagegen ist es verboten oder nicht zielführend Allianzen zu formen, da kein gemeinsamer Sieg errungen werden kann. \cite{Rodriguez}
 
 %cooperative games
 
-Schach stellt dabei ein Nicht-kooperatives Spiel dar, da die Spieler sich nicht miteinander, sondern nur gegeneinander antreten können.
+Schach stellt dabei ein Nicht-kooperatives Spiel dar, da die Spieler nicht miteinander, sondern nur gegeneinander antreten können.
 
 Simultane Spiele sind Spiele, bei denen alle Spieler gleichzeitig Aktionen unternehmen können. Ein Beispiel stellt dabei ein Kampf dar, in der beide Seiten sich gleichzeitig bewegen können und in Echtzeit auf die Bewegungen des Gegners reagieren müssen. Bei sequenziellen Spielen dagegen wechseln sich alle Seiten mit ihren Zügen ab. Dies bedeutet auch, dass die Spieler über die vorangegangenen Züge ihrer Gegner Bescheid wissen. \cite{Rodriguez}
 
@@ -84,7 +84,7 @@ Auch wurden hier erste Machine-learning Algorithmen verwendet, die dem Computer 
 
 %https://www.cs.virginia.edu/~evans/greatworks/samuel1959.pdf
 
-Nur ein Jahr später fand die Theorie von Claude Shannon auch erstmals direkt im Spiel Schach Anwendung. Ein Team um Mathematiker Alex Bernstein entwickelte eine voll funktionale Schach- KI, ebenfalls basierend auf den Minimax Algorithmen. \cite{Kurenkov2019} Die Problematik beim Schach, im Vergleich zu anderen Spielen, ist die enorme Anzahl an verschiedenen Zügen und Spielzuständen, die eine Evaluierung jedes einzelnen, selbst bei heutiger Rechenkapazität, unmöglich macht. Dies ist genauer in Kapitel \ref{depth_limit} beschrieben. 
+Nur ein Jahr später fand die Theorie von Claude Shannon auch erstmals direkt im Spiel Schach Anwendung. Ein Team um den Mathematiker Alex Bernstein entwickelte eine voll funktionale Schach- KI, ebenfalls basierend auf den Minimax Algorithmen. \cite{Kurenkov2019} Die Problematik beim Schach, im Vergleich zu anderen Spielen, ist die enorme Anzahl an verschiedenen Zügen und Spielzuständen, die eine Evaluierung jedes einzelnen, selbst bei heutiger Rechenkapazität, unmöglich macht. Dies ist genauer in Kapitel \ref{depth_limit} beschrieben. 
 
 Auf Grund dieser Komplexität des Schach Spiels, sowie der begrenzten Rechenkapazitäten der damaligen Computer, wurde dies auf eine Tiefe von vier begrenzt. Dies bedeutet, dass der Computer lediglich vier Züge vorausschaut. Zusätzlich schaut der Computer lediglich sieben verschiedene Optionen pro Zug an. Die Auswahl dieser sieben Optionen geschah mittels simpler heuristischer Berechnungen, die versuchten im Vorab die sieben aussichtsreichsten Optionen zu wählen. \cite{Bernstein1958}
 
@@ -108,21 +108,21 @@ Beide Programme basierten dabei auf drei wesentlichen Punkten: Eine Datenbank vo
 
 %http://www.andreykurenkov.com/writing/ai/a-brief-history-of-game-ai-part-2/
 
-Diese Programme benötigten speziell optimierte Computer, die auf die nötigen Berechnungen für die jeweiligen Spiele ausgelegt waren. Anders handhabt es das Programm ``Stockfish'' aus dem Jahre 2008. Dies ist auf jedem Computer ausführbar und dennoch für einen Menschen scheinbar nicht schlagbar.
+Diese Programme benötigten speziell optimierte Computer, die auf die nötigen Berechnungen für die jeweiligen Spiele ausgelegt waren. Anders handhabt es das Programm ``Stockfish'' aus dem Jahre 2008. Dies ist auf jedem Computer ausführbar und dennoch für einen Menschen nicht schlagbar.
 
-Lange war Stockfish unbesiegt, dies änderte sich jedoch im Jahr 2017 als AlphaZero mit 64:36 gegen Stockfish gewann. AlphaZero ist dabei ein verallgemeinerter Ansatz von AlphaGo Zero. Dies wiederum ist eine Aktualisierung von AlphaGo, das im Jahr 2016 den Weltmeister in Go schlug. Dabei verwendet AlphaGo neuronale Netzwerke und verwendet Methoden des ``supervised learning'' und ``reinforcment learning'', um sich selbstständig weiter zu entwickeln. \cite{Fischer}
+Lange war Stockfish unbesiegt, dies änderte sich jedoch im Jahr 2017 als AlphaZero mit 64:36 gegen Stockfish gewann. AlphaZero ist dabei ein verallgemeinerter Ansatz von AlphaGo Zero. Dies wiederum ist eine Aktualisierung von AlphaGo, das im Jahr 2017 den Weltmeister in Go schlug. Dabei verwendet AlphaGo neuronale Netzwerke und verwendet Methoden des ``supervised learning'' und ``reinforcment learning'', um sich selbstständig weiter zu entwickeln. \cite{Fischer}
 
 %L. Fischer Künstliche Intelligenz schlägt...
 
-An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nicht. Besonders durch den Fortschritt im Bereich der neuronalen Netze und speziell im ``Deep Learning'' Bereich werden immer komplexere Spiele durch den Computer beherrscht, immer öfter auch besser als vom Menschen. Ein Beispiel stellt dabei Alpha Star dar, das im Jahre 2019 einer der besten Teams im Echtzeit-Strategiespiel ``Starcraft 2'' geschlagen hat. Diese Entwicklung wird sich wohl auch in den kommenden Jahren fortsetzen, auch außerhalb der Spiele Szene, weshalb KI in unserer Gesellschaft immer mehr an Bedeutung gewinnt. \cite{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
+An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nicht. Besonders durch den Fortschritt im Bereich der neuronalen Netze und speziell im ``Deep Learning'' Bereich werden immer komplexere Spiele durch den Computer beherrscht, immer öfter auch besser als vom Menschen. Ein Beispiel stellt dabei Alpha Star dar, das im Jahre 2019 eines der besten Teams im Echtzeit-Strategiespiel ``Starcraft 2'' geschlagen hat. Diese Entwicklung wird sich wohl auch in den kommenden Jahren fortsetzen, auch außerhalb der Spiele Szene, weshalb KI in unserer Gesellschaft immer mehr an Bedeutung gewinnt. \cite{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
 
 %AlphaStar: Mastering...
 
 \section{Minimax-Algorithmus}\label{minimax}
 
-Der Minimax Algorithmus basiert auf dem ``Minimax-Theorem'' von John Vonn Neumann.
+Der Minimax Algorithmus basiert auf dem ``Minimax-Theorem'' von John von Neumann.
 
-Der Hauptsatz des Theorems für 2 Personen Spiele lautet:
+Das Theorem lautet für zwei Personen Spiele:
 
 \begin{quote}
 In der gemischten Erweiterung $(X, Y, G')$ eines jeden 2-Personen-Nullsummenspiels mit endlichen (reinen) Strategieräumen A und B existiert eine Konstante V und für jeden Spieler mindestens eine (gemischte) Gleichgewichtsstrategie $x^*$ bzw. $y^*$, mit der er eine erwartete Auszahlung von mindestens V garantieren kann.
@@ -319,7 +319,7 @@ Dieser Algorithmus gleicht im Grunde dem Minimax Algorithmus, vorgestellt in Kap
 
 Die Effektivität dieses Algorithmus hängt jedoch von der Reihenfolge der Evaluierung der einzelnen Zustände ab. Im besten Fall werden stets zuerst die scheinbar besten Zustände evaluiert, die ein weiteres Evaluieren der restlichen Zustände weitestgehend überflüssig machen. Im besten Fall könnte so die in Kapitel \ref{minimax} angesprochene Zeitkomplexität eines Spiels mit einer Tiefe m und einer Anzahl b an möglichen Zügen von $O(b^m)$ auf $O(b^\frac{m}{2})$ reduziert werden. Bei einer zufälligen Auswahl der Reihenfolge von zu evaluierenden Zügen dagegen würde sich die Zeitkomplexität immerhin noch auf $O(b^\frac{3m}{4})$ reduzieren. \cite{Russell2010}
 
-Verschiedene Ansätze können dabei helfen die Reihenfolge der zu evaluierenden Züge zu verbessern. Einer dieser Ansätze ist die Züge zu sortieren, so dass zunächst die Züge evaluiert werden, bei der Figuren geschlagen werden können und daraufhin die, bei denen Bedrohungen aufgebaut werden können. Von den übrig gebliebenen Zügen werden dann zunächst die Vorwärtsbewegungen evaluiert und erst zum Schluss die Rückwärtsbewegungen. Nach diesem Schema kann die Zeitkomplexität ungefähr auf $2*O(b^\frac{m}{2}$ gebracht werden. \cite{Russell2010}
+Verschiedene Ansätze können dabei helfen die Reihenfolge der zu evaluierenden Züge zu verbessern. Einer dieser Ansätze ist die Züge zu sortieren, so dass zunächst die Züge evaluiert werden, bei der Figuren geschlagen werden können und daraufhin die, bei denen Bedrohungen aufgebaut werden können. Von den übrig gebliebenen Zügen werden dann zunächst die Vorwärtsbewegungen evaluiert und erst zum Schluss die Rückwärtsbewegungen. Nach diesem Schema kann die Zeitkomplexität ungefähr auf $2*O(b^\frac{m}{2})$ gebracht werden. \cite{Russell2010}
 
 Andere Methoden sind die Züge zusätzlich danach zu sortieren, welche Züge bei vergangenen Spielen zu Erfolg geführt haben. Eine Methode dazu ist, zunächst die Züge der ersten Ebene zuerst zu evaluieren und dann eine Ebene tiefer zu gehen, die Züge dabei aber nach den Ergebnissen aus der ersten Evaluierungsiteration zu sortieren. Dies nennt sich ``Iterative Deepening''. \cite{Russell2010}
 
@@ -327,7 +327,7 @@ Diese Optimierung des Minimax Algorithmus spart bereits einige zu evaluierende Z
 
 \section{Problematik komplexerer Spiele}\label{depth_limit}
 
-Der in Kapitel \ref{minimax} beschriebene Minimax-Algorithmus hat - auch mit der Optimierung durch Alpha-Beta-Pruning (Kapitel \ref{alpha_beta}) - das Problem, dass zur Entscheidungsfindung alle Pfade bis zum Ende des Spiels abgegangen werden müssen. Beim Spiel Schach beispielsweise gibt es schon nach 40 Spielzügen $10^120$ Möglichkeiten das Spiel zu führen. Selbst unter der sehr optimistischen Annahme, dass eine Million verschiedene Züge pro Sekunde evaluiert werden könnten, würde die Evaluation aller Spielzüge $10^108$ Jahre benötigen. \cite{Bernstein1958} Zum Vergleich - das Alter der Erde wird auf nicht viel mehr als $10^9$ Jahre geschätzt. \cite{Braterman} An dieser Tatsache ändert auch eine Reduzierung der zu evaluierenden Möglichkeiten durch Alpha-Beta Pruning nichts Wahrnehmbares.
+Der in Kapitel \ref{minimax} beschriebene Minimax-Algorithmus hat - auch mit der Optimierung durch Alpha-Beta-Pruning (Kapitel \ref{alpha_beta}) - das Problem, dass zur Entscheidungsfindung alle Pfade bis zum Ende des Spiels abgegangen werden müssen. Beim Spiel Schach beispielsweise gibt es schon nach 40 Spielzügen $10^{120}$ Möglichkeiten das Spiel zu führen. Selbst unter der sehr optimistischen Annahme, dass eine Million verschiedene Züge pro Sekunde evaluiert werden könnten, würde die Evaluation aller Spielzüge $10^{108}$ Jahre benötigen. \cite{Bernstein1958} Zum Vergleich - das Alter der Erde wird auf nicht viel mehr als $10^{9}$ Jahre geschätzt. \cite{Braterman} An dieser Tatsache ändert auch eine Reduzierung der zu evaluierenden Möglichkeiten durch Alpha-Beta Pruning nichts Wahrnehmbares.
 
 %https://d1yx3ys82bpsa0.cloudfront.net/chess/computer-v-chessplayer.bernstein-roberts.scientific-american.june-1958.062303059.pdf
 %Braterman, Paul S. (2013). "How Science Figured Out the Age of Earth". Scientific American.
@@ -385,11 +385,11 @@ Eine andere Möglichkeit ist, die Evaluierungsfunktion dahingehend anzupassen, d
 Entscheidend für eine Schach-spielende-KI ist - neben der Anzahl der zu betrachtenden Spielzüge - die Art der Evaluation, die Aufschluss darüber geben soll, wie aussichtsreich eine bestimmte Position ist. In diesem Kapitel werden verschiedene Ansätze aufgeführt und erklärt. Dabei wird zunächst auf die Spieleröffnung eingegangen, der eine Sonderrolle im Schachspiel zukommt. Danach erfolgen die beispielhafte Nennung verschiedener Evaluierungsfunktionen im Mittelspiel ehe zum Schluss auf Strategien für das Endspiel eingegangen wird.
 
 \subsection{Eröffnungsstrategie}\label{opening_evaluation}
-Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet sollten besonders die ersten Züge mit Bedacht gewählt werden. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.\cite{O.V.}
+Wie bereits in den einführenden Abschnitten des zweiten Kapitels erläutert, gibt es viele verschiedene Züge um ein Schachspiel durchzuführen. Damit der Spieler mit einer möglichst guten Ausgangssituation in das Spiel startet, sollten besonders die ersten Züge mit Bedacht gewählt werden. Hierbei ist es zielführend, wenn der Spieler seine Figuren direkt zu den vielversprechendsten Feldern zieht und somit in möglichst wenigen Iterationen zur gewollten Ausgangssituation kommt.\cite{O.V.}
 
 % https://www.chesscentral.com/pages/learn-chess-play-better/chess-strategy-for-chess-openings-and-chess-principles.html
 
-Ein Beispiel für eine gute Ausgangssituation ist es, die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass ihre Lage jeder Schachfigur die jeweils größtmögliche Reichweite ermöglicht. Somit ist dies für jede Figur mitunter die gefährlichste Position im Spiel. Zum Beispiel kontrolliert ein Springer auf dem Feld d4 acht Felder, wohingegen ein Springer auf dem Feld b1 oder g1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet.\cite{O.V.2017}
+Ein Beispiel für eine gute Ausgangssituation ist es, die vier zentralen Felder d4, e4, d5, e5 zu kontrollieren. Diese Felder haben die Eigenschaft, dass ihre Lage jeder Schachfigur die jeweils größtmögliche Reichweite ermöglicht. Somit ist dies für jede Figur mitunter die gefährlichste Position im Spiel. Zum Beispiel kontrolliert ein Springer auf dem Feld d5 acht Felder, wohingegen ein Springer auf dem Feld a1 oder h1 nur zwei Felder kontrolliert (siehe Abbildung \ref{fig:knight_reach}). Ein solches explizites Vorgehen bei der Eröffnung eines Spiels nach einer speziellen Strategie, wird als Eröffnungsstragie bezeichnet.\cite{O.V.2017}
 
 \begin{figure}[h]
 \centering
@@ -406,7 +406,7 @@ Wie bereits Stuart Russell und Peter Norvig in Artificial Intelligence – A Mod
 
 Die Lösung zur Implementierung eines Eröffnungsspiels, ohne die Verwendung von komplexen Suchverfahren, liegt in den sogenannten Opening-Books. Opening-Books sind eine Ansammlung von verschiedenen dokumentierten Eröffnungsstrategien, die es ermöglichen auf eine aktuelle Spielsituation, in der Eröffnung, den passenden Zug zu finden.
 
-Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller in der Berechnung der besten Züge sind. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie ``Ruy Lopez``, oder auch die ``Spanische Eröffnung`` genannt, die bereits 1561 im Zuge der veröffentlich des Buchs ``Libro de la invención liberal y arte del juego del ajedrez`` von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.\cite{Chess.comTeamInternational2018}
+Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller sind. Der deutliche Performanceunterschied erfolgt aus der Tatsache, dass in Opening-Books die besten Züge nachgeschlagen und nicht berechnet werden müssen. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie ``Ruy Lopez``, oder auch die ``Spanische Eröffnung`` genannt, die bereits 1561 im Zuge der veröffentlicht des Buchs ``Libro de la invención liberal y arte del juego del ajedrez`` von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.\cite{Chess.comTeamInternational2018}
 
 % https://www.chess.com/article/view/the-ruy-lopez-chess-opening-explained
 
@@ -607,7 +607,7 @@ Neben der Verteidigung spielen auch die Möglichkeiten zum Angriff auf den Gegne
 
 Ein erster, simpler Ansatz ist dabei neben dem Wert der Materialien auch die möglichen Angriffe auf Figuren mit in die Evaluation mit einzubeziehen. Auch dabei gilt es den Wert der angegriffenen Funktion mit einzuberechnen sowie die Anzahl der angreifenden Figuren. Am Ende müssen diese Werte sowohl für von schwarz angegriffene als auch von weiß angegriffene Figuren berechnet und voneinander subtrahiert werden, um den Vorteil im Angriff berechnen zu können. Diese Möglichkeit der Evaluation ist nur dann möglich, wenn es sich nicht um einen ruhigen Zustand handelt, wie in Kapitel \ref{quiescence} erklärt. 
 
-Ein weiterer, wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle des Zentrums. beim Zentrum handelt es sich dabei um die Felder d4, d5, e4 und e5. Dies ist ein wichtiger Ansatz bei in Kapitel \ref{opening_evaluation} beschriebenen ``Opening-books'', sowie bei in Kapitel \ref{material_evaluation} beschriebenen Matrizen zur Bewertung der Positionierung der Figuren auf einem Schachbrett. Um dies dennoch extra zu evaluieren, können alle Figuren gezählt werden, die das Zentrum erreichen können, mit deren Werten multipliziert werden und anschließend die Differenz der weißen sowie schwarzen Figuren berechnet. \cite{O.V.2019}
+Ein weiterer, wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle des Zentrums. Beim Zentrum handelt es sich dabei um die Felder d4, d5, e4 und e5. Dies ist ein wichtiger Ansatz bei in Kapitel \ref{opening_evaluation} beschriebenen ``Opening-books'', sowie bei in Kapitel \ref{material_evaluation} beschriebenen Matrizen zur Bewertung der Positionierung der Figuren auf einem Schachbrett. Um dies dennoch extra zu evaluieren, können alle Figuren gezählt werden, die das Zentrum erreichen können, mit deren Werten multipliziert werden und anschließend die Differenz der weißen sowie schwarzen Figuren berechnet. \cite{O.V.2019}
 
 %https://www.chessprogramming.org/Center_Control
 
@@ -638,7 +638,7 @@ Die Aussagekraft ist vor Allem dann kräftig, umso höher die Zahl ist. Wenn es 
 
 Deshalb gilt es eine möglichst große Historie aufzubauen, die vor Allem in der Anfangsphase, in der noch nicht so viele verschiedene Zustände erreichbar sind, guten Aufschluss über die Qualität des Zustands geben kann. Umso fortgeschrittener jedoch das Spiel ist, desto schwieriger wird es eine angemessene Anzahl an Iterationen über die speziellen Zustände zu erreichen, da diese immer häufiger vorkommen.
 
-Da im Spiel Schach $10^40$ verschiedene Spielzustände existieren \cite{Stroetmann2018} , ist es kaum möglich alle Zustände in angemessener Anzahl durchgegangen zu sein und abzuspeichern. Selbst unter der Annahme, dass ein Zustand inklusive dessen Bilanz in nur 20 Bit gespeichert werden kann (12 Bits für Schachspiel \cite{Speight} und 8 Bits für Bilanz), würde dies 
+Da im Spiel Schach $10^{40}$ verschiedene Spielzustände existieren \cite{Stroetmann2018} , ist es kaum möglich alle Zustände in angemessener Anzahl durchgegangen zu sein und abzuspeichern. Selbst unter der Annahme, dass ein Zustand inklusive dessen Bilanz in nur 20 Bit gespeichert werden kann (12 Bits für Schachspiel \cite{Speight} und 8 Bits für Bilanz), würde dies 
 
 \begin{equation}
 \begin{aligned}
@@ -654,7 +654,7 @@ Aus diesem Grund stellt dies zwar eine gute Größe für den Beginn des Spiels d
 
 % Computer Chess Compendium
 
-\subsection{Finishing strategy}\label{finishing_evaluation}
+\subsection{Endspiel}\label{finishing_evaluation}
 Nach dem Eröffnungsspiel und dem Mittelteil einer Schachpartie, folgt das Endspiel. Das Endspiel beschreibt dabei eine Situation, bei der sich nur eine geringe Anzahl an schwarzen und weißen Figuren auf dem Schachbrett befinden. 
 
 Zum zielstrebigen Gewinnen des Spiels, ohne überflüssige Züge, ist es hilfreich sich grundlegende Muster anschauen, die es ermöglichen den Gegner Schachmatt zu setzen. Neben der Möglichkeit zielstrebig und effizient das Spiel gewinnen zu können, kann das Wissen über solche Muster auch dazu beitragen den Gegner vom Gewinnen abzuhalten, da ersichtlicher wird was dessen Strategie ist.
