@@ -328,7 +328,7 @@ eingeführte Funktion zur Berechnung von legalen Zügen verwendet.
 Computer spielen zu lassen, der jeweils einen zufälligen Zug verwendet.
 Hierbei wird für das Jupyter Notebook ein Counter eingeführt, damit das
 Spiel bereits nach zwei Zügen pro Spieler beendet ist. Alternativ dazu
-wird das Spiel beendet, sobald ein Sieger oder ein Patt feststeht.
+wird das Spiel beendet, sobald ein Sieger oder ein Remis feststeht.
 
 Ebenfalls wird als Unterstützung für den Spieler pro Zug das Schachbrett
 und die legalen Züge ausgegeben.
@@ -988,7 +988,7 @@ Ergebnis ermittelt.
 Analog zu dem Opening-Book gibt es für das Endgame ebenfalls Datenbanken
 an analysierten Zügen, der letzten \emph{n} Figuren. Hierbei wurden für
 jeden möglichen Zug bereits die Chancen auf einen Sieg, eine Niederlage,
-oder ein Patt berechnet und diese können auf der Basis eines aktuellen
+oder ein Remis berechnet und diese können auf der Basis eines aktuellen
 Schachbretts abgerufen werden.
 
 Für das Abfragen der Chancen gibt es verschiedene Tabellentypen.
@@ -998,7 +998,7 @@ aktuellen Spielsituation ein Ergebnis, welches aussagt, welche der
 spielenden Parteien am Gewinnen ist und welche nicht. Das Ziel der sich
 im Vorteil befindenden Partei liegt offensichtlicher Weise darin, die
 gegnerische Partei Schachmatt zu setzen, wohingegen die gegnerische
-Partei versucht die Niederlage durch ein Patt, oder individuelle Fehler
+Partei versucht die Niederlage durch ein Remis, oder individuelle Fehler
 des Gegners abzuwenden.
 
 Durch die sehr große Anzahl an Möglichkeiten Figuren im Verlauf des
@@ -1030,11 +1030,11 @@ Als Antwort auf eine Anfrage an WDL gibt diese Tabelle eine \texttt{2}
 zurück, falls die Partei, die aktuell am Zug ist, am Gewinnen ist.
 Hingegen wird eine \texttt{-2} zurückgegeben, wenn die gegnerische
 Partei gewinnt und eine \texttt{0}, wenn es auf ein
-Unentschieden hinausläuft. Neben diesen drei verschiedenen Werten kann
+Unentschieden hinausläuft. Neben dieser drei verschiedenen Werten kann
 auch eine \texttt{1} oder \texttt{-1} zurückgegeben werden, wenn eine
-der Parteien einen Sieg oder eine Niederlage erreichen kann, der
-ebenfalls zu einem Unentschieden werden kann. Für die Verwendung der
-Distance To Zero Tabelle wird die WDL Tabelle benötigt. Hierbei baut DTZ
+der Parteien einen Sieg oder eine Niederlage erreichen kann. Hierbei ist jedoch zu beachten, dass bei \texttt{1} der Spieler nur einen Gewinn erreichen kann, wenn die 50-Züge-Regel nicht beachtet wird. Analog ist bei \texttt{-1} nur eine Niederlage möglich, wenn ebenfalls die 50-Züge-Regel nicht beachtet wird. Wenn die Regel beachtet wird führt dies in beiden Fällen zu einem Remis.
+
+Für die Verwendung der Distance To Zero Tabelle wird die WDL Tabelle benötigt. Hierbei baut DTZ
 auf den Werten \texttt{-2}, \texttt{-1}, \texttt{0}, \texttt{1} und
 \texttt{2} auf, die um die Information erweitert werden in wie vielen
 Halbzüge es zu einem Schlagzug oder Bauernzug kommen kann.
