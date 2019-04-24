@@ -17,45 +17,45 @@ Warning--missing publisher in O.V.2013
 Warning--empty booktitle in Slater1988
 
 Done.
-You've used 38 entries,
+You've used 39 entries,
             4087 wiz_defined-function locations,
-            1572 strings with 24343 characters,
-and the built_in function-call counts, 16124 in all, are:
-= -- 1273
-> -- 246
+            1576 strings with 24435 characters,
+and the built_in function-call counts, 16430 in all, are:
+= -- 1295
+> -- 247
 < -- 33
-+ -- 123
++ -- 124
 - -- 53
-* -- 652
-:= -- 2906
-add.period$ -- 77
-call.type$ -- 38
-change.case$ -- 35
+* -- 663
+:= -- 2959
+add.period$ -- 79
+call.type$ -- 39
+change.case$ -- 36
 chr.to.int$ -- 72
-cite$ -- 41
-duplicate$ -- 1298
-empty$ -- 1550
+cite$ -- 42
+duplicate$ -- 1326
+empty$ -- 1584
 format.name$ -- 61
-if$ -- 3592
+if$ -- 3660
 int.to.chr$ -- 0
-int.to.str$ -- 38
-missing$ -- 263
-newline$ -- 189
+int.to.str$ -- 39
+missing$ -- 269
+newline$ -- 194
 num.names$ -- 38
-pop$ -- 772
+pop$ -- 794
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1256
+skip$ -- 1280
 stack$ -- 0
-substring$ -- 211
-swap$ -- 770
+substring$ -- 212
+swap$ -- 783
 text.length$ -- 9
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 38
+type$ -- 39
 warning$ -- 3
 while$ -- 55
-width$ -- 40
-write$ -- 384
+width$ -- 41
+write$ -- 393
 (There were 3 warnings)

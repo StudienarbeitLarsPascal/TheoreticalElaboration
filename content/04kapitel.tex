@@ -207,14 +207,11 @@ Zusätzlich zu dem Verwalten des Spiels ist es auch Aufgabe des
 \texttt{ChessMaster}s die Historie aller Spiele zu pflegen. Dazu wird
 zunächst eine Liste von Schachbrettern der Klasse \texttt{chess.Board}
 angelegt. Nach jedem durchgeführten Zug wird der neue Zustand des boards
-zu dieser hinzugefügt. Dabei wird das Schachbrett in der fen-Notation
+zu dieser hinzugefügt. Dabei wird das Schachbrett in der FEN-Notation
 gespeichert, die in einem String den exakten Zustand des Schachbretts
 wiedergeben kann. Dabei wird jedoch nur der erste Teil dieser Notation
 gespeichert, da dieser alleine bereits Aufschluss über die
-Positionierungen gibt. Die darauf folgenden Teile sind zum Speichern des
-Spielers, der am Zug ist, wie viele Züge bereits durchgeführt wurden und
-weitere Informationen, die zum Bewerten in der Historie nicht notwendig
-sind.
+Positionierungen gibt.
 
 Das Speichern der Züge im Verlauf des Spiels sieht dann wie folgt aus
 
@@ -475,7 +472,7 @@ Code-Snippet zu sehen.
             \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
-    Neben dem akteullen Zustand des Spiels in fen Notation und dem Spieler,
+    Neben des aktuellen Zustands des Spiels in FEN-Notation und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
 sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
 Beta sind dabei, wie in Kapitel INSERT erklärt, dazu da, um den
@@ -485,7 +482,7 @@ als irrelevant betrachtet werden können, da ohnehin bereits ein
 besserrer (im Fall von \texttt{min\_value}) bzw. schlechterer (im Fall
 von \texttt{max\_value}) Wert gefunden wurde.
 
-Nachdem das Schachbrett über die fen-Notation erstellt wurde, wird
+Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
 überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe
 auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
 und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
@@ -842,7 +839,7 @@ kann, wurde in Kapitel INSERT besprochen.
 
     Abgefragt werden kann diese, indem zunächst die Daten aus der Datei
 geladen werden. Dann wird die Reihe abstrahiert, dessen Wert in der
-Spalte ``board`` dem mitgegebenen Zustand (in fen Notation konvertiert)
+Spalte ``board`` dem mitgegebenen Zustand (in FEN-Notation konvertiert)
 gleicht. Dazu wird der entsprechende Wert ausgelesen und zurückgegeben.
 Beim Zurückgeben wird der Wert noch negiert, falls der angegebene
 Spieler der der schwarzen Figuren ist, da in der Historie die Werte aus

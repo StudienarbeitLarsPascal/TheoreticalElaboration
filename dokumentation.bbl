@@ -37,6 +37,12 @@ R.~Alt, K.~Deventer, D.~J. Klueners, T.~Strobl, and T.~Wiedmann, ``{Die FIDE
   \url{https://www.schachbund.de/satzung-ordnungen.html?file=files/dsb/srk/downloads/FIDE-Regeln-2017-Final-DEU-ENG.PDF}
 \BIBentrySTDinterwordspacing
 
+\bibitem{FEN2019}
+\BIBentryALTinterwordspacing
+``Forsyth-edwards-notation,'' 2019. [Online]. Available:
+  \url{https://de.wikipedia.org/wiki/Forsyth-Edwards-Notation}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Apt}
 \BIBentryALTinterwordspacing
 K.~R. Apt, ``{Cooperative Games},'' Tech. Rep., 2009. [Online]. Available:

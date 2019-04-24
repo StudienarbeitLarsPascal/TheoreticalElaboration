@@ -223,6 +223,41 @@ Um diesen Algorithmus in die Praxis umzusetzen, verlangt es drei Funktionen, die
 
 Zusätzlich verlangt der Algorithmus neben der genannten Funktionen $utility$ und $finished$ eine Funktion $min$ sowie eine Funktion $max$, die jeweils mehrere Werte vergleichen und den Minimum bzw. Maximum aller verglichenen Werte zurück geben. Eine beispielhafte Implementierung eines solchen mittels drei verschiedener Funktionen kann in Algorithmus \ref{alg:minimax} gesehen werden.
 
+\begin{algorithm}[h]
+\caption{Minimax Algorithmus \cite{Russell2010}}
+\label{alg:minimax}
+\begin{algorithmic}
+\Function{$minimax\_decision$}{$state$}
+	\ForAll{$a in actions(state)$}
+		\State $value \gets \Call{$min\_value$}{$result\_state(state, a)$}$
+		\If{$value > best\_value$}
+			\State $best\_value \gets value$
+			\State $best\_move \gets a$
+		\EndIf
+	\EndFor
+	\State \Return $best\_move$
+\EndFunction
+\\
+\Function{$max\_value$}{$state$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets -\infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets max(v, \Call{$min\_value$}{$result\_state(state, a)$})$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\\
+\Function{$min\_value$}{$state$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets \infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets min(v, \Call{$max\_value$}{$result\_state(state, a)$})$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
 Die erste Funktion geht dabei jeden möglichen Zug vom gegebenen Ursprungszustand durch und gibt am Ende den Zustand zurück, der den besten Minimum-Wert durch die Evaluierungsfunktion $utility$ erreicht. Dazu gibt die Funktion jeden der erreichbaren Zustände zu der minValue Funktion. Diese gibt entweder den durch die $utility$ Funktion errechneten Wert des Zustands zurück, sollte der Zustand ein Endzustand sein, oder sie gibt das Minimum aller Maxima-Werte der erreichbaren Zustände zurück. Dazu wiederum wird die maxValue Funktion verwendet, die genau das Gegenteil der minValue Funktion macht. Ist der Endzustand erreicht, gibt zwar auch die maxValue Funktion den Wert des Zustands direkt zurück, andernfalls aber gibt sie das Maximum aller Minimum Werte der vom gegebenen Zustand aus erreichbaren Zustände zurück, wozu wiederum auf die minValue Funktion zurückgegriffen wird. Dies ganze wiederholt sich also rekursiv so lange, bis alle neu errechneten Zustände den Wert eines Endzustandes erreicht haben. \cite{Russell2010}
 
 Diesen Endzuständen werden dann Werte zugewiesen, die aufsteigend rekursiv miteinander verglichen und abwechselnd Minimum und Maximum gewählt werden, um dem Minimax-Theorem dahingehend zu folgen. Um das Ganze zu verdeutlichen kann Abbildung \ref{fig:minimax_tree} als Beispiel genommen werden:
@@ -309,6 +344,45 @@ $\beta$ gleicht dagegen dem bisher besten (sprich niedrigsten) Wert in dem $\min
 Diese Werte werden kontinuierlich aktualisiert und sobald bekannt ist, dass der Wert eines Knoten schlechter als das aktuelle $\alpha$ (bei $\max$ Ebenen) beziehungsweise $\beta$ (bei $\min$ Ebenen) sein wird, werden die restlichen Zweige dieses Knoten nicht mehr in Betracht gezogen und somit übersprungen. \cite{Russell2010}
 
 Dies kann in einen Algorithmus verpackt werden, wie in Algorithmus \ref{alg:alpha_beta} zu sehen.
+
+\begin{algorithm}[h]
+\caption{Alpha Beta Algorithmus \cite{Russell2010}}
+\label{alg:alpha_beta}
+\begin{algorithmic}
+\Function{$alpha\_beta\_search$}{$state$}
+	\ForAll{$a in actions(state)$}
+		\State $value \gets \Call{$min\_value$}{result\_state(state, a), -\infty, +\infty}$
+		\If{$value > best\_value$}
+			\State $best\_value \gets value$
+			\State $best\_move \gets a$
+		\EndIf
+	\EndFor
+	\State \Return $best\_move$
+\EndFunction
+\\
+\Function{$max\_value$}{$state, \alpha, \beta$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets -\infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets max(v, \Call{$min\_value$}{result\_state(state, a), \alpha, \beta})$
+		\If{$v \geq \beta$} \State \Return $v$ \EndIf
+		\State $\alpha \gets max(\alpha, v)$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\\
+\Function{$min\_value$}{$state, \alpha, \beta$}
+	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+	\State $v \gets \infty$
+	\ForAll{$a in actions(state)$}
+		\State $v \gets min(v, \Call{$max\_value$}{result\_state(state, a), \alpha, \beta})$
+		\If{$v \leq \alpha$} \State \Return $v$ \EndIf
+		\State $\beta \gets min(\beta, v)$
+	\EndFor
+	\State \Return $v$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 Dieser Algorithmus gleicht im Grunde dem Minimax Algorithmus, vorgestellt in Kapitel \ref{minimax} Jedoch unterscheiden die beiden Algorithmen sich um die ergänzten Werte $\alpha$ und $\beta$. Diese werden dabei jeweils in die Funktionen maxValue bzw. minValue mitgegeben. Innerhalb dieser wird dann beim Iterieren über alle erreichbaren Zustände geprüft, ob einer dieser Zustände bereits größer als $\beta$, das bisherige Minimum im min Pfad, im Fall der maxValue Funktion beziehungsweise kleiner als $\alpha$, das bisherige Maximum im max-Pfad, im Fall der minValue Funktion ist. In dem Fall wird direkt der errechnete Wert zurückgegeben und Evaluierungen aller weiteren Zustände ausgelassen, da diese ohnehin irrelevant wären.
 

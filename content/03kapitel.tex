@@ -154,10 +154,26 @@ Installation der ``python-chess-library`` erläutert.
   \end{itemize}
 \end{itemize}
 
+\subsection{FEN-Notation}\label{FEN-Notation}
+
+Die ``FEN`` Notation, oder auch Forsyth-Edwars-Notation, ist eine gekürzte Form der Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig identifizierbar bleibt. Dabei wird neben der Figurenstellung, dem Zugrecht, das Rochaderecht, ein möglicher En-passant-Schlag und den bereits gespielten Halbzügen seit dem letzten Bauernzug, oder einem Schlag, die Nummer des nächsten Zugs angegeben.\cite{FEN2019}
+
+Diese Notation ist ein essenzieller Bestandteil der einzuführenden Python Bibliothek. Folgend ist ein Beispiel gegeben, das die Startposition eines neuen Schachspiels widerspiegelt.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+\end{Verbatim}
+
+Die Zeichenkette bis zum ersten Leerzeichen beschreibt die Positionen der schwarzen und weißen Steine. Hierbei beschreiben die Großbuchstaben die weißen und die Kleinbuchstaben die schwarzen Figuren. Die Zeichenketten zwischen den Schrägstichen beschreiben jeweils eine Zeile des Schachbretts. Die Bedeutungen der unterschiedlichen Buchstaben wird im folgenden Kapitel \ref{erstellen-eines-schachbretts-und-ausgeben-als-ascii} erläutert. Die Zahlen, die in der Positionsangabe verwendet werden, beschreiben die Anzahl der Felder, auf der sich kein Stein befindet.
+
+Das Zeichen nach den Positionen beschreibt mit ``w`` oder ``b`` das Zugrecht und wird von dem Rochaderecht gefolgt. Da in dieser Situation kein En-passant-Schlag möglich ist, ist für diesen Parameter das Zeichen ``-``angegeben.
+
+Der Wert der bereits gespielten Halbzüge seit dem letzten Bauernzug, oder Schlag, beträgt in diesem Fall ``0``, da noch kein Zug unternommen wurde. Die Nummer des nächsten Zugs ist bei ``1``, da es sich um eine Startposition handelt.
+
     \subsection{Erstellen eines Schachbretts und ausgeben als
 ASCII}\label{erstellen-eines-schachbretts-und-ausgeben-als-ascii}
 
-Zu Beginn muss die Python-Chess-Library eingebunden werden, die für den
+Folgend wird die Python-Chess-Library eingebunden, die für den
 weiteren Verlauf der Evaluierung und Implementierung benötigt wird.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -572,15 +588,7 @@ zufällig aus der Liste der legalen Züge gewählt wird.
 {\color{incolor}In [{\color{incolor}13}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}random\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
-
-
-    Nach jedem Zug wird das Spielbrett in der ``FEN`` Darstellung einer Liste
-hinzugefügt. Die ``FEN`` Darstellung ist eine gekürzte Form der
-Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig
-identifizierbar bleibt. Dabei wird neben dem aktuellen Spielbrett auch
-die Farbe der nächste zu spielenden Figur, die Anzahl der Züge beider
-Seiten und weitere Informationen angegeben. Um diese aus der Darstellung
-zu kürzen, wird auf die ``FEN`` Darstellung des Boards die
+Nach jedem Zug wird das Spielbrett in der "FEN" Darstellung einer Liste hinzugefügt. Um überflüssige Information aus der FEN-Darstellung zu kürzen, wird die auf die "FEN" Darstellung des Boards die
 \texttt{split} Funktion angewandt und nur das erste Element aus der
 daraus entstehenden Liste gespeichert, da die einzelnen Merkmale in
 dieser Darstellung per Leerzeichen getrennt werden.
