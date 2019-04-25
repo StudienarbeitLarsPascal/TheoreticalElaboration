@@ -1,9 +1,11 @@
 %!TEX root = ../dokumentation.tex
 
 \chapter{Implementierung}
-In dem folgenden Kapitel wird der entwickelte Code und die Umsetzung der Schach-Künstlichen Intelligenz besprochen. Hierbei wird jedoch nicht jede einzelne Zeile Code explizit erklärt, sondern der Fokus auf die Schlüsselmerkmale gelegt werden, sowie kompliziertere Abschnitte erläutert werden. Ein besonderes Augenmerk wird dabei auf die Umsetzung, der in Kapitel \ref{theoretische_hintergründe} eingeführten Algorithmen und Techniken gelegt.
+In dem folgenden Kapitel wird der entwickelte Code und die Umsetzung der Schach-Künstlichen Intelligenz besprochen. Hierbei wird jedoch nicht jede einzelne Zeile Code explizit erklärt, sondern der Fokus auf die Schlüsselmerkmale gelegt werden, sowie kompliziertere Abschnitte erläutert werden. Ein besonderes Augenmerk wird dabei auf die Umsetzung, der in Kapitel \ref{theoretische_hintergründe} eingeführten Algorithmen und Techniken gelegt. Zuvor wird jedoch noch ein Benutzerhandbuch eingeführt, indem beschrieben wird, wie das Programm zu verwenden ist. Zudem wird ein zu Kapitel 3.3 ergänzender Überblick über die Verzeichnisstruktur gegeben.
 
    \section{Benutzerhandbuch}\label{benutzerhandbuch}
+
+In diesem Kapitel werden die zwei Möglichkeiten beschrieben, wie das Programm ausgeführt werden kann - entweder direkt über Python mit dem Quellcode oder über einen Docker Container. Zudem wird erklärt, wie das Programm zu benutzen ist.
 
 \subsection{Verwenden der Schach KI mittels 'python
 run'}\label{verwenden-der-schach-ki-mittels-python-run}
@@ -2003,7 +2005,8 @@ Unicode-Zeichen ausgegeben wird, sondern der übergebene Buchstabe.
 {\color{incolor}In [{\color{incolor}49}]:} \PY{k}{def} \PY{n+nf}{create\PYZus{}piece}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{character}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)}\PY{p}{:}
                  \PY{n}{chess\PYZus{}piece} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{piece\PYZus{}switcher}\PY{p}{(}\PY{n}{character}\PY{p}{)}\PY{p}{)}
                  \PY{n}{chess\PYZus{}piece\PYZus{}color} \PY{o}{=} \PY{n}{FG\PYZus{}BLACK} \PY{k}{if} \PY{n}{character}\PY{o}{.}\PY{n}{isupper}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{n}{FG\PYZus{}WHITE}
-                 \PY{n}{colored\PYZus{}chess\PYZus{}piece} \PY{o}{=} \PY{n}{chess\PYZus{}piece\PYZus{}color} \PY{o}{+} \PY{n}{chess\PYZus{}piece}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)} \PY{o}{+} \PY{n}{fg}\PY{o}{.}\PY{n}{rs}
+                 \PY{n}{colored\PYZus{}chess\PYZus{}piece} \PY{o}{=} \PY{n}{chess\PYZus{}piece\PYZus{}color} \PY{o}{+} \PY{n}{chess\PYZus{}piece}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)} 
+			\PY{o}{+} \PY{n}{fg}\PY{o}{.}\PY{n}{rs}
                  \PY{n}{background\PYZus{}color} \PY{o}{=} \PY{n}{BG\PYZus{}BLACK} \PY{k}{if} \PY{n}{field\PYZus{}is\PYZus{}dark} \PY{o+ow}{is} \PY{k+kc}{False} \PY{k}{else} \PY{n}{BG\PYZus{}WHITE}
                  \PY{n}{field} \PY{o}{=} \PY{n}{background\PYZus{}color} \PY{o}{+} \PY{n}{colored\PYZus{}chess\PYZus{}piece} \PY{o}{+} \PY{n}{bg}\PY{o}{.}\PY{n}{rs}
                  \PY{k}{return} \PY{n}{field}
@@ -2039,7 +2042,9 @@ Beschreibung der Konsole übermittelt.
                      \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{8} \PY{o}{\PYZhy{}} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
                      \PY{k}{for} \PY{n}{field\PYZus{}index}\PY{p}{,} \PY{n}{field} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
                          \PY{n}{field\PYZus{}is\PYZus{}dark} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{p}{(}\PY{n}{field\PYZus{}index} \PY{o}{+} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{o}{\PYZpc{}} \PY{l+m+mi}{2}\PY{p}{)}
-                         \PY{n}{colored\PYZus{}field} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)} \PY{k}{if} \PY{o+ow}{not} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{need\PYZus{}win\PYZus{}support} \PY{k}{else} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece\PYZus{}win}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)}
+                         \PY{n}{colored\PYZus{}field} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)} 
+				\PY{k}{if} \PY{o+ow}{not} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{need\PYZus{}win\PYZus{}support} 
+				\PY{k}{else} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece\PYZus{}win}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)}
                          \PY{n+nb}{print}\PY{p}{(}\PY{n}{colored\PYZus{}field}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
                      \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{8} \PY{o}{\PYZhy{}} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{print\PYZus{}alphabetical\PYZus{}description}\PY{p}{(}\PY{p}{)}

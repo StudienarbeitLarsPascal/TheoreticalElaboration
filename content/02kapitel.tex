@@ -78,7 +78,7 @@ Dabei wird vom aktuellen Zustand aus einige Züge vorausgeschaut und bewertet, w
 
 %image?
 
-Auch wurden hier erste Machine-learning Algorithmen verwendet, die dem Computer innerhalb kürzester Zeit das Spiel so gut beibringen, dass dieser dazu in der Lage ist menschliche Spieler zu schlagen. Samuel verwendete dazu zwei Methoden - Einerseits  das "Auswendiglernen", das die Werte von bestimmten Spielzuständen, die bereits evaluiert wurden, abspeichert, so dass die Berechnung kein weiteres Mal durchgeführt werden muss. Zum anderen ``learning-by-generalization'', das die Parameter der Evaluierungsfunktionen basierend auf vorherigen Spielen anpasst. Dies geschah mit dem Ziel, den Unterschied zwischen dem berechneten Evaluierungswert des Zustands und dem tatsächlichen, auf den Ausgang des jeweiligen Spiels basierenden Werts zu minimieren. \cite{Samuel1959}
+Auch wurden hier erste Machine-learning Algorithmen verwendet, die dem Computer innerhalb kürzester Zeit das Spiel so gut beibringen, dass dieser dazu in der Lage ist menschliche Spieler zu schlagen. Samuel verwendete dazu zwei Methoden - Einerseits  das Auswendiglernen, das die Werte von bestimmten Spielzuständen, die bereits evaluiert wurden, abspeichert, so dass die Berechnung kein weiteres Mal durchgeführt werden muss. Zum anderen ``learning-by-generalization'', das die Parameter der Evaluierungsfunktionen basierend auf vorherigen Spielen anpasst. Dies geschah mit dem Ziel, den Unterschied zwischen dem berechneten Evaluierungswert des Zustands und dem tatsächlichen, auf den Ausgang des jeweiligen Spiels basierenden Werts zu minimieren. \cite{Samuel1959}
 
 %https://www.cs.virginia.edu/~evans/greatworks/samuel1959.pdf
 
@@ -100,7 +100,7 @@ Diese neue Vorgehensweise kann einiges an Rechenkapazitäten sparen und soll so 
 
 Durch Verbesserung der Algorithmen und erweiterten Rechenkapazitäten durch immer bessere und performantere Computer, teilweise extra optimiert auf das Schach Spiel, konnten Stück für Stück neue Erfolge erzielt werden. 1962 konnte eine KI von Arthur Samuel erstmals einen renommierten Spieler, Robert Nealy, schlagen. \cite{Kurenkov2019}
 
-1994 konnten die besten Dame Spieler der Welt eine KI namens ``CHINOOK'' nur noch ein Unentschieden abverlangen. \cite{Schaeffer1996} Bereits 1988 gelang einem Programm namens ``Deep Thought'' von Feng-hsiung Hsu, später von IBM weiterentwickelt unter dem Namen ``Deep Blue'' bekannt, ähnliches im Schach Spiel und schlug den Schach-Großmeister Bent Larsen. Im Jahre 1997 schlug die weiterwntickelte Version "Deep Blue" Schachweltmeister Kasparov.\cite{Kurenkov2019}
+1994 konnten die besten Dame Spieler der Welt eine KI namens ``CHINOOK'' nur noch ein Unentschieden abverlangen. \cite{Schaeffer1996} Bereits 1988 gelang einem Programm namens ``Deep Thought'' von Feng-hsiung Hsu, später von IBM weiterentwickelt unter dem Namen ``Deep Blue'' bekannt, ähnliches im Schach Spiel und schlug den Schach-Großmeister Bent Larsen. Im Jahre 1997 schlug die weiterentickelte Version ``Deep Blue'' Schachweltmeister Kasparov.\cite{Kurenkov2019}
 
 Beide Programme basierten dabei auf drei wesentlichen Punkten: Eine Datenbank von Eröffnungszügen entnommen von professionellen Spielern, alpha-beta Suchbäume mit einer Menge an Evaluierungsfunktionen sowie einer Endspiel Datenbank sobald nur noch eine geringe Anzahl an Spielfiguren existiert. \cite{Kurenkov2019}
 
@@ -120,9 +120,7 @@ An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nich
 
 Der Minimax Algorithmus basiert auf dem ``Minimax-Theorem'' von John von Neumann.
 
-Das Theorem lautet für zwei Personen Spiele:
-
-Dabei wird das Spiel von Spieler A gestartet, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler A davon ausgeht, dass Spieler B stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler A den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler A also eine Menge $S$ an Zügen zur Auswahl, werden alle Szenarien von jedem Zug $s \in S$ evaluiert. Die Bewertungsfunktion dieser Züge definieren wir mit
+Dabei wird davon ausgegangen, dass das Spiel von Spieler A gestartet wird, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler A davon ausgeht, dass Spieler B stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler A den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler A also eine Menge $S$ an Zügen zur Auswahl, werden alle Szenarien von jedem Zug $s \in S$ evaluiert. Die Bewertungsfunktion dieser Züge definieren wir mit
 
 \begin{equation}
 \mathtt{utility}: S \times \mathtt{Player} \rightarrow \mathbb{R}
@@ -169,11 +167,11 @@ Diese Strategie basiert auf puren Berechnungen und ist für einen Computer somit
 \item \textbf{$s_0$}: Anfangszustand des zu betrachtenden Spiels
 \item \textbf{$\mathtt{Player}(s)$}: Gibt den Spieler zurück, der in gegebenem Zustand am Zug ist
 \item \textbf{$\mathtt{actions}(s)$}: Eine Liste aller möglichen Züge ausgehend von Zustand s
-\item \textbf{$\mathtt{result_states}(s,a)$}: Der von Zustand s über Zug a erreichbare Zustand
-\item \textbf{$\mathtt{terminal_test}(s)$}: Prüft einen Zustand darauf, ob dieser das Ende des Spiels bedeutet. Diese wird definiert als
+\item \textbf{$\mathtt{result\_states}(s,a)$}: Der von Zustand s über Zug a erreichbare Zustand
+\item \textbf{$\mathtt{terminal\_test}(s)$}: Prüft einen Zustand darauf, ob dieser das Ende des Spiels bedeutet. Diese wird definiert als
 
 \begin{equation}
-\mathtt{terminal_test} : States \rightarrow \mathbb{B}
+\mathtt{terminal\_test} : States \rightarrow \mathbb{B}
 \end{equation}
 
 wobei $\mathbb{B}$ einem Boolean-Wert, sprich wahr oder falsch, entspricht.
@@ -181,19 +179,19 @@ wobei $\mathbb{B}$ einem Boolean-Wert, sprich wahr oder falsch, entspricht.
 Mittels dieser Funktion kann eine Menge $terminal\_states$ als Menge aller Endzustände gebildet werden:
 
 \begin{equation}
-\mathtt{terminal_states} := \{s \in S | \mathtt{terminal_test}(s)\}
+\mathtt{terminal\_states} := \{s \in S | \mathtt{terminal\_test}(s)\}
 \end{equation}
 
 \item \textbf{$utility(s, p)$}: Bewertet einen Zustand, indem sie diesem einen numerischen Wert zuweist. Diese Funktion ist definiert durch
 
 \begin{equation}
-\mathtt{utility} : \mathtt{terminal_states} \times \mathtt{Player} \rightarrow \mathbb{R}
+\mathtt{utility} : \mathtt{terminal\_states} \times \mathtt{Player} \rightarrow \mathbb{R}
 \end{equation}
 
 wobei diese den Zustand aus Sicht des gegebenen Spielers bewertet. Umso höher das Resultat dieser Berechnung also, desto besser das Ergebnis für Spieler P.
 \end{itemize}
 
-Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge von s $\mathtt{actions}(s)$ alle erreichbaren Zustände $result_states$ berechnet. Von jedem Zustand $s \in \mathtt{result_states}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustand erreichen. Der Fall ist dies, wenn $\mathtt{terminal_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
+Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge von s $\mathtt{actions}(s)$ alle erreichbaren Zustände $result\_states$ berechnet. Von jedem Zustand $s \in \mathtt{result\_states}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustand erreichen. Der Fall ist dies, wenn $\mathtt{terminal_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
 
 Entscheidend für die Wahl eines Zuges ist dann die Bewertung jedes einzelnen Zustandes. Dies ist solange umsetzbar, wie der Computer ohne Probleme alle möglichen Zustände berechnen und evaluieren kann. Um dies an einem Beispiel zu zeigen - Beim Spiel ``Tic Tac Toe'', bei dem in einem 3x3 Feld zwei Spieler gegeneinander antreten mit dem Ziel drei aneinander angrenzende (vertikal, horizontal oder diagonal) Felder mit ihrer Figur zu belegen, gibt es insgesamt 255.168 verschiedene Spielverläufe. \cite{Kaplan2017} Diese sind von heutigen Computern in akzeptabler Zeit berechen- und auswertbar.
 
@@ -345,7 +343,7 @@ Diese Werte werden kontinuierlich aktualisiert und sobald bekannt ist, dass der 
 
 Dies kann in einen Algorithmus verpackt werden, wie in Algorithmus \ref{alg:alpha_beta} zu sehen.
 
-\begin{algorithm}[h]
+\begin{algorithm}[p]
 \caption{Alpha Beta Algorithmus \cite{Russell2010}}
 \label{alg:alpha_beta}
 \begin{algorithmic}
