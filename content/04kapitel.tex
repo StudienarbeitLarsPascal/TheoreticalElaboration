@@ -3,19 +3,327 @@
 \chapter{Implementierung}
 In dem folgenden Kapitel wird der entwickelte Code und die Umsetzung der Schach-Künstlichen Intelligenz besprochen. Hierbei wird jedoch nicht jede einzelne Zeile Code explizit erklärt, sondern der Fokus auf die Schlüsselmerkmale gelegt werden, sowie kompliziertere Abschnitte erläutert werden. Ein besonderes Augenmerk wird dabei auf die Umsetzung, der in Kapitel \ref{theoretische_hintergründe} eingeführten Algorithmen und Techniken gelegt.
 
-\section{Erstellen des Spiels und der
-Spieler}\label{erstellen-des-spiels-und-der-spieler}
+   \section{Benutzerhandbuch}\label{benutzerhandbuch}
 
-Vor dem Start eines Schachspiels müssen zunächst Spiel generell sowie
-die partizpierenden Spieler der gewünschten Spielertypen erstellt
-werden. Dazu muss der Spieler dem Programm entweder Parameter mitgeben,
-die das Spiel direkt mit den gewünschten Spielern startet, oder aber der
-Spieler wird zum Programmstart nach gewünschten Einstellungen gefragt.
+\subsection{Verwenden der Schach KI mittels 'python
+run'}\label{verwenden-der-schach-ki-mittels-python-run}
 
-In beiden Fällen wird anschließend eine Liste an Spielern an Hand der
-gegebenen Funktionen erstellt, mittels welcher Das Spiel dann
-stattfinden kann. Dies findet in der Funktion
-\texttt{interrogate\_settings} statt.
+Zum lokalen Starten des Programmes muss zunächst das entsprechende
+GitHub Repository runtergeladen werden. Dazu ist die Installation von
+git nötig. Dieses Programm mitsamt Installationsanleitungen kann hier
+gefunden werden:
+
+\href{https://git-scm.com/download/}{git-scm.com/download}
+
+Dann muss in dem Verzeichnis, in dem das Programm heruntergeladen werden
+soll, in der Konsole der Befehl
+
+\texttt{git\ clone\ https://github.com/StudienarbeitLarsPascal/PythonChessAI.git}
+
+ausgeführt werden.
+
+Anschließend müssen die nötigen Packages installiert werden. Dazu ist
+zunächst die Installation von Python notwendig:
+
+\href{https://www.python.org/downloads/}{python.org/downloads}
+
+Nun kann in der Konsole in das Verzeichnis
+\texttt{PythonChessAI/python\_chess\_ai} navigiert werden und
+anschließend der Befehl
+
+\texttt{pip\ install\ -r\ requirements.txt}
+
+ausgeführt werden.
+
+Jetzt ist das Programm startbereit. Dazu muss in eben genannten
+Verzeichnis der Befehl
+
+\texttt{python\ run\ main.py}
+
+ausgeführt werden. Dazu können Startparameter verwendet werden wie in
+Kapitel \ref{befehlszeilenargumente-zum-starten-der-schach-ki} erklärt. Dies startet das Programm. Wie dies bedient
+wird, ist in Kapitel \ref{bedienen-des-programms} beschrieben.
+
+\subsection{Verwenden der Schach KI mittels Ausführen des Docker
+Containers}\label{verwenden-der-schach-ki-mittels-ausfuxfchren-des-docker-containers}
+
+Um das Programm in einem Docker Container laufen zu lassen, ist zunächst
+die Installation von Docker nötig:
+
+\href{https://www.docker.com/get-started}{docker.com/get-started}
+
+Dann kann der Docker Container heruntergeladen werden, indem per Konsole
+in das gewünschte Verzeichnis navigiert wird und anschließend der Befehl
+
+\texttt{docker\ pull\ pascalschroeder/python\_chess\_ai}
+
+ausgeführt wird.
+
+Nach dem erfolgreichen Herunterladen kann das Programm gestartet werden,
+indem der Befehl
+
+\texttt{docker\ run\ -it\ pascalschroeder/python\_chess\_ai}
+
+durchlaufen wird. Dadurch gelangt man direkt in den Programmablauf. Wie
+dies bedient werden kann, ist in Kapitel \ref{bedienen-des-programms} beschrieben.
+
+\subsection{Bedienen des Programms}\label{bedienen-des-programms}
+
+Nach Start des Programmes gelangt man, wenn keine Startparameter
+mitgegeben wurden, zu den Einstellungen.
+
+Dabei wird zunächst der Name des ersten Spielers abgefragt. Dabei ist
+eine beliebige Eingabe möglich, die mit 'Enter' bestätigt werden muss.
+Nun wird der Typ des Spielers abgefragt. Dabei muss eine Zahl zwischen 1
+und 4 eingeben werden. 1 steht dabei für einen menschlichen Spieler, 2
+für die KI, 3 für eine API zu einer anderen Schach-KI, die bisher noch
+nicht implementiert wurde, jedoch in zukünftigen Versionen geplant ist,
+und 4 für einen "Dummy", der stets einen zufälligen Zug spielt.
+
+Wird beim Typ des Spielers die KI gewählt, wird zusätzlich noch
+abgefragt, welchen Schwierigkeitsgrad die KI haben soll. Dabei sind
+Werte von 1 bis 3 möglich, wobei 1 für leicht, 2 für mittel und 3 für
+schwer steht.
+
+Dieses Prozedere wird noch für den 2. Spieler wiederholt.
+
+Nach Durchlauf für beide Spieler beginnt das eigentliche Spiel. Dazu
+wird zunächst das aktuelle Schachbrett in der Konsole ausgegeben. Ist
+der Spieler, der an der Reihe ist, ein menschlicher Spieler, so wird
+zusätzlich eine Liste aller legalen Züge ausgegeben. Dann wird der
+Spieler zur Eingabe einer dieser Züge aufgefordert. Die Eingabe muss in
+den ersten zwei Zeichen das Feld enthalten, von dem eine Figur aus
+bewegt werden soll, und bei Zeichen drei und vier die Felder, auf die
+die Figur bewegt werden soll. Ist der eingegebene Zug möglich, so wird
+dieser auf dem Schachfeld durchgeführt und erneut ausgegeben. Dann ist
+der nächste Spieler am Zug. Andernfalls wird die Aufforderung zur
+Eingabe eines Zuges so lange wiederholt, bis eine legale Eingabe
+vorliegt und der Zug durchgeführt werden kann.
+
+Sobald das Spiel zu Ende ist, wird der Sieger des Spiels genannt. Danach
+wird der Spieler gefragt, ob er mit den gleichen Einstellungen das Spiel
+nochmal wiederholen möchte. Mit Eingabe einer "1" und bestätigen durch
+die 'Enter' Taste kann dies bejaht werden. So wird das Spiel nochmal mit
+den gleichen Einstellungen wiederholt. Andernfalls wird das Programm
+beendet.
+
+Jederzeit kann mit der Tastenkombination 'Strg' + 'C' das Programm und
+somit auch das Spiel vorläufig beendet werden.
+
+    \section{Verzeichnisstruktur}\label{verzeichnisstruktur}
+
+Um die Entwicklung des Programms möglichst modular und somit erweiterbar
+zu gestalten und zugleich ein übersichtliches Lesen des Codes zu
+ermöglichen, wurden die einzelnen Funktionen in verschiedene Klassen
+aufgeteilt und teils mittels Schnittstellen vereinheitlicht.
+
+Die Hauptdatei, die für das Starten und Erstellen des Spiels
+verantwortlich ist, ist die \texttt{main.py}. In dieser werden die
+Spieler mit ihren Attributen (Spielertyp, Name, ggf. Schwierigkeitsgrad)
+erstellt, die an der Schach Partie teilnehmen, sowie der
+\texttt{chess\_master} initialisiert. Zudem wird hinterlegt, ob das
+Spiel als GUI oder in der Konsole starten soll.
+
+Zum Abfragen der Einstellungen wird die Datei
+\texttt{settings/interface.py} zur Hilfe genommen, die alle nicht beim
+Starten mit übermittelten Parameter der Spieler abfragt und entsprechend
+an die \texttt{main.py} zurückgibt, die die Spieler auf Basis dieser
+Informationen erstellt. Dazu sind zwei Implementierungen dieser
+Schnittstelle vorhanden - einmal für eine konsolenbasierte
+(\texttt{settings/terminal.py}) Abfrage der Einstellungen und einmal für
+eine GUI basierte Darstellung (\texttt{settings/gui.py}).
+
+Der eben angesprochene \texttt{chess\_master} befindet sich in der
+\texttt{chess\_master.py}. Dieser verwaltet das Schachspiel bis dies zu
+Ende ist. Dabei wird über die Liste der teilnehmenden Spieler iteriert
+und jeder nach dem von ihm gewünschten Zug gefragt. Diese Züge werden
+dann auf dem virtuellen Schachbrett vorgenommen. Zudem lässt der
+\texttt{chess\_master} die einzelnen Spieler stets den aktuellen
+Spielzustand ausgeben. Zusätzlich ist der \texttt{chess\_master} auch
+für das Pflegen der Spielverläufe zuständig. Dies bedeutet, dass der
+\texttt{chess\_master} nach jedem getätigten Zug diesen der Liste aller
+Züge hinzufügt und am Ende des Spiels diese in den vorhandenen
+Spielverlauf zusammen mit dem Ausgang des Spiels migriert.
+
+Zum Abfragen der Spieler nach ihren Zügen, das Forcieren der Ausgabe des
+Spielzustands sowie alle weiteren Interaktionen mit den Spielern steht
+mit der \texttt{player/interface.py} eine weiter Schnittstelle zur
+Verfügung. Diese ist für menschliche Spieler (\texttt{player/user.py}),
+eine künstliche Intelligenz (\texttt{player/ai.py}), eine Schnittstelle
+zu einer vorhandenen Intelligenz (\texttt{player/api.py}) sowie zu einem
+sogenannten "Dummy" (\texttt{player/dummy.py}), der stets einen
+zufälligen Zug auswählt, implementiert. Diese beinhalten allesamt die
+Funktionen \texttt{get\_move}, \texttt{submit\_move} und
+\texttt{print\_board}. Welche der Dateien für das Spiel genommen wird
+ist abhängig von den getätigten Einstellungen über den Spielertypen.
+
+Beim Spieler \texttt{player/user.py} existiert zudem eine weitere
+Schnittstelle \texttt{player/user\_input/interface.py}, die ebenfalls
+als GUI sowie als konsolenbasierte Version existiert, um den
+menschlichen Spieler beide Optionen zu ermöglichen.
+
+Die Datei \texttt{player/ai.py} nimmt sich zum Evaluieren der
+Spielzustände die Datei \texttt{misc/ai\_evaluation\_library} zur Hilfe.
+Zudem sind einige wiederkehrende Funktionen für alle Dateien in der
+\texttt{misc/tools.py} gespeichert, so dass diese stets aufrufbar sind.
+
+Eine genaue Erläuterung der Architektur kann Kapitel \ref{architektur} entnommen
+werden. Im folgenden Teil wird Wissen über Verzeichnisstruktur sowie
+Architektur vorrausgesetzt, um die Abläufe und Kommunikationsflüsse
+unter den Dateien und Funktionen zu verstehen.
+
+    \section{Befehlszeilenargumente zum Starten der
+Schach-KI}\label{befehlszeilenargumente-zum-starten-der-schach-ki}
+
+Eine erste Option, um Einfluss auf den Ablauf des Programmes zu
+gewinnen, ist das Mitliefern von Argumenten direkt beim Start der
+Anwendung. Diese Argumente ermöglichen es Programme und Scripts mit
+Speziellen Eigenschaften aufrufen zu können.
+
+Diese Art der Spezialisierung von Programmen wird von der Sprache Python
+mittels des Moduls \texttt{argparse} unterstützt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{argparse}
+\end{Verbatim}
+
+    Wie im Kapitel \ref{bedienen-des-programms} bereits beschrieben müssen zum Start der Schach-KI
+einige Einstellungen vorgenommen werden. Hierunter fallen sowohl die
+Spieler, ihr Spielertyp und falls es sich um das Spiel gegen eine KI
+handelt um deren Schwierigkeitsgrad. Durch die Verwendung von
+\texttt{argparse} lassen sich diese Einstellungen als
+Befehlszeilenargumente vornehmen und somit einer Abfrage von
+Informationen entgehen.
+
+Im folgenden Code wird neben dem Nutzer mittels \texttt{argparse} neben
+der Spieleinstellung auch die Möglichkeit gegeben auszuwählen, ob das
+Graphical User Interface geöffnet werden soll, oder das Spiel in der
+Konsole stattfinden soll. Ebenfalls lässt sich durch die Argumente die
+aktuelle Entwicklungsversion der Schach-KI ausgeben.
+
+Für die Implementierung und Verwendung von Befehlszeilenargumente wurde
+die Funktion \texttt{intialize\_parser} entwickelt in der die benötigten
+Einstellungen des Argument-Parsers vorgenommen werden. Aufgerufen wird
+diese Funktion bei der Verwendung der Schach-KI bevor die Hauptfunktion
+aufgerufen wird.
+
+Dazu wird zu Beginn ein neuer Parser erzeugt und diesem werden zwei
+verschiedene Argumentgruppen zugewiesen. Die beiden Gruppen sind dafür
+zuständig weitere Argumente zu enthalten. Der Unterschied dieser liegt
+darin, dass in der Gruppe \texttt{ui\_group} nur eins der angehörigen
+Argumente ausgewählt werden dürfen. Dies hat den Grund, dass sich der
+Nutzer zwischen der Verwendung des Graphical User Interface und der
+Konsole entscheiden muss und nicht beides gleichzeitig verwenden kann.
+
+Jedes Argument, das hinzugefügt wird kann dabei durch zwei verschiedene
+Argumente angesprochen werden. Die Kurzform dieses Arguments wird mit
+einem Spiegelstrich angesprochen und die längere Variante mit zwei
+Spiegelstrichen. Durch den Parameter \texttt{help} lässt sich dem Nutzer
+eine Hilfestellung geben was die Aufgabe dieses Arguments ist. Diese
+Hilfestellung kann aufgerufen werden indem das Programm mit dem
+Parameter \texttt{-h} oder \texttt{-\/-help} aufgerufen wird.
+
+Ebenfalls lässt sich bei der Initialisierung eines Arguments der
+Parameter \texttt{action} angeben, der bei den Argumenten
+\texttt{-\/-terminal} und \texttt{-\/-gui} im Parser den Boolean-Wert
+\texttt{True} speichert falls diese durch den Nutzer aufgerufen wurden.
+
+Die zweite Argumentengruppe enthält Argumente die gleichzeitig während
+des Startens aufgerufen werden können. Hierunter fällt beispielsweise
+der Spielername, dessen Typ und die Schwierigkeit einer KI.
+
+Bei allen drei Argumenten, die der Gruppe
+\texttt{player\_name\_type\_group} angehören wurde die Eigenschaft
+festgelegt, dass genau zwei Werte bei Aufruf dieser Argumente angegeben
+werden müssen. Eine weitere Spezialisierung wird bei den Argumenten zum
+Spielertyp und der Spielschwierigkeit vorgenommen. Bei diesen Argumenten
+hat der User nur die Auswahl zwischen vorgegebenen Antworten und kann
+dabei nur diese auswählen.
+
+Ingesamt wurde bei dieser Argumentengruppe die Hilfestellung durch
+\texttt{help=argparse.SUPPRESS} deaktiviert, da dies Einstellungen sind,
+die hauptsächlich für den wiederholten Aufruf durch Scripts interessant
+sind und nicht für den allgemeinen Nutzer. Somit werden diese Argumente
+bei der Verwendung des Parameters \texttt{-h}/\texttt{-\/-help} nicht
+aufgelistet.
+
+Als letztes Argument wird ein Parameter initialisiert, der für die
+Version der Schach-KI zuständig ist. Nachdem alle Argumente
+initialisiert wurden wird der Parser zu dem diese Argumente gehören
+zurückgegeben.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k}{def} \PY{n+nf}{intialize\PYZus{}parser}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{parser} \PY{o}{=} \PY{n}{argparse}\PY{o}{.}\PY{n}{ArgumentParser}\PY{p}{(}\PY{p}{)}
+            \PY{n}{ui\PYZus{}group} \PY{o}{=} \PY{n}{parser}\PY{o}{.}\PY{n}{add\PYZus{}mutually\PYZus{}exclusive\PYZus{}group}\PY{p}{(}\PY{p}{)}
+            \PY{n}{ui\PYZus{}group}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}t}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}terminal}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{starts the terminal ui}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{action}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{store\PYZus{}true}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{ui\PYZus{}group}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}g}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}gui}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{starts the GUI}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{action}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{store\PYZus{}true}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+            \PY{n}{player\PYZus{}name\PYZus{}type\PYZus{}group} \PY{o}{=} \PY{n}{parser}\PY{o}{.}\PY{n}{add\PYZus{}argument\PYZus{}group}\PY{p}{(}\PY{p}{)}
+            \PY{n}{player\PYZus{}name\PYZus{}type\PYZus{}group}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}p}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}player}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nargs}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{n}{argparse}\PY{o}{.}\PY{n}{SUPPRESS}\PY{p}{)} \PY{c+c1}{\PYZsh{} help=\PYZdq{}set name player 1 and 2\PYZdq{}}
+            \PY{n}{player\PYZus{}name\PYZus{}type\PYZus{}group}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}pT}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}player\PYZus{}type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nargs}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{choices}\PY{o}{=}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{User}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AI}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Player}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Dummy}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{n}{argparse}\PY{o}{.}\PY{n}{SUPPRESS}\PY{p}{)} \PY{c+c1}{\PYZsh{} help=\PYZdq{}enter player type for player 1 and 2\PYZdq{}}
+            \PY{n}{player\PYZus{}name\PYZus{}type\PYZus{}group}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}pD}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}player\PYZus{}difficulty}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{nargs}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n+nb}{type}\PY{o}{=}\PY{n+nb}{int}\PY{p}{,} \PY{n}{choices}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{n}{argparse}\PY{o}{.}\PY{n}{SUPPRESS}\PY{p}{)} \PY{c+c1}{\PYZsh{} help=\PYZdq{}enter ai difficulty for player 1 and 2, use 0 if you are not using ai\PYZdq{}}
+        
+            \PY{n}{parser}\PY{o}{.}\PY{n}{add\PYZus{}argument}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}v}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}version}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{help}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{print the version number and exit}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{action}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{store\PYZus{}true}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{return} \PY{n}{parser}
+\end{Verbatim}
+
+    Nach der Initialisierung des Parsers wird die Hauptfunktion
+\texttt{main} mit dem Rückgabewert der Funktion
+\texttt{intialize\_parser} aufgerufen. Dieser Rückgabewert enthält die
+Befehlszeilenargumente, die in der \texttt{main} durch If-Verzweigungen
+verwendet werden.
+
+Falls der Nutzer die Schach-KI startet ohne ein Übergabeparameter oder
+mit dem Parameter \texttt{-g}/\texttt{-\/-gui} wird der Variable
+\texttt{ui\_status} der Wert \texttt{1} zugewiesen. Diese Variable wird
+im weiteren Verlauf des Codes dazu verwendet um entscheiden zu können
+welche Visualisierungsmöglichkeit ausgewählt wurde.
+
+Der aktuelle Stand ist, dass nur die Nachricht für den Nutzer ausgegeben
+wird, dass das Graphical User Interface gestartet wird. Da die
+Entwicklung einer weiteren Benutzerschnittstellen den Umfang dieser
+wissenschaftlichen Arbeit sprengen würde, ist die Möglichkeit vorhanden
+zukünftig eine weitere Schnittstelle hinzuzufügen, jedoch dies in der
+aktuellen Version nicht umgesetzt.
+
+Falls der Nutzer den Parameter \texttt{-t}/\texttt{-\/-terminal}
+verwendet hat, wird die Funktion
+\texttt{start\_chess\_maste(ui\_status)} mit dem Übergabeparameter
+\texttt{ui\_status} und dessen Wert \texttt{0}àufgerufen. Sollte der
+Nutzer den Parameter \texttt{-v}/\texttt{-\/-version} verwenden erhält
+die aktuelle Versionsnummer.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{k}{def} \PY{n+nf}{main}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{args}\PY{o}{.}\PY{n}{terminal} \PY{o+ow}{or} \PY{p}{(}\PY{o+ow}{not} \PY{p}{(}\PY{n}{args}\PY{o}{.}\PY{n}{gui}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} \PY{p}{(}\PY{n}{args}\PY{o}{.}\PY{n}{terminal}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} \PY{p}{(}\PY{n}{args}\PY{o}{.}\PY{n}{version}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{n}{ui\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{0}
+                \PY{n}{start\PYZus{}chess\PYZus{}master}\PY{p}{(}\PY{n}{ui\PYZus{}status}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{args}\PY{o}{.}\PY{n}{terminal}\PY{p}{:}
+                \PY{n}{ui\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{1}
+                \PY{n}{start\PYZus{}chess\PYZus{}master}\PY{p}{(}\PY{n}{ui\PYZus{}status}\PY{p}{)}
+            \PY{k}{elif} \PY{n}{args}\PY{o}{.}\PY{n}{version}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+
+    Die zusätzlichen Argumente, die der Nutzer angeben kann werden in der
+Funktion \texttt{start\_chess\_master(ui\_status)} verwendet um damit
+steuern zu können, ob die Einstellungen des Spiels gesetzt wurden, oder
+diese abgefragt werden müssen.
+
+    \section{Erstellen der Spieler}\label{erstellen-der-spieler}
+
+Vor dem Start eines Schachspiels müssen zunächst zusätzlich noch Spiel
+generell sowie die partizpierenden Spieler der gewünschten Spielertypen
+erstellt werden. Dazu muss der Spieler dem Programm entweder Parameter
+mitgeben, wie in Kapitel \ref{befehlszeilenargumente-zum-starten-der-schach-ki} beschrieben, die das Spiel direkt mit
+den gewünschten Spielern startet, oder aber der Spieler wird während des
+Erstellvorgangs nach den fehlenden Einstellungen gefragt.
+
+Dazu wird eine Liste an Spielern an Hand der gegebenen Informationen
+erstellt, mittels welcher Das Spiel dann stattfinden kann. Dies findet
+in der Funktion \texttt{interrogate\_settings} aus der Schnittstelle
+\texttt{settings/interface.py} statt.
 
 Wird das Spiel mit Parametern gestartet werden diese mit in die
 \texttt{interrogate\_settings} Funktion übermittelt. Andernfalls werden
@@ -23,7 +331,7 @@ alle fehlenden Informationen in der Funktion über die
 Nutzerschnittstelle abgefragt. Dies sieht wie folgt aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{interrogate\PYZus{}settings}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}names}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{player\PYZus{}types}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{player\PYZus{}difficulty} \PY{o}{=} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{def} \PY{n+nf}{interrogate\PYZus{}settings}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}names}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{player\PYZus{}types}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{player\PYZus{}difficulty} \PY{o}{=} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
             \PY{n}{players} \PY{o}{=} \PY{p}{[}\PY{p}{]}
             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
                 \PY{n}{num} \PY{o}{=} \PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}
@@ -53,12 +361,38 @@ Nutzerschnittstelle abgefragt. Dies sieht wie folgt aus:
 durchgegangen, der alle Einstellungen abfragt und diese entsprechend
 speichet.
 
-Nach der Abfrage der Informationen ``Name`` und ``Spielertyp`` wird im
-Falle, dass dieser Spielertyp ``2``, der der KI entspricht, gleicht, auch
+Nach der Abfrage der Informationen "Name" und "Spielertyp" wird im
+Falle, dass dieser Spielertyp "2", der der KI entspricht, gleicht, auch
 noch der Schwierigkeitsgrad abgefragt, sollte dieser nicht bereits als
-Startparameter übergeben wordne sein.
+Startparameter übergeben worden sein.
 
-Anschließend wird ein neues Einstellungsparameterschema für Spieler,
+Die Funktionen zur Abfrage dieser Informationen müssen in der
+Implementierung der Schnittstelle definiert werden. Dies kann also
+sowohl in der GUI als auch der terminal Implementierung stattfinden. Die
+Implementierung dieser Informationsabfrage ist in der
+\texttt{settings/terminal.py} Datei vorzufinden und sieht wie folgt aus:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}player\PYZus{}type}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}num}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}player\PYZus{}type}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}
+            \PY{n}{legal\PYZus{}range} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{PLAYER\PYZus{}TYPE\PYZus{}MIN}\PY{p}{,} \PY{n}{PLAYER\PYZus{}TYPE\PYZus{}MAX} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{input\PYZus{}msg} \PY{o}{=} \PY{n}{PLAYER\PYZus{}TYPE\PYZus{}INPUT\PYZus{}MESSAGE}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}
+            \PY{n}{input\PYZus{}player\PYZus{}type} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{check\PYZus{}legal\PYZus{}input\PYZus{}int}\PY{p}{(}\PY{n}{legal\PYZus{}range}\PY{p}{,} \PY{n}{input\PYZus{}msg}\PY{p}{)}
+            \PY{k}{return} \PY{n}{input\PYZus{}player\PYZus{}type}
+        
+        \PY{k}{def} \PY{n+nf}{get\PYZus{}player\PYZus{}name}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}num}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}player\PYZus{}name}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}
+            \PY{k}{return} \PY{n+nb}{input}\PY{p}{(}\PY{n}{PLAYER\PYZus{}NAME\PYZus{}INPUT\PYZus{}MESSAGE}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{get\PYZus{}difficulty}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}num}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}difficulty}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}
+            \PY{n}{legal\PYZus{}range} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{n}{DIFFICULTY\PYZus{}MIN}\PY{p}{,} \PY{n}{DIFFICULTY\PYZus{}MAX} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+            \PY{n}{input\PYZus{}msg} \PY{o}{=} \PY{n}{DIFFICULTY\PYZus{}INPUT\PYZus{}MESSAGE}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{player\PYZus{}num}\PY{p}{)}
+            \PY{n}{input\PYZus{}difficulty} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{check\PYZus{}legal\PYZus{}input\PYZus{}int}\PY{p}{(}\PY{n}{legal\PYZus{}range}\PY{p}{,} \PY{n}{input\PYZus{}msg}\PY{p}{)}
+            \PY{k}{return} \PY{n}{input\PYZus{}difficulty}
+\end{Verbatim}
+
+    Anschließend wird ein neues Einstellungsparameterschema für Spieler,
 genannt \texttt{PlayerSettings}, erstellt und der Liste hinzugefügt.
 Diese Liste wird nach Durchgang der Schleife für beide Spieler zurück
 gegeben.
@@ -68,11 +402,22 @@ Spieler erstellt. Dies funktioniert wie in nachfolgendem Code-Snippet zu
 sehen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{player\PYZus{}settings} \PY{o}{=} \PY{n}{settings\PYZus{}ui}\PY{o}{.}\PY{n}{interrogate\PYZus{}settings}\PY{p}{(}\PY{p}{)}
-        \PY{n}{players} \PY{o}{=} \PY{p}{[}\PY{p}{]}
-        \PY{k}{for} \PY{n}{player\PYZus{}setting} \PY{o+ow}{in} \PY{n}{player\PYZus{}settings}\PY{p}{:}
-            \PY{n+nb}{type} \PY{o}{=} \PY{n}{type\PYZus{}switcher}\PY{p}{(}\PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{type}\PY{p}{)}
-            \PY{n}{players}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{type}\PY{o}{.}\PY{n}{Player}\PY{p}{(}\PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{num}\PY{p}{,} \PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{ui\PYZus{}status}\PY{p}{,} \PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{difficulty}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}master}\PY{p}{(}\PY{n}{ui\PYZus{}status}\PY{p}{)}\PY{p}{:}    
+            \PY{k}{try}\PY{p}{:}
+                \PY{n}{settings\PYZus{}ui} \PY{o}{=} \PY{n}{ui\PYZus{}switcher}\PY{p}{(}\PY{n}{ui\PYZus{}status}\PY{p}{)}\PY{o}{.}\PY{n}{Settings}\PY{p}{(}\PY{p}{)}
+                \PY{n}{player\PYZus{}settings} \PY{o}{=} \PY{n}{settings\PYZus{}ui}\PY{o}{.}\PY{n}{interrogate\PYZus{}settings}\PY{p}{(}\PY{p}{)}
+                \PY{n}{players} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+                \PY{k}{for} \PY{n}{player\PYZus{}setting} \PY{o+ow}{in} \PY{n}{player\PYZus{}settings}\PY{p}{:}
+                    \PY{n+nb}{type} \PY{o}{=} \PY{n}{type\PYZus{}switcher}\PY{p}{(}\PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{type}\PY{p}{)}
+                    \PY{n}{players}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n+nb}{type}\PY{o}{.}\PY{n}{Player}\PY{p}{(}\PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{num}\PY{p}{,} \PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{ui\PYZus{}status}\PY{p}{,} \PY{n}{player\PYZus{}setting}\PY{o}{.}\PY{n}{difficulty}\PY{p}{)}\PY{p}{)}
+        
+                \PY{n}{chess\PYZus{}master} \PY{o}{=} \PY{n}{ChessMaster}\PY{p}{(}\PY{p}{)}
+                \PY{n}{chess\PYZus{}master}\PY{o}{.}\PY{n}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n}{players}\PY{p}{)}
+            \PY{k}{except} \PY{n+ne}{KeyboardInterrupt}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{You}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{ve quit the game.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{except} \PY{n+ne}{Exception}\PY{p}{:}
+                \PY{n}{traceback}\PY{o}{.}\PY{n}{print\PYZus{}exc}\PY{p}{(}\PY{n}{file}\PY{o}{=}\PY{n}{sys}\PY{o}{.}\PY{n}{stdout}\PY{p}{)}
+            \PY{n}{sys}\PY{o}{.}\PY{n}{exit}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
 \end{Verbatim}
 
     Dabei werden zunächst wie gehabt die Einstellungen abgefragt, ehe eine
@@ -80,34 +425,52 @@ Liste aller Spieler erstellt wird. Dann wird über jeden Eintrag in der
 Einstellungsliste iteriert und für diesen zunächst der Spielertyp
 berechnet. Dabei wird der \texttt{type\_switcher} zur Hilfe genommen,
 welcher je nach angegebenen Typ die entsprechende Klasse des Spielertyps
-zurückgibt. Mittels dieser wird dann ein neuer Spieler erstellt, wobei
-beim Initialisierren alle weiteren Daten mitgegeben werden. Dieser neue
+zurückgibt:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{k}{def} \PY{n+nf}{type\PYZus{}switcher}\PY{p}{(}\PY{n}{player\PYZus{}type}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{p}{\PYZob{}}
+                \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{user}\PY{p}{,}
+                \PY{l+m+mi}{2}\PY{p}{:} \PY{n}{ai}\PY{p}{,}
+                \PY{l+m+mi}{3}\PY{p}{:} \PY{n}{api}\PY{p}{,}
+                \PY{l+m+mi}{4}\PY{p}{:} \PY{n}{dummy}
+            \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{player\PYZus{}type}\PY{p}{]}
+\end{Verbatim}
+
+    Mittels dieser wird dann ein neuer Spieler erstellt, wobei beim
+Initialisierren alle weiteren Daten mitgegeben werden. Dieser neue
 Spieler wird dann der Spielerliste hinzugefügt. Mit dieser Liste an
 Spielern wird dann der \texttt{ChessMaster} initialisiert, der im
-nächsten Kapitel beschrieben wird.
+Kapitel \ref{verwalten-des-schachspiels-und-pflege-des-spielverlaufs} beschrieben wird.
+
+Zusätzlich kann man das Spiel an dieser Stelle auch mittels eines
+Keyboard Interrupts beenden.
 
     \section{Verwalten des Schachspiels und Pflege des
 Spielverlaufs}\label{verwalten-des-schachspiels-und-pflege-des-spielverlaufs}
 
-Ein essentieller Part im Erstellen eines Schachprogrammes ist erstmal
-das Verwalten des Schachspiels. Dabei muss garantiert werden, dass -
-Solange das Spiel nicht vorbei ist, die Spieler abwechselnd einen Zug
-auswählen können - Der Zug auf dem vorhandenen Schachbrett durchgeführt
-wird - Das daraus entstehende Schachbrett dem Spieler sichtbar gemacht
-wird
+Ein essentieller Part im Erstellen eines Schachprogrammes ist das
+Verwalten des Schachspiels. Dabei muss garantiert werden, dass - Solange
+das Spiel nicht vorbei ist, die Spieler abwechselnd einen Zug auswählen
+können - Der Zug auf dem vorhandenen Schachbrett durchgeführt wird - Das
+daraus entstehende Schachbrett dem Spieler sichtbar gemacht wird
 
-Dies ist Aufgabe des \texttt{ChessMaster} und ist mit folgendem Code
-umgesetzt
+Dies ist Aufgabe der \texttt{chess\_master.py} und ist mit folgendem
+Code umgesetzt
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
-        \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
+            \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+            \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+        
+                \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+        
             \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
             \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-        
-            \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-            \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-            \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
 \end{Verbatim}
 
     Dabei wird zunächst ein neues Schachbrett - hier board genannt -
@@ -124,73 +487,102 @@ Zug auswählen kann.
 
 Der daraus berechnete Spieler wurde zuvor beim Spielstart ein Spielertyp
 zugewiesen, der auf einer Schnittstelle basiert und somit alle nötigen
-Funktionen implementiert. Diese wurden im Kapitel INSERT beschrieben. Im
-Verwalter des Schachspiels werden diese nun nach für nach aufgerufen.
+Funktionen implementiert. Im Verwalter des Schachspiels werden diese nun nach für nach aufgerufen.
 
 Zunächst wird das board für den Spieler ausgegeben mittels der
 \texttt{print\_board} Funktion. Ist der Spieler ein Nutzer, so wird
-diese für gewöhnlich am Nutzerinterface ausgegeben. Andernfalls ist dies
-nicht nötig und die Funktion kann leer bleiben, ohne etwas auszugeben.
+diese für gewöhnlich am Nutzerinterface ausgegeben. Dies wird in Kapitel
+\ref{ausgabe-des-schachbretts-und-eingabe-von-schachzuxfcgen} näher erläutert. Andernfalls ist dies nicht nötig und die
+Funktion kann leer bleiben, ohne etwas auszugeben.
 
 Nun kommt es zum wichtigsten Teil - dem Berechnen des nächsten Zuges.
 Dazu wird der Spieler aufgefordert an Hand eines gegebenen boards den
-nächstne Zug zu nennen. In diesem Teil übernimmt beispielsweise die KI
-ihre Berechnungen für den nächsten Schachzug. Der Nutzer dagegen gibt
-diesen mittels eines Eingabefeldes ein.
+nächsten Zug zu nennen. In diesem Teil übernimmt beispielsweise die KI
+ihre Berechnungen für den nächsten Schachzug. Dies wird in Kapitel
+\ref{zugfindung-durch-ki} erklärt. Der Nutzer dagegen gibt diesen mittels eines
+Eingabefeldes ein, das beispielsweise über die Nutzer Interface
+Schnittstelle \texttt{player/user\_input/terminal.py} implementiert ist
+wie hier zu sehen ist:
 
-Nachdem der Zug vom entsprechenden Spieler berechnet und zurückgegeben
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}move}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
+            \PY{n}{input\PYZus{}msg} \PY{o}{=} \PY{n}{ASK\PYZus{}FOR\PYZus{}MOVE\PYZus{}MESSAGE}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
+            \PY{n}{move} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{check\PYZus{}legal\PYZus{}input\PYZus{}string}\PY{p}{(}\PY{n}{legal\PYZus{}moves}\PY{p}{,}\PY{n}{input\PYZus{}msg}\PY{p}{,} \PY{n}{WRONG\PYZus{}INPUT\PYZus{}MESSAGE}\PY{p}{)}
+            \PY{k}{return} \PY{n}{move}
+\end{Verbatim}
+
+    Nachdem der Zug vom entsprechenden Spieler berechnet und zurückgegeben
 wurde, wird dieser dem aktuellen board hinzugefügt. Dadurch wechselt
 auch automatisch der Spieler, der an der Reihe ist, wodurch dieser im
 nächsten Schleifendurchlauf nach dessen Zug gefragt wird.
 
 Abschließend wird das neue board nochmal abgeschickt. Dabei kann zum
 Beispiel eine erneute Ausgabe des Schachbretts mit dem aktualisierten
-Zustand stattfinden oder beispielsweise bei der Nutzung einer Online-API
+Zustand stattfinden oder beispielsweise bei der Nutzung einer Schach-API
 der gewählte Zug an die Schnittstelle gesendet werden.
 
-Nach dem Ende des Spiels wird noch das Ergebnis ausgegeben. Der Code
-dazu ist im folgenden Code Snippet zu sehen.
+Nach dem Ende des Spiels wird noch das Ergebnis ausgegeben. Diese
+Ausgabe erfolgt zur aktuellen Version ausschließlich über die Konsole.
+Dies sieht wie folgt aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-        \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}win\PYZus{}msg}\PY{p}{(}\PY{p}{)}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}loose\PYZus{}msg}\PY{p}{(}\PY{p}{)}
-        \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}win\PYZus{}msg}\PY{p}{(}\PY{p}{)}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}loose\PYZus{}msg}\PY{p}{(}\PY{p}{)}
-        \PY{k}{else}\PY{p}{:}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}draw\PYZus{}msg}\PY{p}{(}\PY{p}{)}
-            \PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{print\PYZus{}draw\PYZus{}msg}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}10}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
+             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+             \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+                 \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+         
+             \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+             \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+             \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+             \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+             \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 
     Dabei wird zuerst das Ergebnis an Hand der \texttt{get\_board\_result}
-Funktion aus der Hilfsklasse ``Tools`` ermittelt. Diese sieht wie folgt
+Funktion aus der Hilfsklasse "Tools" ermittelt. Diese sieht wie folgt
 aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}loss}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{l+m+mi}{1}
-        \PY{k}{elif} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}win}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
-        \PY{k}{elif} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}draw}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{0}
-        \PY{c+c1}{\PYZsh{} Checkmate.}
-        \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}checkmate}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{l+m+mi}{1}
-        \PY{c+c1}{\PYZsh{} Draw claimed.}
-        \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{can\PYZus{}claim\PYZus{}draw}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{0}
-        \PY{c+c1}{\PYZsh{} Seventyfive\PYZhy{}move rule or fivefold repetition.}
-        \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}seventyfive\PYZus{}moves}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}fivefold\PYZus{}repetition}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{0}
-        \PY{c+c1}{\PYZsh{} Insufficient material.}
-        \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{0}
-        \PY{c+c1}{\PYZsh{} Stalemate.}
-        \PY{k}{if} \PY{o+ow}{not} \PY{n+nb}{any}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{generate\PYZus{}legal\PYZus{}moves}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
-            \PY{k}{return} \PY{l+m+mi}{0}
-        \PY{k}{return} \PY{l+m+mi}{0}
+{\color{incolor}In [{\color{incolor}11}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}\PY{p}{:}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}loss}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{l+m+mi}{1}
+             \PY{k}{elif} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}win}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+             \PY{k}{elif} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}variant\PYZus{}draw}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+         
+             \PY{c+c1}{\PYZsh{} Checkmate.}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}checkmate}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{l+m+mi}{1}
+         
+             \PY{c+c1}{\PYZsh{} Draw claimed.}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{can\PYZus{}claim\PYZus{}draw}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+         
+             \PY{c+c1}{\PYZsh{} Seventyfive\PYZhy{}move rule or fivefold repetition.}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}seventyfive\PYZus{}moves}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}fivefold\PYZus{}repetition}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+         
+             \PY{c+c1}{\PYZsh{} Insufficient material.}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+         
+             \PY{c+c1}{\PYZsh{} Stalemate.}
+             \PY{k}{if} \PY{o+ow}{not} \PY{n+nb}{any}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{generate\PYZus{}legal\PYZus{}moves}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+             
+             \PY{k}{return} \PY{l+m+mi}{0}
 \end{Verbatim}
 
     Dabei wird jede mögliche Option, wie das Spiel zum Ende gekommen sein
@@ -207,47 +599,64 @@ Zusätzlich zu dem Verwalten des Spiels ist es auch Aufgabe des
 \texttt{ChessMaster}s die Historie aller Spiele zu pflegen. Dazu wird
 zunächst eine Liste von Schachbrettern der Klasse \texttt{chess.Board}
 angelegt. Nach jedem durchgeführten Zug wird der neue Zustand des boards
-zu dieser hinzugefügt. Dabei wird das Schachbrett in der FEN-Notation
+zu dieser hinzugefügt. Dabei wird das Schachbrett in der fen-Notation
 gespeichert, die in einem String den exakten Zustand des Schachbretts
 wiedergeben kann. Dabei wird jedoch nur der erste Teil dieser Notation
 gespeichert, da dieser alleine bereits Aufschluss über die
-Positionierungen gibt.
+Positionierungen gibt. Die darauf folgenden Teile sind zum Speichern des
+Spielers, der am Zug ist, wie viele Züge bereits durchgeführt wurden und
+weitere Informationen, die zum Bewerten in der Historie nicht notwendig
+sind.
 
-Das Speichern der Züge im Verlauf des Spiels sieht dann wie folgt aus
+Zum Speichern der Züge in einem Verlauf wird die Funktion zum Einen um
+eine Liste \texttt{turn\_list} erweitert, in die die Züge dann als
+FEN Notation abgespeichert werden, die in \ref{FEN-Notation} erklärt wurde. Dazu wird die Funktion wie
+folgt angepasst.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
-        \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
-        
-        \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-            \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-        
-            \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-            \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-            \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-            
-            \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
+             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+             \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+             \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+                 \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+         
+                 \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+         
+             \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+             \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+             \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+             \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+             \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+             \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}
 \end{Verbatim}
 
-    In Zeile 2 wird die Liste erstellt und in der letzten Zeile der Zustand
-in diese Liste gespeichert. Nach Ende des Spiels muss diese Liste noch
-in die bestehende Historie eingepflegt werden. Dies ist in folgendem
-Code-Snippet zu sehen.
+    Nach Ende des Spiels muss diese Liste noch in die bestehende Historie
+eingepflegt werden. Dies ist in folgendem Code-Snippet zu sehen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{final\PYZus{}board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}\PY{p}{:}
-            \PY{n}{victory\PYZus{}status} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{final\PYZus{}board}\PY{p}{)}
-        
-            \PY{n}{new\PYZus{}turn\PYZus{}dict} \PY{o}{=} \PY{n+nb}{dict}\PY{o}{.}\PY{n}{fromkeys}\PY{p}{(}\PY{n}{turn\PYZus{}list}\PY{p}{,} \PY{n}{victory\PYZus{}status}\PY{p}{)}
-        
-            \PY{n}{history} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
-            \PY{n}{history\PYZus{}dict} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{board}\PY{p}{)}\PY{p}{,} \PY{n+nb}{list}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{value}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-        
-            \PY{n}{merged\PYZus{}history\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{k}\PY{p}{:} \PY{n}{new\PYZus{}turn\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{n}{history\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{set}\PY{p}{(}\PY{n}{new\PYZus{}turn\PYZus{}dict}\PY{p}{)} \PY{o}{|} \PY{n+nb}{set}\PY{p}{(}\PY{n}{history\PYZus{}dict}\PY{p}{)} \PY{p}{\PYZcb{}}
-            \PY{n}{merged\PYZus{}history} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{merged\PYZus{}history\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{board}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-        
-            \PY{n}{merged\PYZus{}history}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}13}]:} \PY{k}{def} \PY{n+nf}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{final\PYZus{}board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}\PY{p}{:}
+             \PY{n}{victory\PYZus{}status} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{final\PYZus{}board}\PY{p}{)}
+         
+             \PY{n}{new\PYZus{}turn\PYZus{}dict} \PY{o}{=} \PY{n+nb}{dict}\PY{o}{.}\PY{n}{fromkeys}\PY{p}{(}\PY{n}{turn\PYZus{}list}\PY{p}{,} \PY{n}{victory\PYZus{}status}\PY{p}{)}
+         
+             \PY{n}{history} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
+             \PY{n}{history\PYZus{}dict} \PY{o}{=} \PY{n+nb}{dict}\PY{p}{(}\PY{n+nb}{zip}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{board}\PY{p}{)}\PY{p}{,} \PY{n+nb}{list}\PY{p}{(}\PY{n}{history}\PY{o}{.}\PY{n}{value}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         
+             \PY{n}{merged\PYZus{}history\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}} \PY{n}{k}\PY{p}{:} \PY{n}{new\PYZus{}turn\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{n}{history\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{k}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{set}\PY{p}{(}\PY{n}{new\PYZus{}turn\PYZus{}dict}\PY{p}{)} \PY{o}{|} \PY{n+nb}{set}\PY{p}{(}\PY{n}{history\PYZus{}dict}\PY{p}{)} \PY{p}{\PYZcb{}}
+             \PY{n}{merged\PYZus{}history} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{merged\PYZus{}history\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{board}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         
+             \PY{n}{merged\PYZus{}history}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
 \end{Verbatim}
 
     Dabei wird zuerst das Ergebnis ermittelt mittels der bereits
@@ -261,8 +670,8 @@ Nachdem das Dictionary der neu einzupflegenden Züge angelegt ist, wird
 die vorhandene Historie aus der entsprechenden Datei ausgelesen. Dies
 wird mittels der in \texttt{panda} enthaltenden Funktion
 \texttt{pd.read\_csv} durchgeführt. Anschließend wird auch daraus ein
-Dictionary erstellt, indem die Zeile ``board`` als Schlüssel und die Zeile
-``value`` als Wert verwendet wird.
+Dictionary erstellt, indem die Zeile "board" als Schlüssel und die Zeile
+"value" als Wert verwendet wird.
 
 Nun werden die beiden Dictionaries zusammengefügt. Dazu wird für jeden
 Schlüssel aus dem Dictionary der neu einzupflegenden Spielzüge oder dem
@@ -274,25 +683,419 @@ wodurch der neu berechnete Wert Aufschluss über den wahrscheinlichen
 Sieger ausgehend von einem bestimmten Zustand geben kann.
 
 Anschließend wird dieses Dictionary in ein Panda Dataframe umgewandelt,
-wobei der Schlüssel für die Zeile ``board`` und der Wert für die Zeile
-``value`` verwendet wird, um das DataDrame anschließend wieder zu der
+wobei der Schlüssel für die Zeile "board" und der Wert für die Zeile
+"value" verwendet wird, um das DataDrame anschließend wieder zu der
 CSV-Datei zu speichern.
 
-Dies ermöglicht nicht nur eine Verwaltung des Spiels, sondern
+Zusätzlich wurde noch ein Parameter \texttt{repeat} eingeführt, um das
+Spiel mit den gleichen Einstellungen nochmal wiederholen zu können. Dazu
+wird am Ende des Spiels abgefragt, ob das Spiel wiederholt werden soll.
+Solange dies mit einer "1" bestätigt wird, wird das Spiel von vorne
+gestartet. Anderernfalls wird das Spiel und somit das Programm beendet.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
+             \PY{n}{repeat} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{k}{while} \PY{n}{repeat} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+         
+                 \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+                 \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+                     \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                     \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+         
+                     \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+         
+                 \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+                 \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{else}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}
+                 \PY{n}{repeat} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{n}{GAME\PYZus{}FINISHED\PYZus{}MESSAGE}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    Dies ermöglicht nicht nur eine Verwaltung des Spiels, sondern
 gleichzeitig auch eine Speicherung aller möglichen Zustände, die bei den
-Evaluierungsfunktionen (beschrieben in INSERT) zur Hilfe genommen werden
+Evaluierungsfunktionen (beschrieben in Kapitel \ref{evaluierung-eines-gegebenen-schachbretts}) zur Hilfe genommen werden
 können
 
-    \section{Implementierung des Iterative Deepening}\label{implementierung-des-iterative-deepening}
+    \section{Zugfindung durch KI}\label{zugfindung-durch-ki}
 
 Die zentrale Aufgabe der KI ist es, den best möglichen Zug für eine
-gegebene Situation zu finden. Dabei geht diese so vor, dass sie alle
-möglichen Züge durchgeht und die daraus entstehenden Zustände analysiert
-und evaluiert. Dabei jedoch zählt nicht nur der direkt erreichbare
-Zustand zählt, sondern auch die aus diesem Zustand erreichbaren Zustände
-und so weiter. Aus diesem Grund wird immer bis zu einer bestimmten Tiefe
-in die Züge hineingeschaut und die sich daraus ergebenden Zustände
-evaluiert.
+gegebene Situation zu finden. Dazu wird es
+von dem \texttt{ChessMaster} aufgefordert und dazu das aktuelle
+board mit übergeben. Die Findung des Zuges findet dann in der Datei
+\texttt{player/ai.py} statt:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}move}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+         
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{2}
+                 \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluate\PYZus{}board}
+                 
+                 \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{fullmove\PYZus{}number} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{10}\PY{p}{:}
+                     \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{1}
+                     \PY{n}{move} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opening\PYZus{}book}\PY{p}{)}
+                     \PY{k}{if} \PY{o+ow}{not} \PY{n}{move} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
+                         \PY{k}{return} \PY{n}{move}
+                 
+                 \PY{n}{white\PYZus{}material} \PY{o}{=} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+                 \PY{n}{black\PYZus{}material} \PY{o}{=} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{white\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{13} \PY{o+ow}{and} \PY{n}{black\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{13}\PY{p}{:}
+                     \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{3}
+                     \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}dtz\PYZus{}value}
+                 
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{difficulty}\PY{p}{)}
+         
+                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    Dabei gibt es 3 erreichbare Status, in der sich das Spiel befinden kann:
+
+\begin{itemize}
+\tightlist
+\item
+  Eröffnungsspiel
+\item
+  Mittelspiel
+\item
+  Endspiel
+\end{itemize}
+
+Für alle 3 Status unterscheidet sich die Art, wie die KI einen Zug
+finden soll. Standardmäßig befindet sich das Spiel im Zeitfenster des
+Mittelspiel. Mittels dieser wird im Minimax
+Algorithmus (Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}) nach dem besten Zug gesucht. Dies ändert sich wenn
+eine der zwei folgenden Bedinungen zutrifft:
+
+Die erste ist für den Fall, dass sich das Spiel noch innerhalb der
+ersten 10 Züge (5 Züge pro Spieler) befindet. In dem Fall wird es noch
+als Eröffnungsspiel gewertet und es wird zuerst ein
+Eröffnungsspielzugbuch geprüft, ob dies einen passenden Zug zur
+Verfügung hat. Dies ist in Kapitel \ref{einbinden-und-verwendung-von-opening-books} beschrieben. Andernfalls wird
+standardmäßig in die "Iterative Deepening" Funktion gegeben, die in
+Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} beschrieben wird.
+
+Die zweite Möglichkeit ist, dass sich das Spiel im Endspiel befindet.
+Dazu wird von beiden Seiten ein Wert der Materialien berechnet. Dies
+wird später noch bei den Evaluierungsfunktionen in Kapitel \ref{evaluierung-eines-gegebenen-schachbretts} näher
+beschrieben. Ist für beide Spieler der Wert unter 13, so gilt das Spiel
+als Endspiel. Dafür werden auch die Evaluationsfunktionen geändert, um
+statt der üblichen Evaluationen den DTZ Wert zu nehmen, der in Kapitel
+\ref{einbinden-und-verwendung-von-endspiel-datenbanken} erklärt wird, um per Minimax Algorithmus (Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}) nach dem besten
+Zug zu suchen..
+
+In beiden Fällen wird der \texttt{game\_status} geändert. An Hand dieser
+bestimmt die Funktion \texttt{get\_evaluation\_funcs\_by\_dif} die
+Gewichtungsfaktoren, die den einzelnen Evaluierungsfunktionen zugewiesen
+werden, um diese je nach Spielsituation optimal miteinander zu
+kombinieren. Diese Funktion sieht wie folgt aus:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{,} \PY{n}{difficulty}\PY{p}{)}\PY{p}{:}
+             \PY{n}{factor\PYZus{}dict} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}
+             \PY{n}{funcs\PYZus{}by\PYZus{}deg\PYZus{}of\PYZus{}dif} \PY{o}{=} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}
+             \PY{p}{\PYZcb{}}
+             \PY{k}{return} \PY{n}{funcs\PYZus{}by\PYZus{}deg\PYZus{}of\PYZus{}dif}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{difficulty}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{p}{\PYZob{}}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}start}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}start}
+                 \PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{p}{\PYZob{}}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}mid}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}mid}
+                 \PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{p}{\PYZob{}}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}end}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}end}
+                 \PY{p}{\PYZcb{}}
+             \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{game\PYZus{}status}\PY{p}{]}
+\end{Verbatim}
+
+    Dabei wird erst über die Funktion
+\texttt{get\_factors\_by\_game\_status} ein passendes Dictionary mit den
+dem Spielstatus entsprechenden Gewichtungsfaktoren für jede einzelne
+Evaluierungsfunktion erstellt. Dann werden je nach Schwierigkeitsgrad
+die durchzuführenden Evaluierungen mitsamt dem aus dem Dictionary
+passenden Gewichtungsfaktoren zurückgegeben.
+
+Nachdem diese Schritte durchgeführt wurden und nicht schon bereits
+vorher ein Zug durch die Eröffnungs- oder Endspieldatenbank
+zurückgegeben wurde, wird die Funktion des "Iterative Deepening", die in
+Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} erklärt wird, aufgerufen und das der Rückgabewert dieser
+Funktion als durchzuführender Zug ausgewählt und somit zurückgegeben.
+Dazu wird zunächst allerdings noch die maximale Tiefe an Hand des
+Spielstatus ermittelt:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}start}\PY{p}{,} 
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}mid}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}end}
+             \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{game\PYZus{}status}\PY{p}{]}
+\end{Verbatim}
+
+    Der erhaltene Wert wird dann zusammen mit dem aktuellen Spielzustand in
+die \texttt{iterative\_deepening} Funktion gegeben, die dann den
+optimalen Zug ermitteln soll.
+
+    \section{Einbinden und Verwendung von
+Opening-Books}\label{einbinden-und-verwendung-von-opening-books}
+
+Im Fall, dass sich das Spiel noch im Anfangszustand befindet, kann ein
+Opening Book zur Hilfe genommen werden, um einen passenden Zug zu
+finden.
+
+Opening-Books sind ein wesentlicher Bestandteil der Schach-KI, da diese
+aus einer großen Anzahl von Eröffnungszügen bestehen. Hierbei wurden die
+Opening-Books bereits analysiert und konnten durch Überprüfungen als
+gute Eröffnungen identifiziert werden.
+
+Zur Verwendung dieser Bücher müssen diese Dateien, die im .bin-Format
+vorliegen, in eine Variable geladen werden, da später auf diese Bücher
+mittels Funktionen zugegriffen werden soll. Damit die Eröffnungszüge in
+einer Variable gespeichert werden können, muss der Pfad zu dem Buch
+vorliegen, der im folgenden Codeausschnitt in eine globale Konstante
+\texttt{OPENING\_BOOK\_LOC} geschrieben wurde. Dies findet ebenfalls in
+der Datei \texttt{player/ai.py}statt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{OPENING\PYZus{}BOOK\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/polyglot/Performance.bin}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+
+    Für das Laden eines Buches in eine Variable wird die Funktion
+\texttt{import\_opening\_book(self,\ book\_location)} genutzt. Diese hat
+die Eigenschaft, dass sie als Übergabeparameter eine Konstante erhält,
+die den Pfad zu dem zu importierenden Opening-Book enthält.
+
+Innerhalb der \texttt{import\_opening\_book} Funktion wird mittels einer
+If-Verzweigung überprüft, ob der angegebene Pfad eine Datei ist. Sollte
+dies zutreffen, dann wird, inklusive des Buchpfades, die Funktion
+\texttt{polyglot.open\_reader} aus der "chess" Bibliothek aufgerufen.
+Diese Funktion liefert als Rückgabewert das Opening-Book, welches an die
+Stelle zurückgegeben wird, an der die Funktion
+\texttt{import\_opening\_book} aufgerufen wird.
+
+Sollte der Pfad in der Variable \texttt{book\_location} keine Datei
+sein, so wird ein \emph{File Not Found}-Fehler geworfen, der dabei den
+vermeintlichen Pfad mit übergibt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}opening\PYZus{}book}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{book\PYZus{}location}\PY{p}{)}\PY{p}{:}
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{        load an opening book}
+         \PY{l+s+sd}{        raise an error if system cannot find the opening\PYZhy{}book file}
+         \PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{isfile}\PY{p}{(}\PY{n}{book\PYZus{}location}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{chess}\PY{o}{.}\PY{n}{polyglot}\PY{o}{.}\PY{n}{open\PYZus{}reader}\PY{p}{(}\PY{n}{book\PYZus{}location}\PY{p}{)}
+                 \PY{k}{else}\PY{p}{:}
+                     \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}
+                         \PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{,} \PY{n}{os}\PY{o}{.}\PY{n}{strerror}\PY{p}{(}\PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{)}\PY{p}{,} \PY{n}{book\PYZus{}location}\PY{p}{)}
+\end{Verbatim}
+
+    Die Funktion zum Importieren des Opening-Books wird im Konstruktor der
+KI-Klasse aufgerufen, da das Opening-Book bei jeder Verwendung direkt zu
+Beginn von der KI benötigt wird und somit direkt verfügbar sein muss.
+Das bringt den Vorteil, dass eine Klassenvariable vorliegt, die von
+allen Funktionen der Klasse KI verwendet werden kann, sobald der
+Konstruktor ausgeführt wurde.
+
+Als Übergabewert wird die zuvor definierte Konstante
+\texttt{OPENING\_BOOK\_LOC} übergeben, die den Pfad zu einem
+Opening-Book enthält.
+
+    Um das Opening-Book verwenden zu können und aus diesem mögliche
+Eröffnungsstrategien verwenden zu können wird die Funktion
+\texttt{get\_opening\_move(self,\ board,\ opening\_book)} benötigt, die
+als Übergabewerte das aktuelle Schachbrett und das importierte Book
+erhält.
+
+Der aktuelle Spielstand in Form des Schachbretts wird benötigt damit das
+Opening-Book weiß auf welche Situation reagiert werden muss.
+
+Der Sinn der Funktion \texttt{get\_opening\_move} ist es einen Schachzug
+als Objekt \emph{chess.Move} zurückzugeben, der laut des Opening-Books
+in dieser Situation angebracht ist. Dafür wird zuerst überprüft, ob die
+übergebene Variable \texttt{opening\_book} durch den Konstruktor und dem
+damit einhergehenden Aufruf der Funktion \texttt{import\_opening\_book}
+korrekt initialisiert wurde.
+
+Sollte dies nicht der Fall sein wird von der Funktion ein \texttt{None}
+zurückgegeben. Der Wert \texttt{None} ist in der Sprache Python der
+leere Zustand.
+
+Falls das Opening-Book korrekt geladen werden konnte wird durch ein
+try-except versucht einen passenden Schachzug zu finden. Hierbei wird
+ein try-except verwendet, da die aufgerufene Funktion
+\texttt{opening\_book.find(board)} einen \emph{Index Error} wirft, falls
+das Opening-Book keinen passenden Zug kennt. Wenn dieser Fall eintreten
+sollte wird ebenfalls ein \texttt{None} zurückgegeben. Sollte jedoch das
+Buch einen passenden Zug haben, dann wird dieser Zug in eine Variable
+\texttt{main\_entry} geladen und aus dieser der Zug extrahiert.
+
+Nachdem dies durchgeführt wurde, muss das Opening-Book geschlossen
+werden, damit es bei der nächsten Verwendung korrekt genutzt werden
+kann. Ebenfalls wird der erfolgreich extrahierte Zug zurückgegeben.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{opening\PYZus{}book}\PY{p}{)}\PY{p}{:}
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{        get the current board and return move, as string, for this situation}
+         \PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{opening\PYZus{}book} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{try}\PY{p}{:}
+                         \PY{n}{main\PYZus{}entry} \PY{o}{=} \PY{n}{opening\PYZus{}book}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                         \PY{n}{move} \PY{o}{=} \PY{n}{main\PYZus{}entry}\PY{o}{.}\PY{n}{move}\PY{p}{(}\PY{p}{)}
+                         \PY{n}{opening\PYZus{}book}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+                         \PY{k}{return} \PY{n}{move}
+                     \PY{k}{except} \PY{n+ne}{IndexError}\PY{p}{:}
+                         \PY{k}{return} \PY{k+kc}{None}
+                 \PY{k}{else}\PY{p}{:}
+                     \PY{k}{return} \PY{k+kc}{None}
+\end{Verbatim}
+
+    \section{Einbinden und Verwendung von Endspiel
+Datenbanken}\label{einbinden-und-verwendung-von-endspiel-datenbanken}
+
+Analog dazu kann im Fall, dass sich das Spiel dem Ende neigt, eine
+Endspiel Datenbank zur Zugfindung zur Hilfe genommen werden. Auch die
+Einbindung einer solchen Datenbank wird direkt in der Datei
+\texttt{player/ai.py} vorgenommen.
+
+Dabei befinden sich auf dem Schachfeld nur noch wenige Figuren. Analog
+zu den Opening-Books wurden bereits viele Endspiele analysiert und für
+Spielsituationen die optimalen Züge evaluiert. Diese Informationen sind
+in den Endspiel Datenbanken persistiert, welche eine Auskunft darüber
+geben welche der spielenden Parteien am Gewinnen bzw. Verlieren ist und
+wie weit diese von einem Schlagzug entfernt sind. Näheres dazu ist in
+Kapitel \ref{einbinden-und-verwendung-von-endspiel-datenbanken} zu finden.
+
+Durch diese Informationen gepaart mit dem Minimax-Algorithmus lässt sich
+der optimale Zug im Endspiel finden.
+
+Das Einbinden der Endspiel Datenbank ähnelt sehr stark dem der
+Opening-Books. Ebenfalls muss zuerst in einer Konstanten der Pfad zu der
+Endspiel Datenbank angegeben werden.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{SYZYGY\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/syzygy}\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+
+    Ebenfalls analog zu dem Vorgehen bei Opening-Books wird in der Funktion
+\texttt{import\_syzygy(self,\ syzygy\_location)}, zum Importieren der
+Datenbank, der Pfad übergeben, der zu den benötigten Daten führt. Der
+Unterschied in dieser Funktion zu der bei den Opening-Books liegt daran,
+dass die Daten der Datenbank sich in mehreren Dateien befinden und diese
+sich in einem Ordner befinden. Dafür muss überprüft werden, ob der
+übergebene Pfad tatsächlich auf ein Verzeichnis verweist. Falls dies
+gegeben ist, dann kann die Funktion
+\texttt{syzygy.open\_tablebase(syzygy\_location)} der "chess"-Bibliothek
+aufgerufen werden, die die Datenbank importiert. Nachdem die Daten
+innerhalb dieser Funktion vorliegen können sie zurückgegeben werden.
+
+Sollte der übergebene Pfad nicht auf ein verfügbares Verzeichnis
+verweisen, dann wird ebenfalls ein \emph{File Not Found Error} geworfen,
+der den angegebenen Pfad enthält.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}syzygy}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{syzygy\PYZus{}location}\PY{p}{)}\PY{p}{:}
+                 \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+         \PY{l+s+sd}{        load a syzygy tablebase}
+         \PY{l+s+sd}{        raise an error if system cannot find the file}
+         \PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
+                 \PY{k}{if} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{isdir}\PY{p}{(}\PY{n}{syzygy\PYZus{}location}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{chess}\PY{o}{.}\PY{n}{syzygy}\PY{o}{.}\PY{n}{open\PYZus{}tablebase}\PY{p}{(}\PY{n}{syzygy\PYZus{}location}\PY{p}{)}
+                 \PY{k}{else}\PY{p}{:}
+                     \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}
+                         \PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{,} \PY{n}{os}\PY{o}{.}\PY{n}{strerror}\PY{p}{(}\PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{)}\PY{p}{,} \PY{n}{syzygy\PYZus{}location}\PY{p}{)}
+\end{Verbatim}
+
+    Wie bereits aus dem Importieren der Opening-Books bekannt, wird die
+benötigte Funktion im Konstruktor der Klasse KI aufgerufen.
+
+    Zur Berechnung der Partei, die sich aktuell im Vorteil befindet wird die
+folgende Funktion \texttt{get\_dtz\_value(self,\ tablebase,\ board)}
+benötigt, die den DTZ-Wert berechnet. Dieser Wert wird auf der Basis des
+aktuellen Spielzustandes in Form der Variable \texttt{board} und der
+Datenbank in Form der Variable \texttt{tablebase} übergeben.
+
+Daraufhin wird mittels eines try-except und der Funktion
+\texttt{probe\_dtz(board)} versucht den DTZ Wert zu bestimmen. Das
+Abfangen eines möglichen \emph{Key Error} wird in diesem Fall benötigt,
+da die Funktion \texttt{probe\_dtz} der "chess" Bibliothek diesen Fehler
+wirft, wenn der aktuelle Spielzustand zu viele Steine, oder
+Informationen zu en passant oder einer Rochade enthält.
+
+Die in der Künstlichen Intelligenz verwendete Datenbank unterstützt
+Endspiele mit bis zu fünf Steinen, jedoch wird dabei nicht auf die
+Sonderregeln en passant und Rochade geachtet.
+
+Wenn der DTZ-Wert bestimmt werden konnte wird diese an die Stelle
+zurückgegeben an der die Funktion \texttt{get\_dtz\_value} aufgerufen
+wurde. Falls es zu einem \emph{Key Error} kommen sollte wird der Wert
+\texttt{None} zurückgegeben.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}dtz\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tablebase}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{try}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{tablebase}\PY{o}{.}\PY{n}{probe\PYZus{}dtz}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
+                     \PY{k}{return} \PY{k+kc}{None}
+\end{Verbatim}
+
+    \section{Implementierung des Iterative Deepening
+Algorithmus}\label{implementierung-des-iterative-deepening-algorithmus}
+
+Um den besten Zug zu finen muss eine Schach-KI im Optimalfall alle
+möglichen Züge bis zum Ende des Spiels durchgehen, diese bewerten und
+den aussichtsreichsten Zug wählen. Da dies aber technisch nicht
+realistisch ist, werden die Züge nur
+bis zu einer gewissen Tiefe angeschaut und die Zustände über mitgegebene
+Evaluierungsfunktionen bewertet.
+
+Die KI geht dabei dann wie folgt vor: Alle möglichen Züge werden
+durchgegangen. Die daraus entstehenden Zustände werden analysiert und
+evaluiert. Dabei jedoch zählt nicht nur der direkt erreichbare Zustand ,
+sondern auch die aus diesem Zustand erreichbaren Zustände und so weiter.
+Aus diesem Grund wird immer bis zu einer bestimmten Tiefe in die Züge
+hineingeschaut und die sich daraus ergebenden Zustände evaluiert.
 
 Um dies jedoch nicht fest immer bis zu einer bestimmten Tiefe durchgehen
 zu lassen, sondern variabel anzupassen, je nachdem wie viele Züge von
@@ -301,24 +1104,52 @@ wird anfangs die Tiefe auf 1 gesetzt und dann mittels des
 Minimax-Algorithmus die Züge evaluiert. Danach wird die Tiefe um 1
 erhöht und erneut der Minimax-Algorithmus angewandt. Dies wird solange
 wiederholt, bis die angegebene Zeit abgelaufen ist. Dieser Algorithmus
-nennt sich ``Iterative Deepening``. Nähere Informationen dazu sind in
-Kapitel INSERT aufgeführt.
+nennt sich "Iterative Deepening". Nähere Informationen dazu sind in
+Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} aufgeführt.
 
 Dem Algorithmus muss dazu der aktuelle Zustand sowie eine maximale Tiefe
 mitgegeben werden. Ist diese erreicht bricht der Algorithmus ab,
 unabhängig davon, ob das Zeitlimit überschritten ist oder nicht.
-Zunächst müssen beim Ausführen dann einige Werte wie folgt festgelegt
-werden.
+Zunächst müssen beim Ausführen einige Werte festgelegt werden. Der
+folgende Algorithmus zeigt, wie der Prozess des Iterative Deepening in
+der \texttt{player/ai.py} implementiert ist.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{depth} \PY{o}{=} \PY{l+m+mi}{1}
-            
-        \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
-        \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{time\PYZus{}limit}
-        \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time}
-        
-        \PY{n}{player} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}
-        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}24}]:}    \PY{k}{def} \PY{n+nf}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{max\PYZus{}depth}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{depth} \PY{o}{=} \PY{l+m+mi}{1}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{counter}\PY{o}{=}\PY{l+m+mi}{0}
+         
+                 \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{time\PYZus{}limit}
+                 \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time}
+         
+                 \PY{n}{player} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+         
+                 \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
+                 \PY{k}{while} \PY{n}{current\PYZus{}time} \PY{o}{\PYZlt{}} \PY{n}{end\PYZus{}time} \PY{o+ow}{and} \PY{n}{depth} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{max\PYZus{}depth}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{n}{depth}\PY{p}{)}
+                     \PY{n}{move\PYZus{}val\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+         
+                     \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                     \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{legal\PYZus{}moves}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         
+                     \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                         \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                         \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                         \PY{n}{value} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{end\PYZus{}time}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}
+                         \PY{n}{move\PYZus{}val\PYZus{}dict}\PY{p}{[}\PY{n}{move}\PY{p}{]} \PY{o}{=} \PY{n}{value}
+                         \PY{k}{if} \PY{n}{value} \PY{o}{==} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}\PY{p}{:}
+                             \PY{k}{return} \PY{n}{move}
+                         \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}value}\PY{p}{:}
+                             \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n}{value}
+                             \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
+                     
+                     \PY{n}{legal\PYZus{}moves}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{key}\PY{o}{=}\PY{n}{move\PYZus{}val\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                     \PY{n}{depth} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                     \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+                     
+                 \PY{k}{return} \PY{n}{best\PYZus{}move}
 \end{Verbatim}
 
     Zunächst wird die Starttiefe auf 1 festgesetzt. Danach wird die
@@ -335,15 +1166,15 @@ nicht mehr möglich ist) und dementsprechend zu bewerten. Die Funktion
 sieht wie folgt aus.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
-            \PY{k}{if} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{:}
-                \PY{k}{return} \PY{l+m+mi}{0}
-            \PY{k}{if} \PY{o+ow}{not} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{:}
-                \PY{k}{return} \PY{l+m+mi}{0}
-            \PY{k}{if} \PY{n}{player} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{:}
-                \PY{k}{return} \PY{l+m+mi}{1}
-            \PY{k}{if} \PY{o+ow}{not} \PY{n}{player} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{:}
-                \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+{\color{incolor}In [{\color{incolor}25}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
+             \PY{k}{if} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+             \PY{k}{if} \PY{o+ow}{not} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{0}
+             \PY{k}{if} \PY{n}{player} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{l+m+mi}{1}
+             \PY{k}{if} \PY{o+ow}{not} \PY{n}{player} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
 \end{Verbatim}
 
     Dabei muss der Funktion der aktuelle Zustand sowie der Spieler, der an
@@ -359,54 +1190,28 @@ wird für den schwarzen Spieler der Wert -1 zurückgegeben, falls er noch
 ausreichende Materialien besitzt, da dieser noch einen Sieg erreichen
 kann und der Wert -1 für einen Sieg von Schwarz steht.
 
-Nach dieser Abfrage wird der eigentliche Algorithmus des ``Iterative
-Deepening`` durchgeführt.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
-        \PY{k}{while} \PY{n}{current\PYZus{}time} \PY{o}{\PYZlt{}} \PY{n}{end\PYZus{}time} \PY{o+ow}{and} \PY{n}{depth} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{max\PYZus{}depth}\PY{p}{:}
-            \PY{n}{move\PYZus{}val\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
-        
-            \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-            \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{legal\PYZus{}moves}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
-        
-            \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-                \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-        
-                \PY{n}{value} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{end\PYZus{}time}\PY{p}{)}
-                \PY{n}{move\PYZus{}val\PYZus{}dict}\PY{p}{[}\PY{n}{move}\PY{p}{]} \PY{o}{=} \PY{n}{value}
-        
-                \PY{k}{if} \PY{n}{value} \PY{o}{==} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}\PY{p}{:}
-                    \PY{k}{return} \PY{n}{move}
-                \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}value}\PY{p}{:}
-                    \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n}{value}
-                    \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
-        
-            \PY{n}{legal\PYZus{}moves}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{key}\PY{o}{=}\PY{n}{move\PYZus{}val\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-            \PY{n}{depth} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
-            \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
+Nach dieser Abfrage wird der eigentliche Algorithmus des "Iterative
+Deepening" durchgeführt.
 
     Dabei wird zunächst eine Liste aller legalen Züge erstellt. Dann wird
-eine Schleife so lange durchlaufen, bsi entweder die Zeit abgelaufen ist
+eine Schleife so lange durchlaufen, bis entweder die Zeit abgelaufen ist
 oder aber die maximale Tiefe erreicht ist.
 
 In dieser Schleife wird ein Dictionary aller Züge mit ihren berechneten
 Werte erstellt. Zudem werden Anfangswerte für die besten Züge und dessen
 Wert festgelegt. Der Anfangswert des besten Zugs wird auf den ersten Zug
-festgesetzt. Der Wert dieses wird auf den Wert ``- Unendlich`` gesetzt.
+festgesetzt. Der Wert dieses wird auf den Wert "- Unendlich" gesetzt.
 
 Nun wird über alle legalen Züge iteriert und für jeden Zug ein
-temporärer ``board`` angelegt, das erreichbaren Zustand widerspiegelt. Nun
+temporärer "board" angelegt, das erreichbaren Zustand widerspiegelt. Nun
 wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
-Dabei wird als Alpha ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben.
-Was die Werte Alpha und Beta aussagen, wird im Kapitel INSERT
+Dabei wird als Alpha "- Unendlich" und als Beta "Unendlich" mitgegeben.
+Was die Werte Alpha und Beta aussagen, wird im Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}
 beschrieben. Zudem wird die Tiefe auf einen Wert festgelegt, der um
 einen Wert geringer ist als die maximale Tiefe, da durch Aufruf der
 Funktion in die erste Tiefe hineingegangen wurde. Zudem wird die Zeit
 mitgegeben, zu der der Algorithmus enden muss, damit der Minimax
-Algorithmus dementsprechend endet und das zeitlimit nicht überschreitet.
+Algorithmus dementsprechend endet und das Zeitlimit nicht überschreitet.
 
 Nachdem der Minimax-Algorithmus fertig durchlaufen ist, wird der Wert
 mit dem Zug zu dem Dictionary hinzugefügt. Gleicht der Wert dem
@@ -420,7 +1225,7 @@ Zug auf den der aktuellen Iteration gesetzt wird.
 Nachdem alle Züge durchlaufen wurden, wird die Liste aller legalen Züge
 an Hand der berechneten Werte sortiert, damit im nächsten Durchlauf die
 Züge in dieser Reihenfolge durchlaufen werden. Dies verbessert den
-Durchsatz beim Alpha Beta Pruning, wie in Kapitel INSERT beschrieben und
+Durchsatz beim Alpha Beta Pruning, wie in Kapitel \ref{alpha_beta} beschrieben, und
 garantiert zudem, dass der beste Wert der vergangenen Runde gewählt
 wird, falls der Minimax-Algorithmus beim Durchlaufen der nächst tieferen
 Tiefe das Zeitlimit erreicht, bevor die Runde komplett evaluiert werden
@@ -432,7 +1237,7 @@ der Algorithmus noch weiter durchlaufen darf.
 
 Nachdem dann die Zeit abgelaufen ist und alle Züge in der für die
 angegebenen Zeit maximalen Tiefe evaluiert wurden, wird der best
-mögliche Zug zurückgegeben. Dieser wird dann von der Ki ausgeführt.
+mögliche Zug zurückgegeben. Dieser wird dann von der KI ausgeführt.
 
     \section{Implementierung des Minimax-Algorithmus mit
 Alpha-Beta-Pruning}\label{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}
@@ -442,47 +1247,47 @@ jeder Zug bis zu einer gewissen Tiefe betrachtet. Dabei wird unter der
 Prämisse gehandelt, dass auch der Gegner stets den besten Zug macht.
 Dies führt dazu, dass der bestmöglichste Zug ausgewählt wird (max), der
 erreichbar ist, wenn der Gegner mit dem für ihn jeweils besten Zug
-antwortet, der für den Spieler somit der schlechteste ist (min). Genauer
-ist dies in Kapitel INSERT erklärt.
+antwortet, der für den Spieler somit der schlechteste ist (min).
 
 Die Umsetzung dabei erfolgt in zwei Funktionen - \texttt{min\_value} und
-\texttt{max\_value}. Erstere berechnet dabei den schlecht möglichsten
-Ausgang für den Spieler aus einer bestimmten Position, also den besten
-Ausgang für den Gegner. Letztere berechnet den best möglichsten Ausgang.
-Beide Funktionen sind sehr ähnlich aufgebaut und in folgendem
-Code-Snippet zu sehen.
+\texttt{max\_value}. Auch diese sind direkt in der Datei
+\texttt{player/ai.py} vorzufinden. Erstere berechnet dabei den schlecht
+möglichsten Ausgang für den Spieler aus einer bestimmten Position, also
+den besten Ausgang für den Gegner. Letztere berechnet den best
+möglichsten Ausgang. Beide Funktionen sind sehr ähnlich aufgebaut und in
+folgendem Code-Snippet zu sehen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{min\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{)}\PY{p}{:}
-            \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-            \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        
-            \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
-                \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluate\PYZus{}board}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
-            \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
-                \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        
-            \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-                \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                \PY{n}{v} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{)}\PY{p}{)}
-                \PY{k}{if} \PY{n}{v} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{alpha}\PY{p}{:}
-                    \PY{k}{return} \PY{n}{v}
-                \PY{n}{beta} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{beta}\PY{p}{,} \PY{n}{v}\PY{p}{)}
-            \PY{k}{return} \PY{n}{v}
+{\color{incolor}In [{\color{incolor}26}]:} \PY{k}{def} \PY{n+nf}{min\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
+             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
+             \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+             \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+             \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
+                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{v} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{alpha}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{v}
+                 \PY{n}{beta} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{beta}\PY{p}{,} \PY{n}{v}\PY{p}{)}
+             \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
-    Neben des aktuellen Zustands des Spiels in FEN-Notation und dem Spieler,
+    Neben dem akteullen Zustand des Spiels in fen Notation und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
 sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
-Beta sind dabei, wie in Kapitel INSERT erklärt, dazu da, um den
+Beta sind dabei, wie in Kapitel \ref{alpha_beta} erklärt, dazu da, um den
 Minimax-Algorithmus zu beschleunigen, indem nicht jeder mögliche Zustand
 betrachtet wird. Durch diese Werte fallen nämlich solche weg, die direkt
 als irrelevant betrachtet werden können, da ohnehin bereits ein
 besserrer (im Fall von \texttt{min\_value}) bzw. schlechterer (im Fall
 von \texttt{max\_value}) Wert gefunden wurde.
 
-Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
+Nachdem das Schachbrett über die fen-Notation erstellt wurde, wird
 überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe
 auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
 und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
@@ -516,28 +1321,27 @@ Außerdem gibt dieser bei der um eins tieferen Iteration in die
 unverändert.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{max\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{)}\PY{p}{:}
-            \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-            \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-        
-            \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
-                \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluate\PYZus{}board}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
-            \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
-                \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        
-            \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-                \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                \PY{n}{v} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{)}\PY{p}{)}
-                \PY{k}{if} \PY{n}{v} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{beta}\PY{p}{:}
-                    \PY{k}{return} \PY{n}{v}
-                \PY{n}{alpha} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{alpha}\PY{p}{,} \PY{n}{v}\PY{p}{)}
-            \PY{k}{return} \PY{n}{v}
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k}{def} \PY{n+nf}{max\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
+             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
+             \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+             \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         
+             \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
+                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{v} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{beta}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{v}
+                 \PY{n}{alpha} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{alpha}\PY{p}{,} \PY{n}{v}\PY{p}{)}
+             \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
     Mit diesem Algorithmus wird ein Baum aus allen Pfaden erstellt, an Hand
-der der beste Zug ermittelt werden kann wie in Kapitel INSERT
-beschrieben. Da es sich jedoch nur selten um Endzustände handelt, für
+der der beste Zug ermittelt werden kann. Da es sich jedoch nur selten um Endzustände handelt, für
 die eine Bewertung trivial erfolgen kann, ist eine Evaluierung der
 Zustände nötig. Diese wird im nächsten Kapitel beschrieben.
 
@@ -547,7 +1351,7 @@ Schachbretts}\label{evaluierung-eines-gegebenen-schachbretts}
     Um gegebene Zustände auch mitten im Spiel bewerten zu können, müssen
 diese an Hand bestimmter Kriterien bewertet werden können, die über Sieg
 oder Niederlage hinausgehen. Dazu gibt es verschiedene Ansätze, wie in
-Kapitel INSERT erläutert. Einige davon wurden im Laufe des Projektes
+Kapitel \ref{evaluation_func} erläutert. Einige davon wurden im Laufe des Projektes
 umgesetzt und implementiert. Diese werden in diesem Kapitel erläutert.
 Zunächst jedoch gilt es aufzuzeigen, wie die Evaluierung der Zustände im
 generellen umgesetzt wird.
@@ -555,23 +1359,25 @@ generellen umgesetzt wird.
 Zunächst wird zum Evaluieren eines Zustandes jener Zustand sowie der
 Spieler, für den dieser zu evaluieren ist, in die Funktion
 \texttt{evaluate\_board} gegeben, die die Evaluierung zentral verwaltet.
+Diese befindet sich in der \texttt{player/ai.py}.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{evaluate\PYZus{}board}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
-            \PY{n}{player\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{player} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
-        
-            \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{:}
-                    \PY{k}{return} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
-                \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
-                    \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
-        
-            \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{l+m+mi}{0}
-            \PY{k}{for} \PY{n}{func}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
-                    \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{n}{evaluation\PYZus{}val} \PY{o}{+} \PY{n}{value} \PY{o}{*} \PY{n}{func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player\PYZus{}color}\PY{p}{)}
-            \PY{k}{return} \PY{n}{evaluation\PYZus{}val}
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{def} \PY{n+nf}{evaluate\PYZus{}board}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
+             \PY{n}{player\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{player} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{counter}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
+         
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{:}
+                     \PY{k}{return} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                     \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
+         
+             \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{l+m+mi}{0}
+             \PY{k}{for} \PY{n}{func}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+                     \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{n}{evaluation\PYZus{}val} \PY{o}{+} \PY{n}{value} \PY{o}{*} \PY{n}{func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player\PYZus{}color}\PY{p}{)}
+             \PY{k}{return} \PY{n}{evaluation\PYZus{}val}
 \end{Verbatim}
 
     Dabei wird zunächst an Hand des Spielers die Farbe dieses ermittelt, die
@@ -580,7 +1386,7 @@ später bei den einzelnen Evaluierungsfunktionen benötigt wird.
 Dann wird für den Fall, dass der gegebene Zustand einem Endzustand
 gleicht, das Ergebnis dieses ermittelt. Gleicht dieses dem bestmöglichen
 Ergebnis, dass mittels der \texttt{get\_board\_result} Funktion zuvor
-ermittelt wurde (siehe INSERT), so wird der maximale Wert (Unendlich)
+ermittelt wurde, so wird der maximale Wert (Unendlich)
 für den Zusand zurückgegeben. Ist das Ergebnis des übermittelten
 Zustands jedoch eine Niederlage, so wird der maximale Wert umgekehrt und
 zurückgegeben (minus Unendlich).
@@ -604,9 +1410,10 @@ nicht zum Evaluierungswert aufaddiert wird.
 Der daraus entstehende Evaluierungswert, der zurückgegeben wird, gibt
 einen guten Aufschluss über den Wert des aktuellen Zustands. Dazu werden
 verschiedene Evaluierungsfunktionen verwendet, wie in folgendem
-Abschnitt zu sehen ist.
+Abschnitt zu sehen ist. Diese befinden sich in der Datei
+\texttt{misc/ai\_evaluation\_lib.py}.
 
-    \subsubsection{Materialbewertung}\label{materialbewertung}
+    \subsection{Materialbewertung}\label{materialbewertung}
 
 Eine zentrale sowie einfache Bewertung ist dabei die Bewertung der
 vorhandenen Materialien auf dem Spielfeld. Dabei werden alle Figuren der
@@ -615,19 +1422,34 @@ multipliziert.
 
 Dabei ist zunächst jedem Figurentyp ein Wert zuzuweisen. Üblicherweise
 werden Bauern dabei 1 Punkt, Türmen 5 Punkte, Springern sowie Läufern
-jeweils 3 Punkte und der Dame 9 Punkte zugeordnet. Diese werden dann
-zusammengerechnet.
+jeweils 3 Punkte und der Dame 9 Punkte zugeordnet. Dies geschieht über
+die Funktion \texttt{assign\_piece\_value()}. Dabei wird der Typ
+angegeben und die Punkte zurückgegeben. Zusätzlich kann angegeben
+werden, ob auch der König einen Wert zugewiesen bekommen soll. Diese
+werden dann über die \texttt{map} Funktion nach Farbe in der
+\texttt{get\_value\_by\_color} Funktion für alle auf den Feldern
+befindlichen Figuren zusammengerechnet.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{attacked\PYZus{}pieces\PYZus{}value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{piece\PYZus{}type} \PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
-            \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{attacked\PYZus{}pieces\PYZus{}value}\PY{p}{)}
-        
-        \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
-            \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
-            
-            \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n}{black\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{white\PYZus{}value}
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{PAWN\PYZus{}VALUE}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{n}{KNIGHT\PYZus{}VALUE}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{n}{BISHOP\PYZus{}VALUE}\PY{p}{,}
+                 \PY{l+m+mi}{4}\PY{p}{:} \PY{n}{ROOK\PYZus{}VALUE}\PY{p}{,}
+                 \PY{l+m+mi}{5}\PY{p}{:} \PY{n}{QUEEN\PYZus{}VALUE}\PY{p}{,}
+                 \PY{l+m+mi}{6}\PY{p}{:} \PY{n}{KING\PYZus{}VALUE} \PY{k}{if} \PY{n}{count\PYZus{}king} \PY{k}{else} \PY{l+m+mi}{0}
+             \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+             
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{attacked\PYZus{}pieces\PYZus{}value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{piece\PYZus{}type} \PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
+             \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{attacked\PYZus{}pieces\PYZus{}value}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
+             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
+             
+             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n}{black\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{white\PYZus{}value}
 \end{Verbatim}
 
     Um den Gesamtwert des Schachbretts zu berechnen muss zunächst der Wert
@@ -641,7 +1463,7 @@ aller Figurentypen der jeweiligen Farbe berechnet und diese mit dem Wert
 der Figurentypen multipliziert. Am Ende werden die Ergebnisse für alle
 Figurentypen zusammengezählt und zurückgegeben.
 
-    \subsubsection{Materialbewertung attackierter
+    \subsection{Materialbewertung attackierter
 Figuren}\label{materialbewertung-attackierter-figuren}
 
 Die Berechnung der attackierten Figuren ist ähnlich zu dem Vorgehen bei
@@ -653,17 +1475,17 @@ negativer Wert zum Vorteil des Gegenübers. Ebenso gilt umso höher der
 Wert, desto deutlicher der Vorteil.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{defender\PYZus{}color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{attackedSquares} \PY{o}{=} \PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}attacked\PYZus{}by}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{color} \PY{o+ow}{is} \PY{n}{defender\PYZus{}color}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{SQUARES}\PY{p}{)}
-            \PY{n}{attackedPieces} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{attackedSquares}\PY{p}{)}
-            \PY{n}{value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{,} \PY{n}{attackedPieces}\PY{p}{)}
-            \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{value}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{defender\PYZus{}color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{attackedSquares} \PY{o}{=} \PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}attacked\PYZus{}by}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{color} \PY{o+ow}{is} \PY{n}{defender\PYZus{}color}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{SQUARES}\PY{p}{)}
+             \PY{n}{attackedPieces} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{attackedSquares}\PY{p}{)}
+             \PY{n}{value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{,} \PY{n}{attackedPieces}\PY{p}{)}
+             \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{value}\PY{p}{)}
+              
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
+             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
              
-        \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-            \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
-            \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
-            
-            \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value}
+             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value}
 \end{Verbatim}
 
     Um diese Werte der attackierten Figuren zu berechnen wird jedes Feld
@@ -674,47 +1496,51 @@ Feldern der Typ der Figur zugeordnet, die sich auf dem Feld befindet.
 Daraufhin werden diesen ihre jeweiligen Werte zugeordnet und diese
 abschließend summiert.
 
-    \subsubsection{Positionsbewertung}\label{positionsbewertung}
+    \subsection{Positionsbewertung}\label{positionsbewertung}
 
 Um die Positionen der einzelnen Figuren zu bewerten, werden zunächst für
 jeden Figurentypen Matrizen benötigt, die über jedes Feld eine Aussage
-über den Wert der Position der Figur geben. Diese sind in Kapitel INSERT
+über den Wert der Position der Figur geben. Diese sind in Kapitel \ref{material_evaluation}
 einsehbar. An Hand dieser Matrizen wird dann Aussage über den Wert
 getroffen.
 
-Dabei wird zunächst jedes Feld auf dem Schachbrett durchgegangen und die
+    Dabei wird zunächst jedes Feld auf dem Schachbrett durchgegangen und die
 darauf befindliche Figur berechnet. Dies wird mittels einer
 verschachtelten Schleife gelöst, die zunächst alle Reihen durchgeht und
 dann die einzelnen Felder in dieser Reihe.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}positions\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n+nb}{sum} \PY{o}{=} \PY{l+m+mi}{0}
-            \PY{k}{for} \PY{n}{rank} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
-                \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
-                    \PY{n}{piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
-                    \PY{k}{if} \PY{p}{(}\PY{n}{piece} \PY{o+ow}{and} \PY{n}{piece}\PY{o}{.}\PY{n}{color} \PY{o}{==} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-                        \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}
-                        \PY{n+nb}{sum} \PY{o}{+}\PY{o}{=} \PY{n}{piece\PYZus{}pos\PYZus{}value}
-            \PY{k}{return} \PY{n+nb}{sum}
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{sum} \PY{o}{=} \PY{l+m+mi}{0}
+             \PY{k}{for} \PY{n}{rank} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
+                     \PY{k}{if} \PY{p}{(}\PY{n}{piece} \PY{o+ow}{and} \PY{n}{piece}\PY{o}{.}\PY{n}{color} \PY{o}{==} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}
+                         \PY{n+nb}{sum} \PY{o}{+}\PY{o}{=} \PY{n}{piece\PYZus{}pos\PYZus{}value}
+             \PY{k}{return} \PY{n+nb}{sum} \PY{o}{/} \PY{l+m+mi}{10}
 \end{Verbatim}
 
     Nachdem die Figur ermittelt wurde wird diese, falls diese der
 angegebenen Farbe angehört, gemeinsam mit den Werten für Reihe und
 Spalte an die Funktion \texttt{get\_position\_value\_by\_square}
 übergeben. Nachdem diese den Wert zurückgegben hat wird dies zu der
-bisherigen Summe aufaddiert und am Ende die Summe aller Figuren zurück
-gegeben.
+bisherigen Summe aufaddiert und am Ende die Summe aller Figuren geteilt
+durch 10 zurück gegeben. Der Divisor 10 rührt daher, dass die Positionen
+der einzelnen Figuren in dessen Matrizen recht hoch gewertet sind und
+somit insgesamt noch etwas abgeschwächt werden müssen, um die Funktion
+mit den restlichen Evaluierungsfunktionen ungefähr auf eine
+Bedeutungshöhe zu bringen.
 
 In der Funktion \texttt{get\_position\_value\_by\_square} wird mittels
 der Matrix der Wert der Figur an der gegebenen Position ermittelt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{piece\PYZus{}type} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}type\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
-            \PY{n}{piece\PYZus{}matrix} \PY{o}{=} \PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{np}\PY{o}{.}\PY{n}{flip}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{)}
-            \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{piece\PYZus{}matrix}\PY{p}{[}\PY{n}{rank}\PY{p}{,}\PY{n}{file}\PY{p}{]}
-            \PY{k}{return} \PY{n}{piece\PYZus{}pos\PYZus{}value}
+{\color{incolor}In [{\color{incolor}32}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{piece\PYZus{}type} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}type\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
+             \PY{n}{piece\PYZus{}matrix} \PY{o}{=} \PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{np}\PY{o}{.}\PY{n}{flip}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{)}
+             \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{piece\PYZus{}matrix}\PY{p}{[}\PY{n}{rank}\PY{p}{,}\PY{n}{file}\PY{p}{]}
+             \PY{k}{return} \PY{n}{piece\PYZus{}pos\PYZus{}value}
 \end{Verbatim}
 
     Dazu wird zunächst der Typ der Figur auf dem gegebenen Feld ermittelt.
@@ -725,26 +1551,36 @@ Matrix mit den Positionen aus der Sicht des Spielers übereinstimmt.
 Schlussendlich wird der Wert in der Matrix über die Reihe und Spalte
 ermittelt und zurück gegeben.
 
-    \subsubsection{Königszonen-Sicherheit}\label{kuxf6nigszonen-sicherheit}
+Um die Positionen des Gegners zu berechnen, kann folgende Funktion
+dienen, die die angegebene Farbe invertiert und so den Wert der
+gegnerischen Positionen berechnen und zurückgeben kann.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{opp\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opp\PYZus{}color}\PY{p}{)}
+\end{Verbatim}
+
+    \subsection{Königszonen-Sicherheit}\label{kuxf6nigszonen-sicherheit}
 
 Ein weiterer, wichtiger Wert ist die Sicherheit des Königs bemessen an
 Hand der Figuren, die dessen Zone angreifen.
 
 Dazu wird diese Zone berechnet und dann alle Figuren, die diese Zone
-angreifen ermittelt. Mittels der in Kapitel INSERT vorgestellten
+angreifen ermittelt. Mittels der in Kapitel \ref{defense_evaluation} vorgestellten
 Berechnung wird dann der Wert des Angriffs auf die Königszone berechnet.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{attacker\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
-            \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}
-            \PY{n}{attackers} \PY{o}{=} \PY{n}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{king\PYZus{}zone}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}
-            \PY{n}{attack\PYZus{}weight} \PY{o}{=} \PY{n}{get\PYZus{}king\PYZus{}attack\PYZus{}weight}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{attackers}\PY{p}{)}\PY{p}{)}
-            \PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{=} \PY{l+m+mi}{0}
-            \PY{k}{for} \PY{n}{attacker} \PY{o+ow}{in} \PY{n}{attackers}\PY{p}{:}
-                \PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{+}\PY{o}{=} \PY{n}{get\PYZus{}king\PYZus{}attack\PYZus{}constants}\PY{p}{(}\PY{n}{attacker}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{)}
-            
-            \PY{k}{return} \PY{p}{(}\PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{*} \PY{n}{attack\PYZus{}weight}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{1000}
+{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{attacker\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}
+             \PY{n}{attackers} \PY{o}{=} \PY{n}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{king\PYZus{}zone}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}
+             \PY{n}{attack\PYZus{}weight} \PY{o}{=} \PY{n}{get\PYZus{}king\PYZus{}attack\PYZus{}weight}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{attackers}\PY{p}{)}\PY{p}{)}
+             \PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{=} \PY{l+m+mi}{0}
+             \PY{k}{for} \PY{n}{attacker} \PY{o+ow}{in} \PY{n}{attackers}\PY{p}{:}
+                 \PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{+}\PY{o}{=} \PY{n}{get\PYZus{}king\PYZus{}attack\PYZus{}constants}\PY{p}{(}\PY{n}{attacker}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{)}
+             
+             \PY{k}{return} \PY{p}{(}\PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{*} \PY{n}{attack\PYZus{}weight}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{1000}
 \end{Verbatim}
 
     Dabei wird zuerst die Farbe des Angreifers berechnet, indem die gegebene
@@ -753,25 +1589,33 @@ Farbe umgekehrt wird. Danach wird mittels der Funktion
 gibt eine Menge von Feldern zurück, die der Königszone angehören.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{SquareSet}\PY{p}{(}\PY{p}{)}
-            \PY{n}{king\PYZus{}rank}\PY{p}{,} \PY{n}{king\PYZus{}file} \PY{o}{=} \PY{n}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{Piece}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)}
-        
-            \PY{n}{rank\PYZus{}range} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
-            \PY{k}{for} \PY{n}{rank\PYZus{}summand} \PY{o+ow}{in} \PY{n}{rank\PYZus{}range}\PY{p}{:}
-                \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
-                    \PY{k}{for} \PY{n}{file\PYZus{}summand} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
-                        \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
-                            \PY{n}{king\PYZus{}zone}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{,} \PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)}\PY{p}{)}
-            
-            \PY{k}{return} \PY{n}{king\PYZus{}zone}
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{SquareSet}\PY{p}{(}\PY{p}{)}
+             \PY{n}{king\PYZus{}rank}\PY{p}{,} \PY{n}{king\PYZus{}file} \PY{o}{=} \PY{n}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{Piece}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)}
+         
+             \PY{n}{rank\PYZus{}range} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+             \PY{k}{for} \PY{n}{rank\PYZus{}summand} \PY{o+ow}{in} \PY{n}{rank\PYZus{}range}\PY{p}{:}
+                 \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{for} \PY{n}{file\PYZus{}summand} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
+                         \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                             \PY{n}{king\PYZus{}zone}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{,} \PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)}\PY{p}{)}
+             
+             \PY{k}{return} \PY{n}{king\PYZus{}zone}
 \end{Verbatim}
 
     Um dies zu ermöglichen, wird zunächst die Position des Königs ermittelt.
 Dabei werden alle Felder durchgegangen bis der König der entsprechenden
-Farbe gefunden wurde. Dann wird Reihe sowie Spalte zurückgegeben.
+Farbe gefunden wurde. Dann wird Reihe sowie Spalte zurückgegeben:
 
-Nun werden alle Felder der Königszone einzeln durchgegangen und zu der
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{piece}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{rank} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+                     \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)} \PY{o}{==} \PY{n}{piece}\PY{p}{:}
+                         \PY{k}{return} \PY{n}{rank}\PY{p}{,} \PY{n}{file}
+\end{Verbatim}
+
+    Nun werden alle Felder der Königszone einzeln durchgegangen und zu der
 Menge an Feldern hinzugeführt. Dabei werden bei den Spaltel alle Felder
 bis 3 Felder in Richtung des Gegners durchgegangen und für jede Spalte
 ein Feld links bis zu einem Feld rechts von dem König mitgezählt. Dabei
@@ -779,20 +1623,20 @@ wird zuvor jeweils überprüft, ob sich die Spalte beziehungsweise die
 Reihe noch au fdem Spielfeld befinden. Ist dies der Fall, wird das Feld
 der Menge hinzugefügt und diese wird am Ende zurück gegeben.
 
-Als nächstes wir ddann für diese Menge an Feldern ermittelt, welche
+Als nächstes wir dann für diese Menge an Feldern ermittelt, welche
 Figuren diese Felder angreifen. Dies wird mittels der
 \texttt{get\_attackers\_by\_squares} Funktion durchgeführt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{square\PYZus{}set}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{attacker\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
-            \PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{square\PYZus{}set}\PY{p}{:}
-                \PY{n}{attacker\PYZus{}square\PYZus{}set} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{attackers}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)}
-                \PY{k}{for} \PY{n}{attacker\PYZus{}square} \PY{o+ow}{in} \PY{n}{attacker\PYZus{}square\PYZus{}set}\PY{p}{:}
-                    \PY{n}{attacker\PYZus{}piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{attacker\PYZus{}square}\PY{p}{)}
-                    \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{PAWN} \PY{o+ow}{or} \PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{)}\PY{p}{:}
-                        \PY{n}{attacker\PYZus{}dict}\PY{p}{[}\PY{n}{attacker\PYZus{}piece}\PY{p}{]} \PY{o}{=} \PY{n}{attacker\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}
-            \PY{k}{return} \PY{n}{attacker\PYZus{}dict}
+{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{square\PYZus{}set}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{attacker\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+             \PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{square\PYZus{}set}\PY{p}{:}
+                 \PY{n}{attacker\PYZus{}square\PYZus{}set} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{attackers}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)}
+                 \PY{k}{for} \PY{n}{attacker\PYZus{}square} \PY{o+ow}{in} \PY{n}{attacker\PYZus{}square\PYZus{}set}\PY{p}{:}
+                     \PY{n}{attacker\PYZus{}piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{attacker\PYZus{}square}\PY{p}{)}
+                     \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{PAWN} \PY{o+ow}{or} \PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{attacker\PYZus{}dict}\PY{p}{[}\PY{n}{attacker\PYZus{}piece}\PY{p}{]} \PY{o}{=} \PY{n}{attacker\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}
+             \PY{k}{return} \PY{n}{attacker\PYZus{}dict}
 \end{Verbatim}
 
     Dabei wird jedes Feld einzeln durchgegangen und für alle jeweils eine
@@ -807,43 +1651,396 @@ zurückgegeben.
 Nachdem dieses Dictionary zurückgegeben wurde, wird die Gewichtung der
 Attacke ermittelt. Dabei wird die Anzahl der verschiedenen Figuren, die
 die Zone angreifen, zur Hilfe genommen und ein ensprechender Wert
-zurückgegeben, wie in Kapitel INSERT beschrieben.
+zurückgegeben, wie in Kapitel \ref{defense_evaluation} beschrieben.
 
-Abschließend wird für jeden Angreifer noch der Wert dieses ermittelt,
-wie ebenfalls in Kapitel INSERT beschrieben, und diese alle aufaddiert.
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}king\PYZus{}attack\PYZus{}weight}\PY{p}{(}\PY{n}{piece\PYZus{}counter}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{0}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{l+m+mi}{50}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{l+m+mi}{75}\PY{p}{,}
+                 \PY{l+m+mi}{4}\PY{p}{:} \PY{l+m+mi}{88}\PY{p}{,}
+                 \PY{l+m+mi}{5}\PY{p}{:} \PY{l+m+mi}{94}\PY{p}{,}
+                 \PY{l+m+mi}{6}\PY{p}{:} \PY{l+m+mi}{97}\PY{p}{,}
+                 \PY{l+m+mi}{7}\PY{p}{:} \PY{l+m+mi}{99}
+             \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece\PYZus{}counter}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}king\PYZus{}attack\PYZus{}constants}\PY{p}{(}\PY{n}{piece}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{n}{chess}\PY{o}{.}\PY{n}{KNIGHT}\PY{p}{:} \PY{l+m+mi}{20}\PY{p}{,}
+                 \PY{n}{chess}\PY{o}{.}\PY{n}{BISHOP}\PY{p}{:} \PY{l+m+mi}{20}\PY{p}{,}
+                 \PY{n}{chess}\PY{o}{.}\PY{n}{ROOK}\PY{p}{:} \PY{l+m+mi}{40}\PY{p}{,}
+                 \PY{n}{chess}\PY{o}{.}\PY{n}{QUEEN}\PY{p}{:} \PY{l+m+mi}{80}
+             \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+\end{Verbatim}
+
+    Abschließend wird für jeden Angreifer noch der Wert dieses ermittelt,
+wie ebenfalls in Kapitel \ref{defense_evaluation} beschrieben, und diese alle aufaddiert.
 Dieser Wird wird dann mit dem berechneten Gewicht multipliziert und
 durch 1000 dividiert. Das Ergebnis aus dieser Berechnung wird dann
 zurückgegeben und gibt einen Aufschluss über die Sicherheit des Königs.
 Dies kann auch für die Sicherheit des gegnerischen Königs angewandt
 werden, indem schlicht die Farbe des Angreifers auf die eigene Farbe
-gesetzt wird.
+gesetzt wird. Auch hier kann die Sicherheit des gegnerischen Königs
+berechnet werden, indem die Funktion ausgeführt wird, nachdem zuvor die
+angegebene Farbe invertiert wird.
 
-    \subsubsection{Mobilität}\label{mobilituxe4t}
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{opp\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opp\PYZus{}color}\PY{p}{)}
+\end{Verbatim}
 
-    \subsubsection{Bewertung an Hand angelegter
+    \subsection{Mobilität}\label{mobilituxe4t}
+
+Bei der Berechnung eines Wertes zur Mobilität wird dieser an Hand der
+Differenz der legalen Züge von Spieler schwarz und Spieler weiß
+festgemacht. Dazu wird zunächst überprüft, ob es überhaut möglich ist
+einen Zug auszuführen. Ist dies nicht der Fall ist sowohl die Anzahl der
+Züge des Spielers, der am Zug ist, als auch die des nachfolgenden
+Spielers 0. Andernfalls wird ein zufälliger (hier: der erste) legaler
+Zug ausgeführt und der Wert der legalen Züge von diesem berechnet. Dabei
+wird aus Performanz Gründen nicht der Durchschnitt aller möglchen Züge
+berechnet, sondenr ein zufälliger Wert. Andernfalls hätte diese einzelne
+Evaluierungsfunktion so viel Zeit in Anspruch genommen, dass die
+Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{player} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+         
+             \PY{k}{if} \PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{l+m+mi}{0}
+             
+             \PY{k}{if} \PY{n}{player} \PY{o}{==} \PY{n}{color}\PY{p}{:}
+                 \PY{k}{return} \PY{p}{(}\PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{\PYZhy{}} \PY{n}{next\PYZus{}turn\PYZus{}len}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{10}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{k}{return} \PY{p}{(}\PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{\PYZhy{}} \PY{n}{current\PYZus{}turn\PYZus{}len}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{10}
+\end{Verbatim}
+
+    Abschließend wird die Differenz der Anzahl der legalen Züge vom
+aktuellen Spielzustand und des berechneten möglichen nächstne Zustandes
+berechnet und zurückgegeben. Dabei wird entweder ein positiver Wert
+zurückgegeben, wenn der aktuelle Spieler mehr Züge hat. Dies ist der
+Fall, wenn der Spieler, der aktuell an der Reihe ist, dem entspricht,
+aus dessen Sicht der Zustand evaluiert wird. Andernfalls wird ein Wert
+aus der Sicht des Spielers zurückgegeben, der als nächstes am Zug ist.
+So wird gewährleistet, dass das Ergebnis stets aus Sicht des Spielers
+berechnet wird, aus dessen Sicht der Zustand evaluiert werden soll.
+
+    \subsection{Bewertung an Hand angelegter
 Historie}\label{bewertung-an-hand-angelegter-historie}
 
 Besonders am Anfang des Spiels ist es oft unschlüssig, wie man ein
 Schachbrett bewerten kann, da noch sehr viele Optionen des Spielverlaufs
 offen sind. Dabei kann eine angelegte Historie helfen, die Aufschluss
 über Siegchancen geben kann. Wie eine solche Historie angelegt werden
-kann, wurde in Kapitel INSERT besprochen.
+kann, wurde in Kapitel \ref{verwalten-des-schachspiels-und-pflege-des-spielverlaufs} besprochen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-            \PY{n}{dataset} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
-            \PY{n}{row} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{dataset}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{board}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
-            \PY{n}{value} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1} \PY{k}{else} \PY{l+m+mi}{0}
-            \PY{k}{return} \PY{n}{value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{*}\PY{n}{value}
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{dataset} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
+             \PY{n}{row} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{dataset}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{board}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+             \PY{n}{value} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1} \PY{k}{else} \PY{l+m+mi}{0}
+             \PY{k}{return} \PY{n}{value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{o}{*}\PY{n}{value}
 \end{Verbatim}
 
     Abgefragt werden kann diese, indem zunächst die Daten aus der Datei
 geladen werden. Dann wird die Reihe abstrahiert, dessen Wert in der
-Spalte ``board`` dem mitgegebenen Zustand (in FEN-Notation konvertiert)
+Spalte "board" dem mitgegebenen Zustand (in fen Notation konvertiert)
 gleicht. Dazu wird der entsprechende Wert ausgelesen und zurückgegeben.
 Beim Zurückgeben wird der Wert noch negiert, falls der angegebene
 Spieler der der schwarzen Figuren ist, da in der Historie die Werte aus
 Sicht des Spielers der weißen Figuren gespeichert wird.
 
+    \section{Ausgabe des Schachbretts und Eingabe von
+Schachzügen}\label{ausgabe-des-schachbretts-und-eingabe-von-schachzuxfcgen}
 
-    % Add a bibliography block to the postdoc
+Nachdem die Schach-KI bereits Berechnungen durchführen und somit auf
+Schachzüge reagieren kann ist die Visualisierung des Spielverlaufs ein
+essenzieller Bestandteil, wenn ein Spieler mit der KI spielen soll.
+Dabei hat die Visualisierung einerseits die Aufgabe die aktuelle
+Spielsituation zu illustrieren, als auch andererseits die vom Spieler
+gewählten Züge entgegenzunehmen.
+
+In Kapitel \ref{kriterienformulierung} sind die Kriterien für diese wissenschaftliche Arbeit
+aufgelistet und ein wichtiger Aspekt dabei ist die Visualisierung des
+Spiels mittels ASCII-Zeichen in der Konsole. Damit das Schachbrett
+angezeigt werden kann werden zwei verschiedene Bibliotheken benötigt.
+
+\texttt{sty} ist eine Python Bibliothek, die die Hintergrund- und
+Schriftfarbe in der Konsole für einzelne Zeichen angeben kann. Hierbei
+unterstützt die Bibliothek verschiedene 24bit Farben, die eine optimale
+Auswahl an Farben für das Schachbrett garantieren. Eine Hürde bei der
+Umsetzung ist, dass Microsoft Windows Betriebssysteme aktuell Probleme
+mit der Visualisierung und der Verwendung dieses Moduls hat. Um jedoch
+trotzdem ein Schachbrett mit unterschiedlich farbigen Feldern und
+Figuren, die sich von dem Hintergrund der Konsole abheben, garantieren
+zu können wird die Bibliothek \texttt{colorama} benötigt.
+
+\texttt{colorama} ist ebenfalls eine Python Bibliothek, mittels der
+Hintergrund- und Schriftfarbe angegeben werden kann. Jedoch ist der
+Farbraum auf acht verschiedene Farben begrenzt und bietet somit im
+Gegensatz zu \texttt{sty}, bei der Bibliothek 16.777.216 verschiedene
+Farben verfügbar sind, eine weniger gut unterscheidbare Farbpalette für
+die Visualisierung des Schachbretts.
+
+Aus der Bibliothek \texttt{sty} muss \texttt{fg} für die Darstellung der
+Schriftfarbe, \texttt{bg} für die Darstellung der Hintergrundfarbe und
+\texttt{rs} importiert werden. \texttt{rs} wird benötigt um die Farben
+nach Verwendung wieder auf die Standardfarben der Konsole zu setzen.
+
+Hingegen muss aus der Bibliothek \texttt{colorama} die Funktion
+\texttt{init} importiert werden, die speziell für die Visualisierung der
+Farben auf Mircrosoft Windows Betriebssystemen benötigt wird. Dabei
+filtert die Funktion \texttt{init} die ANSI Zeichenketten, da diese von
+Microsoft Windows Produkten nicht untertstütz wird und ersetzt diese
+durch die äquivalenten Windows Befehle.
+
+Ebenfalls wird aus \texttt{colorama} die Unterstützung für die
+Veränderung von Schrift- und Hintergrundfarben
+\texttt{Fore}/\texttt{Back} importiert.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{k+kn}{from} \PY{n+nn}{sty} \PY{k}{import} \PY{n}{fg}\PY{p}{,} \PY{n}{bg}\PY{p}{,} \PY{n}{rs}
+         \PY{k+kn}{from} \PY{n+nn}{colorama} \PY{k}{import} \PY{n}{init}
+         \PY{k+kn}{from} \PY{n+nn}{colorama} \PY{k}{import} \PY{n}{Fore}\PY{p}{,} \PY{n}{Back}
+\end{Verbatim}
+
+    Neben dem Import der benötigten Module werden Konstanten definiert, die
+im weiteren Verlauf der Visualisierung mehrfach benötigt werden.
+Hierunter fällt die Definition der Hintergrund- und Schriftfarben für
+\texttt{sty} und \texttt{colorama} und eine Liste, die alle benötigten
+Buchstaben eines Schachbretts enthält, die zur Benennung der X-Achse
+benötigt werden. Ebenfalls werden drei Konstanten definiert, die eine
+Anweisung für den Nutzer enthalten und zu einem passenden Zeitpunkt
+ausgegeben werden, wie bspw. die Eingabe des zu verwendenden Zuges des
+Nutzers.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{FG\PYZus{}BLACK} \PY{o}{=} \PY{n}{fg}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+         \PY{n}{FG\PYZus{}WHITE} \PY{o}{=} \PY{n}{fg}\PY{p}{(}\PY{l+m+mi}{255}\PY{p}{,} \PY{l+m+mi}{255}\PY{p}{,}\PY{l+m+mi}{255}\PY{p}{)}
+         \PY{n}{BG\PYZus{}BLACK} \PY{o}{=} \PY{n}{bg}\PY{p}{(}\PY{l+m+mi}{222}\PY{p}{,} \PY{l+m+mi}{184}\PY{p}{,} \PY{l+m+mi}{135}\PY{p}{)}
+         \PY{n}{BG\PYZus{}WHITE} \PY{o}{=} \PY{n}{bg}\PY{p}{(}\PY{l+m+mi}{211}\PY{p}{,} \PY{l+m+mi}{211}\PY{p}{,} \PY{l+m+mi}{211}\PY{p}{)}
+         
+         \PY{n}{FG\PYZus{}BLACK\PYZus{}WIN} \PY{o}{=} \PY{n}{Fore}\PY{o}{.}\PY{n}{BLACK}
+         \PY{n}{FG\PYZus{}WHITE\PYZus{}WIN} \PY{o}{=} \PY{n}{Fore}\PY{o}{.}\PY{n}{RED}
+         \PY{n}{BG\PYZus{}BLACK\PYZus{}WIN} \PY{o}{=} \PY{n}{Back}\PY{o}{.}\PY{n}{YELLOW}
+         \PY{n}{BG\PYZus{}WHITE\PYZus{}WIN} \PY{o}{=} \PY{n}{Back}\PY{o}{.}\PY{n}{GREEN}
+         
+         \PY{n}{NUM\PYZus{}TO\PYZus{}ALPHABET} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{C}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{E}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{H}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         
+         \PY{n}{ASK\PYZus{}FOR\PYZus{}MOVE\PYZus{}MESSAGE} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Possible Moves: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Enter your move: }\PY{l+s+s2}{\PYZdq{}}
+         \PY{n}{WRONG\PYZus{}INPUT\PYZus{}MESSAGE} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Given move not in legal moves. Please repeat}\PY{l+s+s2}{\PYZdq{}}
+         \PY{n}{PLAYER\PYZus{}TURN\PYZus{}MESSAGE} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{It}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{s turn: }\PY{l+s+s2}{\PYZdq{}}
+\end{Verbatim}
+
+    Damit die Schach-KI die Ausgabe je nach Betriebssystem ändern kann muss
+erst ermittelt werden, ob der Nutzer ein Microsoft Produkt nutzt, oder
+nicht. Dafür wird eine Funktion \texttt{os\_is\_windows} definiert, die
+als Rückgabewert ein Boolean-Wert gibt, ob es sich um ein Windows
+handelt, oder nicht.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{k}{def} \PY{n+nf}{os\PYZus{}is\PYZus{}windows}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{p}{\PYZob{}}
+                     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{linux1}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{k+kc}{False}\PY{p}{,}
+                     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{linux2}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{k+kc}{False}\PY{p}{,}
+                     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{darwin}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{k+kc}{False}\PY{p}{,}
+                     \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{win32}\PY{l+s+s1}{\PYZsq{}} \PY{p}{:} \PY{k+kc}{True}
+                 \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{sys}\PY{o}{.}\PY{n}{platform}\PY{p}{]}
+\end{Verbatim}
+
+    Verwendet wird die Funktion \texttt{os\_is\_windows} in
+\texttt{ensure\_windows\_compability}, die die Aufgabe hat die
+\texttt{colorama} Funktion \texttt{init()} zu verwenden, wenn es sich um
+ein Microsoft Betriebssystem handelt. Die Funktion \texttt{init} bekommt
+in diesem Fall den speziellen Übergabewert \texttt{autoreset=True}, der
+dafür zuständig ist die Schrift- und Hintergrundfarbe nach Verwendung
+von \texttt{colorama} auf die ursprüngliche zu stellen.
+
+Die Funktion \texttt{ensure\_windows\_compability} gibt den
+Boolean-Wert, ob es sich um ein Microsoft Betriebssystem handelt zurück.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{k}{def} \PY{n+nf}{ensure\PYZus{}windows\PYZus{}compability}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{os\PYZus{}windows} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{os\PYZus{}is\PYZus{}windows}\PY{p}{(}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{os\PYZus{}windows}\PY{p}{:}
+                     \PY{n}{init}\PY{p}{(}\PY{n}{autoreset}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{os\PYZus{}windows}
+\end{Verbatim}
+
+    Die zuletzt eingeführten Funktionen werden von dem Programm im
+Konstruktor aufgerufen und der Boolean-Wert der Variable
+\texttt{need\_win\_support} zugewiesen. Diese Variable wird im späteren
+Verlauf der Visualisierung benötigt um entscheiden zu können, ob das
+Modul \texttt{sty} oder \texttt{colorama} genutzt werden soll.
+
+    Damit der Nutzer der Schach-KI schnell erkennen kann welche Figur sich
+auf welchem Feld befindet wird in der Visualisierung auf der X-Achse die
+Buchstaben A bis H angegeben. Zur Ausgabe dieser Zeichen wird die
+Funktion \texttt{print\_alphabetical\_description} verwendet, die
+mittels einer for-Schleife von 0 bis einschließlich 8 iteriert und
+nacheinander die Zeichen aus der \texttt{NUM\_TO\_ALPHABET} Konstante
+ausgibt.
+
+Das erste Zeichen, das ausgegeben wird ist ein Leerzeichen, da das
+Schachbrett zur besseren Navigation neben den Buchstaben auch Zahlen
+enthalten soll und somit diese erste Spalte nicht das Schachbrett,
+sondern die Zahlen sind.
+
+Die Python \texttt{print} Funktion wird während der gesamten Ausgabe des
+Schachbretts mit zusätzlichen Parametern ausgestattet, die den Inhalt
+zentrieren und diesem eine bestimmte Breite zuweisen. Ebenfalls ist es
+in Python 3 Standard, dass nach der \texttt{print} Funktion eine neue
+Zeile gestartet wird, dies wird mittels
+\texttt{end=\textquotesingle{}\textquotesingle{}} umgangen, da das
+Schachbrett nicht jedes Feld in einer neuen Zeile besitzen soll.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{k}{def} \PY{n+nf}{print\PYZus{}alphabetical\PYZus{}description}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{9}\PY{p}{)}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{n}{NUM\PYZus{}TO\PYZus{}ALPHABET}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+    Um das Schachbrett besser ausgeben und Farben zuordnen zu können wird es
+in eine Matrix umgewandelt. Die Formatierung in eine Matrix wird in der
+Funktion \texttt{create\_board\_matrix(self,\ board)} umgesetzt, die als
+Übergabewert die aktuelle Spielsituation erhält.
+
+Aus dem Schachbrett wird mittels der Funktion \texttt{fen()} die
+aktuelle Schachsituation als Zeichenkette exportiert. Hierbei muss
+darauf geachtet werden, dass nur der erste Teil der Zeichenkette
+beachtet wird und nicht zusätzliche Informationen, wie bspw. die Partei,
+die am Zug ist, exportiert wird.
+
+Da das Board als Zeichenkette bspw. \texttt{8/2K5/4B3/3N4/8/8/4k3/8} so
+aussehen kann und die Informationen einer Zeile durch ein \texttt{/}
+voneinander getrennt sind, wird in einer for-Schleife pro Iteration die
+Informationen bis zum nächsten \texttt{/} ausgelesen. Daraufhin wird für
+jedes Element dieser Informationen überprüft, ob es sich um eine Zahl
+oder einen Buchstaben handelt. Sollte es sich um eine Zahl handeln, dann
+ist dies die Anzahl der freien Felder bis zum nächsten Zeichen oder der
+nächsten Zeile. Für jede Zahl wird ein Leerzeichen pro Höhe der Zahl zu
+einer Liste \texttt{line} hinzugefügt. Handelt es sich um keine Zahl,
+sondern um einen Buchstaben, dann ist dies eine Figur und diese wird
+ebenfalls zur Liste \texttt{line} hinzugefügt.
+
+Nach jeder Zeile wird die Liste \texttt{line} zu einer weiteren Liste
+\texttt{board\_matrix} hinzugefügt, die nach Abschluss der Funktion
+\texttt{create\_board\_matrix} zurückgegeben wird.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{k}{def} \PY{n+nf}{create\PYZus{}board\PYZus{}matrix}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{board\PYZus{}fen} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+                 \PY{n}{board\PYZus{}matrix} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+                 \PY{k}{for} \PY{n}{row} \PY{o+ow}{in} \PY{n}{board\PYZus{}fen}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{line} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+                     \PY{k}{for} \PY{n}{character} \PY{o+ow}{in} \PY{n}{row}\PY{p}{:}
+                         \PY{k}{if} \PY{n}{character}\PY{o}{.}\PY{n}{isdigit}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                             \PY{k}{for} \PY{n}{empty} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{int}\PY{p}{(}\PY{n}{character}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                                 \PY{n}{line}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                         \PY{k}{else}\PY{p}{:} 
+                             \PY{n}{line}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{character}\PY{p}{)}
+                     \PY{n}{board\PYZus{}matrix}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{line}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{board\PYZus{}matrix}
+\end{Verbatim}
+
+    Zur optimalen Visualisierung des Schachbretts können die Buchstaben, die
+eine Figur beschreiben gewandelt werden. Für
+diese Umsetzung wird die Funktion \texttt{piece\_switcher(self,\ piece)}
+benötigt, die anhand der übergebenen Buchstaben die Figur als
+Unicode-Zeichen zurückgibt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{k}{def} \PY{n+nf}{piece\PYZus{}switcher}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{piece}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{return} \PY{p}{\PYZob{}}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{K}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2654}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Q}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2655}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{R}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2656}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{B}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2657}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{N}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2658}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{P}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u2659}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265A}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{q}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265B}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265D}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265E}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+sa}{u}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}u265F}\PY{l+s+s1}{\PYZsq{}}
+                 \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece}\PY{p}{,} \PY{n}{piece}\PY{p}{)}
+\end{Verbatim}
+
+    Für die Ausgabe eines Feldes und dessen Farben ist die Funktion
+\texttt{create\_piece(self,\ character,\ field\_is\_dark)} zuständig,
+die die Schachfigur als Buchstaben und einen booleschen Wert, ob das zu
+erzeugenden Feld dunkel oder hell sein muss, übergeben bekommt.
+
+Zu Beginn wird mittels des Buchstabens das passende Zeichen ausgewählt
+und je nachdem, ob der Buchstaben groß oder klein geschrieben ist eine
+andere Schriftfarbe zugeordnet. Die weißen Figuren werden als Groß- und
+die schwarzen als Kleinbuchstaben geschrieben.
+
+Daraufhin wird der Figur je nach dem Wert der Variable
+\texttt{field\_is\_dark} eine Hintergrundfarbe zugewiesen und dies
+zurückgegeben.
+
+Da jedoch Microsoft Windows kein Unicode in Konsolen unterstützt, wird
+bei Nutzern dieses Betriebssystems nur die Buchstaben ausgegeben. Die
+Implementierung dieser Windows-Spezifikation wird innerhalb der Funktion
+\texttt{create\_piece\_win(self,\ character,\ field\_is\_dark)}
+umgesetzt, die analog zu der vorgestellten ist, jedoch sich in dem Punkt
+unterscheidet, dass das Modul \texttt{colorama} verwendet wird und kein
+Unicode-Zeichen ausgegeben wird, sondern der übergebene Buchstabe.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{k}{def} \PY{n+nf}{create\PYZus{}piece}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{character}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{chess\PYZus{}piece} \PY{o}{=} \PY{n+nb}{str}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{piece\PYZus{}switcher}\PY{p}{(}\PY{n}{character}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{chess\PYZus{}piece\PYZus{}color} \PY{o}{=} \PY{n}{FG\PYZus{}BLACK} \PY{k}{if} \PY{n}{character}\PY{o}{.}\PY{n}{isupper}\PY{p}{(}\PY{p}{)} \PY{k}{else} \PY{n}{FG\PYZus{}WHITE}
+                 \PY{n}{colored\PYZus{}chess\PYZus{}piece} \PY{o}{=} \PY{n}{chess\PYZus{}piece\PYZus{}color} \PY{o}{+} \PY{n}{chess\PYZus{}piece}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)} \PY{o}{+} \PY{n}{fg}\PY{o}{.}\PY{n}{rs}
+                 \PY{n}{background\PYZus{}color} \PY{o}{=} \PY{n}{BG\PYZus{}BLACK} \PY{k}{if} \PY{n}{field\PYZus{}is\PYZus{}dark} \PY{o+ow}{is} \PY{k+kc}{False} \PY{k}{else} \PY{n}{BG\PYZus{}WHITE}
+                 \PY{n}{field} \PY{o}{=} \PY{n}{background\PYZus{}color} \PY{o}{+} \PY{n}{colored\PYZus{}chess\PYZus{}piece} \PY{o}{+} \PY{n}{bg}\PY{o}{.}\PY{n}{rs}
+                 \PY{k}{return} \PY{n}{field}
+\end{Verbatim}
+
+    Zur Koordination dieser vorgestellten Funktionen und somit der Ausgabe
+des Schachbretts wird die Funktion
+\texttt{print\_board(self,\ player\_name,\ board)} verwendet. Dabei wird
+zuerst die Konstante \texttt{PLAYER\_TURN\_MESSAGE} mit dem passenden
+Spielername ausgegeben und daraufhin die Matrix des Schachbretts
+berechnet.
+
+Daraufhin werden die Buchstaben der x-Achse des Schachbretts ausgegeben
+und darauf eine for-Schleife verwendet, die aus der Anzahl der
+vorhandenen Spalten iteriert. Innerhalb dieser Schleife wird jeweils zu
+Beginn einer Zeile die aktuelle y-Achsen Zahl ausgegeben und daraufhin
+eine neue for-Schleife gestartet, die berechnet, ob das Feld dunkel oder
+hell sein muss. Ebenfalls wird in dieser zweiten for-Schleife Gebrauch
+von der Funktion \texttt{create\_piece} gemacht und die Schachfigur
+ausgegeben. Am Ende jeder Zeile wird, analog zum Beginn einer Zeile, die
+y-Achsen Zahl ausgegeben.
+
+Nachdem alle Zeilen ausgegeben wurden, wird erneut die x-Achsen
+Beschreibung der Konsole übermittelt.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{k}{def} \PY{n+nf}{print\PYZus{}board}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{player\PYZus{}name}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
+                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{player\PYZus{}name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{PLAYER\PYZus{}TURN\PYZus{}MESSAGE}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{player\PYZus{}name}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{board\PYZus{}matrix} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}board\PYZus{}matrix}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{print\PYZus{}alphabetical\PYZus{}description}\PY{p}{(}\PY{p}{)}
+                 \PY{k}{for} \PY{n}{row\PYZus{}index}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{board\PYZus{}matrix}\PY{p}{)}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{8} \PY{o}{\PYZhy{}} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                     \PY{k}{for} \PY{n}{field\PYZus{}index}\PY{p}{,} \PY{n}{field} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{row}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{field\PYZus{}is\PYZus{}dark} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{p}{(}\PY{n}{field\PYZus{}index} \PY{o}{+} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{o}{\PYZpc{}} \PY{l+m+mi}{2}\PY{p}{)}
+                         \PY{n}{colored\PYZus{}field} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)} \PY{k}{if} \PY{o+ow}{not} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{need\PYZus{}win\PYZus{}support} \PY{k}{else} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{create\PYZus{}piece\PYZus{}win}\PY{p}{(}\PY{n}{field}\PY{p}{,} \PY{n}{field\PYZus{}is\PYZus{}dark}\PY{p}{)}
+                         \PY{n+nb}{print}\PY{p}{(}\PY{n}{colored\PYZus{}field}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{8} \PY{o}{\PYZhy{}} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{print\PYZus{}alphabetical\PYZus{}description}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
