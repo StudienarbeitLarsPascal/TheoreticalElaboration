@@ -445,7 +445,7 @@ R N B Q K B . R
     \subsection{Ausgeben des Boards als
 SVG}\label{ausgeben-des-boards-als-svg}
 
-Um eine bessere Darstellung und Erklärung der Implementation in der
+Um eine bessere Darstellung und Erklärung der Implementierung in der
 theoretischen Ausarbeitung zu ermöglichen, wäre eine visuelle
 Darstellung des Schachbretts wünschenswert. Die ``python-chess-library``
 ermöglicht dies durch ein Konvertieren des Boards zu einer SVG-Datei.
@@ -1240,11 +1240,11 @@ Dieser spricht die vom Controller erstellten Spieler an. Diese können, wie bere
 
 Dazu existiert eine ``Player'' Schnittstelle, die für jeden dieser Spieler implementiert werden muss.
 
-Die ``User'' Implementation greift dabei zur Ermittlung des Zuges auf eine ``PlayerIO'' Schnittstelle zurück. Diese wiederum kann - ähnlich zur ``SettingsUI'' Schnittstelle - sowohl für Eingaben über eine Konsole als auch für Eingaben über eine grafische Nutzeroberfläche implementiert werden.
+Die ``User'' Implementierung greift dabei zur Ermittlung des Zuges auf eine ``PlayerIO'' Schnittstelle zurück. Diese wiederum kann - ähnlich zur ``SettingsUI'' Schnittstelle - sowohl für Eingaben über eine Konsole als auch für Eingaben über eine grafische Nutzeroberfläche implementiert werden.
 
-Die ``AI'' sowie die ``API'' Implementation greifen für die Ermittlungen ihrer Züge nochmals auf eigens erstellte Bibliotheken zurück, die elementare Funktionen erhalten.
+Die ``AI'' sowie die ``API'' Implementierung greifen für die Ermittlungen ihrer Züge nochmals auf eigens erstellte Bibliotheken zurück, die elementare Funktionen erhalten.
 
-Der genaue Ablauf der Ermittlung der Züge sowie der andere Operationen des Programmes werden in Kapitel XY.ZY näher erläutert.
+Der genaue Ablauf der Ermittlung der Züge sowie der andere Operationen des Programmes werden in Kapitel \ref{zugfindung-durch-ki}  näher erläutert.
 
 In Figur 3.2.2 ist der sequenteille Ablauf der Funktionsaufrufe erkennbar.
 
