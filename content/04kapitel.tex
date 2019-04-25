@@ -217,7 +217,7 @@ Argumente ausgewählt werden dürfen. Dies hat den Grund, dass sich der
 Nutzer zwischen der Verwendung des Graphical User Interface und der
 Konsole entscheiden muss und nicht beides gleichzeitig verwenden kann.
 
-Jedes Argument, das hinzugefügt wird kann dabei durch zwei verschiedene
+Jedes Argument, das hinzugefügt wird, kann dabei durch zwei verschiedene
 Argumente angesprochen werden. Die Kurzform dieses Arguments wird mit
 einem Spiegelstrich angesprochen und die längere Variante mit zwei
 Spiegelstrichen. Durch den Parameter \texttt{help} lässt sich dem Nutzer
@@ -251,7 +251,7 @@ aufgelistet.
 
 Als letztes Argument wird ein Parameter initialisiert, der für die
 Version der Schach-KI zuständig ist. Nachdem alle Argumente
-initialisiert wurden wird der Parser zu dem diese Argumente gehören
+initialisiert wurden wird der Parser, zu dem diese Argumente gehören,
 zurückgegeben.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -289,7 +289,7 @@ verwendet werden.
 Falls der Nutzer die Schach-KI startet ohne ein Übergabeparameter oder
 mit dem Parameter \texttt{-g}/\texttt{-\/-gui} wird der Variable
 \texttt{ui\_status} der Wert \texttt{1} zugewiesen. Diese Variable wird
-im weiteren Verlauf des Codes dazu verwendet um entscheiden zu können
+im weiteren Verlauf des Codes dazu verwendet, um entscheiden zu können
 welche Visualisierungsmöglichkeit ausgewählt wurde.
 
 Der aktuelle Stand ist, dass nur die Nachricht für den Nutzer ausgegeben
@@ -319,7 +319,7 @@ die aktuelle Versionsnummer.
                 \PY{n+nb}{print}\PY{p}{(}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
 \end{Verbatim}
 
-    Die zusätzlichen Argumente, die der Nutzer angeben kann werden in der
+    Die zusätzlichen Argumente, die der Nutzer angeben kann, werden in der
 Funktion \texttt{start\_chess\_master(ui\_status)} verwendet um damit
 steuern zu können, ob die Einstellungen des Spiels gesetzt wurden, oder
 diese abgefragt werden müssen.
@@ -373,7 +373,7 @@ Nutzerschnittstelle abgefragt. Dies sieht wie folgt aus:
 
     Dabei werden für jeden Spieler einmal ein Block an Abfragen
 durchgegangen, der alle Einstellungen abfragt und diese entsprechend
-speichet.
+speichert.
 
 Nach der Abfrage der Informationen "Name" und "Spielertyp" wird im
 Falle, dass dieser Spielertyp "2", der der KI entspricht, gleicht, auch
@@ -382,7 +382,7 @@ Startparameter übergeben worden sein.
 
 Die Funktionen zur Abfrage dieser Informationen müssen in der
 Implementierung der Schnittstelle definiert werden. Dies kann also
-sowohl in der GUI als auch der terminal Implementierung stattfinden. Die
+sowohl in der GUI als auch in der Terminal-Implementierung stattfinden. Die
 Implementierung dieser Informationsabfrage ist in der
 \texttt{settings/terminal.py} Datei vorzufinden und sieht wie folgt aus:
 
@@ -605,26 +605,26 @@ aus:
 kann, durchgegangen und anschließend das jeweilige Ergebnis
 zurückgegeben. Eine 1 steht für einen Sieg für weiß, eine -1 für einen
 Sieg für schwarz und eine 0 für ein Unentschieden beziehungsweise einen
-Patt.
+Remis.
 
 Nach Abfrage des Ergebnisses werden beide Spieler abhängig von diesem
-entweder dazu aufgefordert eine Siesesbenachrichtigung auszugeben oder
+entweder dazu aufgefordert eine Siegesbenachrichtigung auszugeben oder
 aber eine Benachrichtigung über die Niederlage oder ein Unentschieden.
 
 Zusätzlich zu dem Verwalten des Spiels ist es auch Aufgabe des
 \texttt{ChessMaster}s die Historie aller Spiele zu pflegen. Dazu wird
 zunächst eine Liste von Schachbrettern der Klasse \texttt{chess.Board}
 angelegt. Nach jedem durchgeführten Zug wird der neue Zustand des boards
-zu dieser hinzugefügt. Dabei wird das Schachbrett in der fen-Notation
+zu dieser hinzugefügt. Dabei wird das Schachbrett in der FEN-Notation
 gespeichert, die in einem String den exakten Zustand des Schachbretts
 wiedergeben kann. Dabei wird jedoch nur der erste Teil dieser Notation
 gespeichert, da dieser alleine bereits Aufschluss über die
-Positionierungen gibt. Die darauf folgenden Teile sind zum Speichern des
+Positionierungen gibt. Die darauffolgenden Teile sind zum Speichern des
 Spielers, der am Zug ist, wie viele Züge bereits durchgeführt wurden und
 weitere Informationen, die zum Bewerten in der Historie nicht notwendig
 sind.
 
-Zum Speichern der Züge in einem Verlauf wird die Funktion zum Einen um
+Zum Speichern der Züge in einem Verlauf wird die Funktion zum einen um
 eine Liste \texttt{turn\_list} erweitert, in die die Züge dann als
 FEN Notation abgespeichert werden, die in \ref{FEN-Notation} erklärt wurde. Dazu wird die Funktion wie
 folgt angepasst.
@@ -683,7 +683,7 @@ vorgestellten Funktion \texttt{get\_board\_result}. Danach wird ein
 Dictionary angelegt, das auf der einen Seite jeden gespeicherten Zustand
 des einzupflegenden Spiels als Schlüssel enthält und auf der anderen
 Seite als Wert den Ausgang des Spiels. Zur Erinnerung - dieser beträgt 1
-bei Sieg von weiß, 0 bei Unentschieden/Patt und -1 bei Sieg von Schwarz.
+bei Sieg von Weiß, 0 bei Unentschieden/Remis und -1 bei Sieg von Schwarz.
 
 Nachdem das Dictionary der neu einzupflegenden Züge angelegt ist, wird
 die vorhandene Historie aus der entsprechenden Datei ausgelesen. Dies
@@ -710,7 +710,7 @@ Zusätzlich wurde noch ein Parameter \texttt{repeat} eingeführt, um das
 Spiel mit den gleichen Einstellungen nochmal wiederholen zu können. Dazu
 wird am Ende des Spiels abgefragt, ob das Spiel wiederholt werden soll.
 Solange dies mit einer "1" bestätigt wird, wird das Spiel von vorne
-gestartet. Anderernfalls wird das Spiel und somit das Programm beendet.
+gestartet. Andernfalls wird das Spiel und somit das Programm beendet.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}14}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
@@ -801,8 +801,8 @@ board mit übergeben. Die Findung des Zuges findet dann in der Datei
 Für alle 3 Status unterscheidet sich die Art, wie die KI einen Zug
 finden soll. Standardmäßig befindet sich das Spiel im Zeitfenster des
 Mittelspiel. Mittels dieser wird im Minimax
-Algorithmus (Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}) nach dem besten Zug gesucht. Dies ändert sich wenn
-eine der zwei folgenden Bedinungen zutrifft:
+Algorithmus (Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}) nach dem besten Zug gesucht. Dies ändert sich, wenn
+eine der zwei folgenden Bedingungen zutrifft:
 
 Die erste ist für den Fall, dass sich das Spiel noch innerhalb der
 ersten 10 Züge (5 Züge pro Spieler) befindet. In dem Fall wird es noch
@@ -819,7 +819,7 @@ beschrieben. Ist für beide Spieler der Wert unter 13, so gilt das Spiel
 als Endspiel. Dafür werden auch die Evaluationsfunktionen geändert, um
 statt der üblichen Evaluationen den DTZ Wert zu nehmen, der in Kapitel
 \ref{einbinden-und-verwendung-von-endspiel-datenbanken} erklärt wird, um per Minimax Algorithmus (Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}) nach dem besten
-Zug zu suchen..
+Zug zu suchen.
 
 In beiden Fällen wird der \texttt{game\_status} geändert. An Hand dieser
 bestimmt die Funktion \texttt{get\_evaluation\_funcs\_by\_dif} die
@@ -931,7 +931,7 @@ gute Eröffnungen identifiziert werden.
 Zur Verwendung dieser Bücher müssen diese Dateien, die im .bin-Format
 vorliegen, in eine Variable geladen werden, da später auf diese Bücher
 mittels Funktionen zugegriffen werden soll. Damit die Eröffnungszüge in
-einer Variable gespeichert werden können, muss der Pfad zu dem Buch
+eine Variable gespeichert werden können, muss der Pfad zu dem Buch
 vorliegen, der im folgenden Codeausschnitt in eine globale Konstante
 \texttt{OPENING\_BOOK\_LOC} geschrieben wurde. Dies findet ebenfalls in
 der Datei \texttt{player/ai.py}statt.
@@ -1092,7 +1092,7 @@ der den angegebenen Pfad enthält.
     Wie bereits aus dem Importieren der Opening-Books bekannt, wird die
 benötigte Funktion im Konstruktor der Klasse KI aufgerufen.
 
-    Zur Berechnung der Partei, die sich aktuell im Vorteil befindet wird die
+    Zur Berechnung der Partei, die sich aktuell im Vorteil befindet, wird die
 folgende Funktion \texttt{get\_dtz\_value(self,\ tablebase,\ board)}
 benötigt, die den DTZ-Wert berechnet. Dieser Wert wird auf der Basis des
 aktuellen Spielzustandes in Form der Variable \texttt{board} und der
@@ -1134,7 +1134,7 @@ Evaluierungsfunktionen bewertet.
 
 Die KI geht dabei dann wie folgt vor: Alle möglichen Züge werden
 durchgegangen. Die daraus entstehenden Zustände werden analysiert und
-evaluiert. Dabei jedoch zählt nicht nur der direkt erreichbare Zustand ,
+evaluiert. Dabei jedoch zählt nicht nur der direkt erreichbare Zustand,
 sondern auch die aus diesem Zustand erreichbaren Zustände und so weiter.
 Aus diesem Grund wird immer bis zu einer bestimmten Tiefe in die Züge
 hineingeschaut und die sich daraus ergebenden Zustände evaluiert.
@@ -1206,7 +1206,7 @@ Anschließend wird für den Spieler, der aktuell am Zug ist, berechnet,
 was das bestmöglich zu erreichende Resultat ist. Dies wird mit der
 Funktion \texttt{get\_best\_possible\_result} durchgeführt. Dies ist
 dazu gut, um finale Zustände dahingehend zu evaluieren, ob diese für den
-Nutzer die best mögliche Option ist (Sieg oder Unentschieden wenn Sieg
+Nutzer die best mögliche Option ist (Sieg oder Unentschieden, wenn Sieg
 nicht mehr möglich ist) und dementsprechend zu bewerten. Die Funktion
 sieht wie folgt aus.
 
@@ -1225,7 +1225,7 @@ sieht wie folgt aus.
     Dabei muss der Funktion der aktuelle Zustand sowie der Spieler, der an
 der Reihe ist, mitgegeben werden. Ist der aktuelle Spieler der der
 weißen Figuren (player == True) und hat weiß unzureichende Materialien
-für einen Sieg, so ist der bestmögliche Zustand ein Patt. Das gleiche
+für einen Sieg, so ist der bestmögliche Zustand ein Remis. Das gleiche
 Ergebnis wird zurückgegeben, wenn der Spieler der der schwarzen Figuren
 ist (player == False) und schwarz unzureichende Materialien hat.
 
@@ -1262,7 +1262,7 @@ Nachdem der Minimax-Algorithmus fertig durchlaufen ist, wird der Wert
 mit dem Zug zu dem Dictionary hinzugefügt. Gleicht der Wert dem
 maximalen Wert für einen Zustand, ist also dementsprechend ein Sieg,
 wird der Zug direkt zurückgegeben, da mit diesem dann auf jeden Fall ein
-Sieg erreich werdne kann. Andernfalls wird der Wert verglichen, ob er
+Sieg erreicht werden kann. Andernfalls wird der Wert verglichen, ob er
 besser ist als der aktuelle Wert. Ist dies der Fall, so wird der neue
 beste Wert auf den aktuell berechneten festgelegt, ebenso wie der beste
 Zug auf den der aktuellen Iteration gesetzt wird.
@@ -1298,8 +1298,8 @@ Die Umsetzung dabei erfolgt in zwei Funktionen - \texttt{min\_value} und
 \texttt{max\_value}. Auch diese sind direkt in der Datei
 \texttt{player/ai.py} vorzufinden. Erstere berechnet dabei den schlecht
 möglichsten Ausgang für den Spieler aus einer bestimmten Position, also
-den besten Ausgang für den Gegner. Letztere berechnet den best
-möglichsten Ausgang. Beide Funktionen sind sehr ähnlich aufgebaut und in
+den besten Ausgang für den Gegner. Letztere berechnet den besten
+möglichen Ausgang. Beide Funktionen sind sehr ähnlich aufgebaut und in
 folgendem Code-Snippet zu sehen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -1324,7 +1324,7 @@ folgendem Code-Snippet zu sehen.
              \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
-    Neben dem akteullen Zustand des Spiels in fen Notation und dem Spieler,
+    Neben dem akteullen Zustand des Spiels in FEN-Notation und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
 sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
 Beta sind dabei, wie in Kapitel \ref{alpha_beta} erklärt, dazu da, um den
@@ -1334,12 +1334,12 @@ als irrelevant betrachtet werden können, da ohnehin bereits ein
 besserrer (im Fall von \texttt{min\_value}) bzw. schlechterer (im Fall
 von \texttt{max\_value}) Wert gefunden wurde.
 
-Nachdem das Schachbrett über die fen-Notation erstellt wurde, wird
+Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
 überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe
 auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
 und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
 bereits erreicht wurde. In dem Fall wird der maximal negative Wert
-zurück gegeben, damit dieser Zug keine weitere Beachtung mehr bei der
+zurückgegeben, damit dieser Zug keine weitere Beachtung mehr bei der
 endgültigen Auswahl findet.
 
 Ist auch dies nicht der Fall, werden alle von dem gegebenen Zustand aus
@@ -1354,10 +1354,10 @@ Wert als das neue v genommen. Andernfalls bleibt v beim akteullen Wert.
 
 Anschließend wird überprüft, ob der Wert v kleiner ist als der aktuelle
 Alpha Wert. Ist dies der Fall, muss der Pfad keine weitere Beachtung
-finden und es kann direkt v zurück gegeben werden. ist dies nicht der
+finden und es kann direkt v zurückgegeben werden. ist dies nicht der
 Fall, so wird Beta auf v gesetzt, falls dieser Wert kleiner als das
 aktuelle Beta ist. Nach Durchgang aller legalen Züge wird dann der sich
-aus all diesen Iterationen ergebende Wert v zurück gegeben.
+aus all diesen Iterationen ergebende Wert v zurückgegeben.
 
 Die \texttt{max\_value} Funktion läuft similar ab, mit dem einzigen
 Unterschied, dass hier der maximale statt der minmale Wert gesucht wird
@@ -1437,7 +1437,7 @@ Dann wird für den Fall, dass der gegebene Zustand einem Endzustand
 gleicht, das Ergebnis dieses ermittelt. Gleicht dieses dem bestmöglichen
 Ergebnis, dass mittels der \texttt{get\_board\_result} Funktion zuvor
 ermittelt wurde, so wird der maximale Wert (Unendlich)
-für den Zusand zurückgegeben. Ist das Ergebnis des übermittelten
+für den Zustand zurückgegeben. Ist das Ergebnis des übermittelten
 Zustands jedoch eine Niederlage, so wird der maximale Wert umgekehrt und
 zurückgegeben (minus Unendlich).
 
@@ -1451,7 +1451,7 @@ sowie vom Spielstatus (Eröffnung, Mittelspiel, Endspiel).
 
 Dabei werden zur Performanz-Steigerung jedoch nur Evaluierungsfunktionen
 durchgegangen, dessen Faktor höher als 0 liegt. Der Grund dafür ist,
-dass bestimmte Funktionne je nach Spielstatus leichter aus der
+dass bestimmte Funktionen je nach Spielstatus leichter aus der
 Evaluierung herausgenommen werden können, ohne, dass das gesamte
 Dictionary angepasst werden muss und zudem keine unnötige Rechenzeit
 durch Berechnung eines Werts benötigt wird, der im Endeffekt ohnehin
@@ -1507,7 +1507,7 @@ befindlichen Figuren zusammengerechnet.
 
     Um den Gesamtwert des Schachbretts zu berechnen muss zunächst der Wert
 aller weißer Figuren berechnet werden und von diesem der Wert aller
-schwarzen Figuren abgezogen werden. Je nach angegebenen Spieler wird für
+schwarzen Figuren abgezogen werden. Je nach angegebenem Spieler wird für
 diesen ein positiver Wert zurückgegeben, wenn das Spiel zu dessen
 Gunsten verläuft und ein negativer, wenn dies nicht der Fall ist.
 
@@ -1585,9 +1585,9 @@ dann die einzelnen Felder in dieser Reihe.
     Nachdem die Figur ermittelt wurde wird diese, falls diese der
 angegebenen Farbe angehört, gemeinsam mit den Werten für Reihe und
 Spalte an die Funktion \texttt{get\_position\_value\_by\_square}
-übergeben. Nachdem diese den Wert zurückgegben hat wird dies zu der
+übergeben. Nachdem diese den Wert zurückgegeben hat wird dies zu der
 bisherigen Summe aufaddiert und am Ende die Summe aller Figuren geteilt
-durch 10 zurück gegeben. Der Divisor 10 rührt daher, dass die Positionen
+durch 10 zurückgegeben. Der Divisor 10 rührt daher, dass die Positionen
 der einzelnen Figuren in dessen Matrizen recht hoch gewertet sind und
 somit insgesamt noch etwas abgeschwächt werden müssen, um die Funktion
 mit den restlichen Evaluierungsfunktionen ungefähr auf eine
@@ -1612,7 +1612,7 @@ falls die Farbe des angegebenen Spielers weiß sein sollte, damit die
 Matrix mit den Positionen aus der Sicht des Spielers übereinstimmt.
 
 Schlussendlich wird der Wert in der Matrix über die Reihe und Spalte
-ermittelt und zurück gegeben.
+ermittelt und zurückgegeben.
 
 Um die Positionen des Gegners zu berechnen, kann folgende Funktion
 dienen, die die angegebene Farbe invertiert und so den Wert der
@@ -1686,7 +1686,7 @@ bis 3 Felder in Richtung des Gegners durchgegangen und für jede Spalte
 ein Feld links bis zu einem Feld rechts von dem König mitgezählt. Dabei
 wird zuvor jeweils überprüft, ob sich die Spalte beziehungsweise die
 Reihe noch au fdem Spielfeld befinden. Ist dies der Fall, wird das Feld
-der Menge hinzugefügt und diese wird am Ende zurück gegeben.
+der Menge hinzugefügt und diese wird am Ende zurückgegeben.
 
 Als nächstes wird dann für diese Menge an Feldern ermittelt, welche
 Figuren diese Felder angreifen. Dies wird mittels der
@@ -1707,7 +1707,7 @@ Figuren diese Felder angreifen. Dies wird mittels der
 \end{Verbatim}
 
     Dabei wird jedes Feld einzeln durchgegangen und für alle jeweils eine
-Menge an Figuren erstellt, die dieses Feld angreifen. Alle Angriefer
+Menge an Figuren erstellt, die dieses Feld angreifen. Alle Angreifer
 werden dann einzeln durchgegangen und dessen Figurentyp ermittelt. Wenn
 dies weder ein Bauer noch ein König ist, wird die Figur einem Dictionary
 von allen Angreifern hinzugefügt. Der Wert dieses Eintrags setzt sich
@@ -1717,7 +1717,7 @@ zurückgegeben.
 
 Nachdem dieses Dictionary zurückgegeben wurde, wird die Gewichtung der
 Attacke ermittelt. Dabei wird die Anzahl der verschiedenen Figuren, die
-die Zone angreifen, zur Hilfe genommen und ein ensprechender Wert
+die Zone angreifen, zur Hilfe genommen und ein entsprechender Wert
 zurückgegeben, wie in Kapitel \ref{defense_evaluation} beschrieben.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -1744,7 +1744,7 @@ zurückgegeben, wie in Kapitel \ref{defense_evaluation} beschrieben.
 
     Abschließend wird für jeden Angreifer noch der Wert dieses ermittelt,
 wie ebenfalls in Kapitel \ref{defense_evaluation} beschrieben, und diese alle aufaddiert.
-Dieser Wird wird dann mit dem berechneten Gewicht multipliziert und
+Dieser wird dann mit dem berechneten Gewicht multipliziert und
 durch 1000 dividiert. Das Ergebnis aus dieser Berechnung wird dann
 zurückgegeben und gibt einen Aufschluss über die Sicherheit des Königs.
 Dies kann auch für die Sicherheit des gegnerischen Königs angewandt
@@ -1763,13 +1763,13 @@ angegebene Farbe invertiert wird.
 
 Bei der Berechnung eines Wertes zur Mobilität wird dieser an Hand der
 Differenz der legalen Züge von Spieler schwarz und Spieler weiß
-festgemacht. Dazu wird zunächst überprüft, ob es überhaut möglich ist
+festgemacht. Dazu wird zunächst überprüft, ob es überhaupt möglich ist
 einen Zug auszuführen. Ist dies nicht der Fall ist sowohl die Anzahl der
 Züge des Spielers, der am Zug ist, als auch die des nachfolgenden
 Spielers 0. Andernfalls wird ein zufälliger (hier: der erste) legaler
 Zug ausgeführt und der Wert der legalen Züge von diesem berechnet. Dabei
-wird aus Performanz Gründen nicht der Durchschnitt aller möglchen Züge
-berechnet, sondenr ein zufälliger Wert. Andernfalls hätte diese einzelne
+wird aus Performanz Gründen nicht der Durchschnitt aller möglichen Züge
+berechnet, sondern ein zufälliger Wert. Andernfalls hätte diese einzelne
 Evaluierungsfunktion so viel Zeit in Anspruch genommen, dass die
 Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
 
@@ -1820,7 +1820,7 @@ kann, wurde in Kapitel \ref{verwalten-des-schachspiels-und-pflege-des-spielverla
 
     Abgefragt werden kann diese, indem zunächst die Daten aus der Datei
 geladen werden. Dann wird die Reihe abstrahiert, dessen Wert in der
-Spalte "board" dem mitgegebenen Zustand (in fen Notation konvertiert)
+Spalte "board" dem mitgegebenen Zustand (in FEN-Notation konvertiert)
 gleicht. Dazu wird der entsprechende Wert ausgelesen und zurückgegeben.
 Beim Zurückgeben wird der Wert noch negiert, falls der angegebene
 Spieler der der schwarzen Figuren ist, da in der Historie die Werte aus
@@ -1865,9 +1865,9 @@ nach Verwendung wieder auf die Standardfarben der Konsole zu setzen.
 
 Hingegen muss aus der Bibliothek \texttt{colorama} die Funktion
 \texttt{init} importiert werden, die speziell für die Visualisierung der
-Farben auf Mircrosoft Windows Betriebssystemen benötigt wird. Dabei
+Farben auf Microsoft Windows Betriebssystemen benötigt wird. Dabei
 filtert die Funktion \texttt{init} die ANSI Zeichenketten, da diese von
-Microsoft Windows Produkten nicht untertstütz wird und ersetzt diese
+Microsoft Windows Produkten nicht untertstützt wird und ersetzt diese
 durch die äquivalenten Windows Befehle.
 
 Ebenfalls wird aus \texttt{colorama} die Unterstützung für die
@@ -1946,7 +1946,7 @@ Boolean-Wert, ob es sich um ein Microsoft Betriebssystem handelt zurück.
     Die zuletzt eingeführten Funktionen werden von dem Programm im
 Konstruktor aufgerufen und der Boolean-Wert der Variable
 \texttt{need\_win\_support} zugewiesen. Diese Variable wird im späteren
-Verlauf der Visualisierung benötigt um entscheiden zu können, ob das
+Verlauf der Visualisierung benötigt, um entscheiden zu können, ob das
 Modul \texttt{sty} oder \texttt{colorama} genutzt werden soll.
 
     Damit der Nutzer der Schach-KI schnell erkennen kann welche Figur sich
@@ -1957,7 +1957,7 @@ mittels einer for-Schleife von 0 bis einschließlich 8 iteriert und
 nacheinander die Zeichen aus der \texttt{NUM\_TO\_ALPHABET} Konstante
 ausgibt.
 
-Das erste Zeichen, das ausgegeben wird ist ein Leerzeichen, da das
+Das erste Zeichen, das ausgegeben wird, ist ein Leerzeichen, da das
 Schachbrett zur besseren Navigation neben den Buchstaben auch Zahlen
 enthalten soll und somit diese erste Spalte nicht das Schachbrett,
 sondern die Zahlen sind.
