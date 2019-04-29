@@ -1,16 +1,16 @@
 %!TEX root = ../dokumentation.tex
 
 \chapter{Technische Grundlagen}
-In dem dritten Kapitel dieser wissenschaftlichen Arbeit werden einerseits die Kriterien erläutert, die erfüllt sein müssen, dass das Projekt nach dem Abschluss als erfolgreich oder nicht erfolgreich bezeichnet werden kann. Die Auswertung mit dem Bezug auf die Kriterienformulierung wird in Kapitel \ref{evaluation} stattfinden.
+In dem dritten Kapitel dieser Arbeit werden einerseits die Kriterien erläutert, die erfüllt sein müssen, um das Projekt nach dem Abschluss auf dessen Erfolg prüfen zu können. Die Auswertung mit dem Bezug auf die Kriterienformulierung wird in Kapitel \ref{evaluation} stattfinden.
 
-Andererseits wird die zu verwendende Bibliothek vorgestellt und evaluiert. Dabei werden die Eigenschaften, Vor- und Nachteile dieser aufgeschlüsselt und diese anhand von Beispielen erläutert.
+Andererseits wird die verwendete Bibliothek vorgestellt und evaluiert. Dabei werden die Eigenschaften, Vor- und Nachteile dieser aufgeschlüsselt und diese anhand von Beispielen erläutert.
 
 % Die zu verwendende Bibliothek vorgestellt und evaluiert. Dabei werden Eigenschaften, Vor- und Nachteile dieser aufgeschlüsselt.
 
 \section{Kriterienformulierung}\label{kriterienformulierung}
 Nachdem in Kapitel \ref{zweck_und_ziel} bereits auf das Ziel der wissenschaftlichen Arbeit eingegangen wurde, in Kapitel \ref{game_types} bis \ref{evaluation_func} das benötigte Grundwissen vermittelt wurde, das für das Verständnis der Umsetzung notwending ist, werden nun die Merkmale und Eigenschaften dargelegt, die erfüllt werden sollen.
 
-Grundlegend wird eine Künstliche Intelligenz für das Spiel Schach entwickelt worden sein. Der Fokus dieser Implementierung liegt dabei die in Kapitel \ref{theoretische_hintergründe} vorgestellten Algorithmen und deren Wirkungsweise zu demonstrieren.
+Grundlegend wird eine Künstliche Intelligenz für das Spiel Schach entwickelt worden sein. Der Fokus dieser Implementierung liegt dabei auf den in Kapitel \ref{theoretische_hintergründe} vorgestellten Algorithmen und auf der Demonstration von deren Wirkungsweise.
 
 Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein, ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist.\cite{E.V.} 
 
@@ -23,7 +23,7 @@ E_{A} = \frac{1}{1 + 10^{({R_{B} - R_{A}})/400}}
 \end{aligned}
 \end{equation}
 
-Nachdem ein Spiel beendet wurde, wird die Diskrepanz zwischen dem zuvor berechneten Erwartungswert und dem Ergebnis ermittelt und auf dieser Grundlage die Elo-Werte der Spieler angepasst. Hierbei ergibt sich der neue Elo-Wert($R'_{A}$) von Spieler A aus dem alten Elo-Wert, einem Faktor $K$, der gewichtet wie stark sich neu erzielte Ergebnisse auswirken, dem Ergebnispunktestand des Spiels ($S_{A}$) und dem Erwartungswert. Der Faktor $K$ wird an die Stärke eines Spielers angepasst.
+Nachdem ein Spiel beendet wurde, wird die Diskrepanz zwischen dem zuvor berechneten Erwartungswert und dem Ergebnis ermittelt und auf dieser Grundlage die Elo-Werte der Spieler angepasst. Hierbei ergibt sich der neue Elo-Wert($R'_{A}$) von Spieler A aus dem alten Elo-Wert, einem Faktor $K$, der gewichtet, wie stark sich neu erzielte Ergebnisse auswirken, dem Ergebnispunktestand des Spiels ($S_{A}$) und dem Erwartungswert. Der Faktor $K$ wird an die Stärke eines Spielers angepasst.
 
 \begin{equation}
 \begin{aligned}
@@ -32,11 +32,11 @@ R'_{A} = R_{A} + K \cdot (S_{A} - E_{A})
 \end{aligned}
 \end{equation}
 
-Zur Ermittlung eines Elo-Werts eines neuen Spielers wird dessen Wert geschätzt. In dem \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}, das in den Statuten der Fédération Internationale des Échecs verwendet wird, ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat. Alle Spieler mit einem geringeren Wert werden nicht gelistet.\cite{FIDE2017}
+Zur Ermittlung des Elo-Werts eines neuen Spielers wird dessen Wert geschätzt. In dem \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}, das in den Statuten der Fédération Internationale des Échecs verwendet wird, ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat. Alle Spieler mit einem geringeren Wert werden nicht gelistet.\cite{FIDE2017}
 
-Durch die Entwicklung von Evaluierungsfunktionen wird die Schach KI die Möglichkeit besitzen die besten Züge für eine spezielle Spielsituation ermitteln zu können. Dabei wird eine Historie integriert sein, die es ermöglicht auf einer Basis von vergangenen Spielen Zügen einen Wert zuzuweisen und daraus einen optimalen auszuwählen. Ebenfalls wird die Schach KI anhand der Anzahl und Wichtigkeit attackierter Steine, sowie des insgesamten Wertes aller sich auf dem Spielfeld befindlichen Steine, einen guten Zug auszuwählen.
+Durch die Entwicklung von Evaluierungsfunktionen wird die Schach KI die Möglichkeit besitzen die besten Züge für eine spezielle Spielsituation ermitteln zu können. Dabei wird eine Historie integriert sein, die es ermöglicht auf einer Basis von vergangenen Spielen Zügen einen Wert zuzuweisen und daraus einen optimalen auszuwählen. Ebenfalls wird die Schach KI anhand der Anzahl und Wert attackierter Steine, sowie des insgesamten Wertes aller sich auf dem Spielfeld befindlichen Steine, einen guten Zug auszuwählen.
 
-Die Benutzinteraktionen wird durch Verwendung von \acs{ASCII} (American Standard Code for Information Interchange) Zeichen in einer Konsole visualisiert werden. Zukünftige Erweiterungen des Programms werden durch eine gute Dokumentation des Codes garantiert werden. Ebenfalls wird nach der erfolgreichen Beendigung dieser Arbeit ein beliebig erweiterbares Grundgerüst für eine Schach-KI vorliegen.
+Die Benutzinteraktionen wird durch Verwendung von \acs{ASCII} (\acl{ASCII}) Zeichen in einer Konsole visualisiert werden. Zukünftige Erweiterungen des Programms werden durch eine gute Dokumentation des Codes garantiert werden. Ebenfalls wird nach der erfolgreichen Beendigung dieser Arbeit ein beliebig erweiterbares Grundgerüst für eine Schach-KI vorliegen.
 
 % Wie kann überprüft werden, ob das Porjekt erfolgreich verlaufen ist?
 
@@ -79,18 +79,18 @@ dokumentiert. Alle notwendigen Funktionen sind folgend gelistet.
 \item
   Schachbrett als ASCII ausgeben
 \item
-  Züge auf dem Schachbrett ziehen
+  Züge auf dem Schachbrett durchführen
 \item
-  Erlaubte Züge berechnen
+  Legale Züge berechnen
 \item
   Auf Schach/Schachmatt prüfen
 \item
   Testen, ob Rochade, En Passant als erlaubte Züge gelistet werden
 \item
-  \emph{(Optional)} Schachbrett als SVG in JupyterNotebook ausgeben
+  \emph{(Optional)} Schachbrett als \acs{SVG} (\acl{SVG} in JupyterNotebook ausgeben
 \item
   \emph{(Optional)} Möglichkeiten evaluieren, Schachbrett je nach
-  Positionierungen eindeutig identifizierbar in CSV zu schreiben
+  Positionierungen eindeutig identifizierbar in \acs{CSV} (\acl{CSV} zu schreiben
 \end{itemize}
 
 Des Weiteren werden folgende Aktionen/Berechnungen auf deren
@@ -118,7 +118,7 @@ Installation der ``python-chess-library`` erläutert.
 \begin{itemize}
 \tightlist
 \item
-  Python 3 Da die zu verwendende Bibliothek auf Python 3 basiert muss
+  Python 3: Da die zu verwendende Bibliothek auf Python 3 basiert muss
   diese Version auf dem auszuführenden Computer vorhanden sein.
 
   \begin{itemize}
@@ -131,7 +131,7 @@ Installation der ``python-chess-library`` erläutert.
     \href{https://realpython.com/installing-python/}{Win}
   \end{itemize}
 \item
-  Jupyter Notebooks Damit die aufgeführten Scripts direkt im Browser
+  Jupyter Notebooks: Damit die aufgeführten Scripts direkt im Browser
   ausgeführt werden können haben sich die Autoren dieser Arbeit darauf
   verständigt Jupyter Notebook zu nutzen. Dabei bietet diese Applikation
   den Vorteil, dass Code und Dokumente live geteilt werden können und
@@ -144,21 +144,19 @@ Installation der ``python-chess-library`` erläutert.
     \href{https://jupyter.org/install}{Installationsanleitung}
   \end{itemize}
 \item
-  ``python-chess-library``
+  ``python-chess-library``:
 
   \begin{itemize}
   \tightlist
   \item
-    \texttt{pip\ install\ python-chess} Im weiteren Verlauf dieses
-    Notebooks werden zusätzliche Module, wie beispielsweise Pandas,
-    genutzt, die ebenfalls auf dem auszuführenden Rechner installiert
+    \texttt{pip\ install\ python-chess}
     sein müssen.
   \end{itemize}
 \end{itemize}
 
 \subsection{FEN-Notation}\label{FEN-Notation}
 
-Die ``FEN`` Notation, oder auch Forsyth-Edwars-Notation, ist eine gekürzte Form der Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig identifizierbar bleibt. Dabei wird neben der Figurenstellung, dem Zugrecht, das Rochaderecht, ein möglicher En-passant-Schlag und den bereits gespielten Halbzügen seit dem letzten Bauernzug, oder einem Schlag, die Nummer des nächsten Zugs angegeben.\cite{FEN2019}
+Die ``\acs{FEN}`` Notation, oder auch \acl{FEN}, ist eine gekürzte Form der Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig identifizierbar bleibt. Dabei wird neben der Figurenstellung, dem Zugrecht, dem Rochaderecht, ein möglicher En-passant-Schlag und den bereits gespielten Halbzügen seit des letzten Bauernzugs oder eines Schlagens, die Nummer des nächsten Zugs angegeben.\cite{FEN2019}
 
 Diese Notation ist ein essenzieller Bestandteil der einzuführenden Python Bibliothek. Folgend ist ein Beispiel gegeben, das die Startposition eines neuen Schachspiels widerspiegelt.
 
@@ -166,9 +164,9 @@ Diese Notation ist ein essenzieller Bestandteil der einzuführenden Python Bibli
 rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 \end{Verbatim}
 
-Die Zeichenkette bis zum ersten Leerzeichen beschreibt die Positionen der schwarzen und weißen Steine. Hierbei beschreiben die Großbuchstaben die weißen und die Kleinbuchstaben die schwarzen Figuren. Die Zeichenketten zwischen den Schrägstichen beschreiben jeweils eine Zeile des Schachbretts. Die Bedeutungen der unterschiedlichen Buchstaben wird im folgenden Kapitel \ref{erstellen-eines-schachbretts-und-ausgeben-als-ascii} erläutert. Die Zahlen, die in der Positionsangabe verwendet werden, beschreiben die Anzahl der Felder, auf der sich kein Stein befindet.
+Die Zeichenkette bis zum ersten Leerzeichen beschreibt die Positionen der schwarzen und weißen Steine. Hierbei beschreiben die Großbuchstaben die weißen und die Kleinbuchstaben die schwarzen Figuren. Die Zeichenketten zwischen den Schrägstichen kündigen jeweils eine neue Zeile des Schachbretts an. Die Bedeutungen der unterschiedlichen Buchstaben wird im folgenden Kapitel \ref{erstellen-eines-schachbretts-und-ausgeben-als-ascii} erläutert. Die Zahlen, die in der Positionsangabe verwendet werden, beschreiben die Anzahl der Felder, auf der sich kein Stein befindet.
 
-Das Zeichen nach den Positionen beschreibt mit ``w`` oder ``b`` das Zugrecht und wird von dem Rochaderecht gefolgt. Da in dieser Situation kein En-passant-Schlag möglich ist, ist für diesen Parameter das Zeichen ``-``angegeben.
+Das Zeichen nach den Positionen beschreibt mit ``w`` oder ``b`` das Zugrecht. Gefolgt wird dies von dem Rochaderecht. Da in dieser Situation kein En-passant-Schlag möglich ist, ist für diesen Parameter das Zeichen ``-``angegeben.
 
 Der Wert der bereits gespielten Halbzüge seit dem letzten Bauernzug, oder Schlag, beträgt in diesem Fall ``0``, da noch kein Zug unternommen wurde. Die Nummer des nächsten Zugs ist bei ``1``, da es sich um eine Startposition handelt.
 
@@ -183,12 +181,12 @@ weiteren Verlauf der Evaluierung und Implementierung benötigt wird.
 \end{Verbatim}
 
 
-    Das unten einzusehende Code Snippet zeigt, wie ein neues Schachbrett mit
+    Der unten einzusehende Code Snippet zeigt, wie ein neues Schachbrett mit
 standardmäßigen Positionierungen der Figuren erstellt werden kann. Dies
 ist umzusetzen durch den Aufruf der \texttt{chess.Board()} Funktion und
-das Speicherns der Rückgabe dieser Funktion in einer \texttt{board}
+des Speicherns der Rückgabe dieser Funktion in einer \texttt{board}
 Variable. Dieses \texttt{board} beinhaltet die Positionierungen aller
-Figuren und kann mittels der python-eigenen \texttt{print()} Funktion
+Figuren und kann mittels der python-chess eigenen \texttt{print()} Funktion
 als ASCII Code ausgegeben werden, wie unten einzusehen ist. Zuletzt wird
 noch die Möglichkeit aufgezeigt, die auf einem spezifizierten Feld
 befindliche Figur auszulesen. Dieses Feld wird dabei über das Datenfeld
@@ -222,7 +220,7 @@ N
 
     \end{Verbatim}
 
-    Dabei ist einzusehen, dass die Figuren durch einen Buchstaben abgekürzt
+    Dabei ist ersichtlich, dass die Figuren durch einen Buchstaben abgekürzt
 werden. Figuren des Spielers der schwarzen Steine werden als Kleinbuchstaben
 dargestellt, Figuren des Spielers der weißen Steine als äquivalente
 Großbuchstaben. Leere Felder werden mit einem Punkt dargestellt. Aus
@@ -477,7 +475,7 @@ ausgegeben werden.
     Die verwendete Bibliothek bringt den Vorteil mit sich, dass einige
 wichtige Eigenschaften während eines Spiels visualisiert werden können.
 Ein Beispiel für diese Visualisierung ist das Schachmatt, bei dem der
-betroffende König rot hervorgehoben wird. Ein weiteres Beispiel zum
+betroffene König rot hervorgehoben wird. Ein weiteres Beispiel zum
 Thema Visualisierung wird im folgenden Kapitel gegeben.
 
 Um diesen Fall simulieren zu können, wird in diesem Beispiel eine
@@ -504,7 +502,7 @@ Felds}\label{berechnen-ausgeben-legaler-zuxfcge-eines-speziellen-felds}
 
 Für eine bessere, visuelle Darstellung in der theoretischen Ausarbeitung
 wurde die Möglichkeit geprüft, spezielle Felder auf dem ausgegebenen SVG
-markieren zu können. Solche Felder können beispielsweise die errechneten
+markieren zu können. Solche Felder können beispielsweise die berechneten
 erlaubten Züge einer speziellen Figur 
 darstellen, um anzuzeigen, welche Möglichkeiten eine Figur in der
 aktuellen Situation besitzt.
@@ -611,7 +609,7 @@ zurückgegeben. Mit diesem wird dann eine Key-Value Liste erstellt, die
 zu jedem Spielbrett des vergangenen Spiels den Wert zuweist, der Aussage
 über den Sieger gibt.
 
-Diese Liste wird dann zusammen gefügt mit der bisher vorhandenen
+Diese Liste wird dann zusammengefügt mit der bisher vorhandenen
 Historie. Falls bereits ein Eintrag für ein gleichartiges Schachbrett
 existiert, wird der Siegwert zu dem aktuellen Wert aus der Historie dazu
 addiert, andernfalls wird ein neuer Eintrag mit dem Siegwert angelegt.
@@ -634,13 +632,13 @@ addiert, andernfalls wird ein neuer Eintrag mit dem Siegwert angelegt.
 \end{Verbatim}
 
 
-    Der Siegwert nach dem Schachbrett gibt dann, je nach Höhe, Auskunft
+    Der Siegwert nach dem Schachbrett gibt dann je nach Höhe Auskunft
 darüber, wie wahrscheinlich es ist mit einem solchen Schachbrett zu
 gewinnen. Umso höher der Wert in den positiven Bereich fällt, desto
 wahrscheinlicher ist ein Sieg für Spieler 1. Umso höher der Wert in den
 negative Bereich fällt, desto besser sind die Aussichten für Spieler 2.
 
-Diese Erkenntnis kann dann von der KI genutzt werde, um beim ``iterative
+Diese Erkenntnis kann dann von der KI genutzt werde, um beim ``Iterative
 Deepening`` Prozess alle möglichen Schachbretter zu evaluieren und sich
 so für den besten Zug zu entscheiden.
 
@@ -798,14 +796,14 @@ Figur schlagen, wenn sich diese direkt in dem diagonal vor dem Bauern
 angrenzenden Feld befindet. Durch die sogenannte Regel ``en passant``, im
 deutschen ``im Vorbeigehen``, wird diese Regel erweitert. Eingesetzt
 werden kann ``en passant``, wenn auf einen Bauern die Sonderregel des
-Doppelschritts aus der Grundstellung angewendet wird. Steht in diesem
+Doppelschritts aus der Grundstellung angewandt wird. Steht in diesem
 Fall der mit Doppelschritt herausgerückte Bauern neben einem des
 Gegners, dann kann dieser den neu herausgerückten Bauern durch ``en
 passant`` schlagen. Hierbei springt der angreifende Bauer des Gegners
 direkt hinter den herausgerückten und schlägt ihn somit.
 
-Damit die Schach-KI alle möglichen Züge des Gegners bedenken und ebenso
-alle Züge ausführen soll, muss überprüft werden, ob die verwendete
+Damit die Schach-KI alle möglichen Züge des Gegners bedenkt und ebenso
+alle Züge ausführen kann, muss überprüft werden, ob die verwendete
 Library die beiden Sonderzüge unterstützt, oder ob diese Unterstützung
 manuell entwickelt werden muss.
 
@@ -911,7 +909,7 @@ Strategien verfügbar sind und somit ein anspruchsvolles Spiel
 ermöglichen.
 
 Sobald das Opening-Book, im Verlauf des Spiels, keinen passenden Zug als
-Antwort bereitstellen kann, übernimmt die Künstliche Intelligenz.
+Antwort bereitstellen kann, übernimmt die Iterative Deepening Funktion mit ihren Evaluierungsfunktionen.
 
 Für das Einbinden eines Opening-Books werden einige Funktionen aus der
 Core Chess Library genutzt und müssen somit eingebunden werden.
@@ -996,7 +994,7 @@ des Endgames wird ein Sieger/Verlierer oder ein Unentschieden als
 Ergebnis ermittelt.
 
 Analog zu dem Opening-Book gibt es für das Endgame ebenfalls Datenbanken
-an analysierten Zügen, der letzten \emph{n} Figuren. Hierbei wurden für
+an analysierten Zügen der letzten \emph{n} Figuren. Hierbei wurden für
 jeden möglichen Zug bereits die Chancen auf einen Sieg, eine Niederlage,
 oder ein Remis berechnet und diese können auf der Basis eines aktuellen
 Schachbretts abgerufen werden.
@@ -1152,7 +1150,7 @@ DTZ black start:  -53
     Der folgende Codeblock iteriert durch alle möglichen Züge und berechnet
 dabei den schlechtesten Zug für die gegnerische Partei (weiße Figuren).
 Zur Berechnung dieser Werte muss das Schachbrett immer wieder im
-gleichen Ausgangszustand vorzufinden sein. Damit dies gewährleistet ist
+gleichen Ausgangszustand vorzufinden sein. Damit dies gewährleistet ist,
 wird die FEN Darstellung des aktuellen Boards berechnet und diese einem
 Testboard zugewiesen, das pro Iteration/Zug neu definiert wird.
 
@@ -1244,7 +1242,7 @@ Dazu existiert eine ``Player'' Schnittstelle, die für jeden dieser Spieler impl
 
 Die ``User'' Implementierung greift dabei zur Ermittlung des Zuges auf eine ``PlayerIO'' Schnittstelle zurück. Diese wiederum kann - ähnlich zur ``SettingsUI'' Schnittstelle - sowohl für Eingaben über eine Konsole als auch für Eingaben über eine grafische Nutzeroberfläche implementiert werden.
 
-Die ``AI'' sowie die ``API'' Implementierung greifen für die Ermittlungen ihrer Züge nochmals auf eigens erstellte Bibliotheken zurück, die elementare Funktionen erhalten.
+Die ``AI'' Implementierung greift für die Ermittlungen ihrer Züge nochmals auf eigens erstellte Bibliotheken zurück, die elementare Funktionen erhalten.
 
 Der genaue Ablauf der Ermittlung der Züge sowie der andere Operationen des Programmes werden in Kapitel \ref{zugfindung-durch-ki}  näher erläutert.
 
@@ -1259,7 +1257,7 @@ In Figur 3.2.2 ist der sequenteille Ablauf der Funktionsaufrufe erkennbar.
 
 Dabei wird zunächst über die ``Settings'' Schnittstelle nach den Spielertypen sowie Namen gefragt. initialisiert der ``Controller'' die Spieler, in diesem Fall einerseits den ``User'', der wiederum die ``UserIO'' Schnittstelle implementiert, und außerdem den ``AI'' Player. 
 
-Darauffolgend spricht der ``Controller'' den ``ChessMaster'' an. Dieser startet nun das Spiel und fragt solange wie das Spiel nicht vorbei ist immer abwechselnd erst zu Spieler 1 - dem Nutzer - und dann zu Spieler 2 - der KI - nach dem nächstne Zug. Dabei übergibt der ``ChessMaster'' stets das aktuelle Schachbrett. Der Nutzer ermittelt den durchzuführenden Zug über eine Abfrage an den Nutzer über die entsprechende Schnittstelle, der ``AI'' Spieler, indem dieser Funktionen aus der entsprechenden Bibliothek zur Hilfe nimmt.
+Darauffolgend spricht der ``Controller'' den ``ChessMaster'' an. Dieser startet nun das Spiel und fragt solange wie das Spiel nicht vorbei ist immer abwechselnd erst Spieler 1 - dem Nutzer - und dann zu Spieler 2 - der KI - nach dem nächsten Zug. Dabei übergibt der ``ChessMaster'' stets das aktuelle Schachbrett. Der Nutzer ermittelt den durchzuführenden Zug über eine Abfrage an den Nutzer über die entsprechende Schnittstelle, der ``AI'' Spieler, indem dieser Funktionen aus der entsprechenden Bibliothek zur Hilfe nimmt.
 
 Nach jedem Zug fügt der ``ChessMaster'' diesen zum Schachbrett hinzu und speichert dieses in einen Spielverlauf. Nach Ende des Spiels wird dieser in das ``board\_history.csv'' eingepflegt wie weiter oben bei der Beschreibung der Klasse bereits erläutert.
 

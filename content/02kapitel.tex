@@ -225,31 +225,31 @@ Zusätzlich verlangt der Algorithmus neben der genannten Funktionen $utility$ un
 \caption{Minimax Algorithmus \cite{Russell2010}}
 \label{alg:minimax}
 \begin{algorithmic}
-\Function{$minimax\_decision$}{$state$}
-	\ForAll{$a in actions(state)$}
-		\State $value \gets \Call{$min\_value$}{$result\_state(state, a)$}$
-		\If{$value > best\_value$}
-			\State $best\_value \gets value$
-			\State $best\_move \gets a$
+\Function{$ minimax\_decision $}{$state$}
+	\ForAll{$ a  \in  actions(state) $}
+		\State $ value  \gets \Call{$ min\_value $}{$ result\_state(state, a) $}$
+		\If{$ value  >  best\_value $}
+			\State $ best\_value  \gets  value $
+			\State $ best\_move  \gets  a $
 		\EndIf
 	\EndFor
-	\State \Return $best\_move$
+	\State \Return $ best\_move $
 \EndFunction
 \\
-\Function{$max\_value$}{$state$}
-	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
-	\State $v \gets -\infty$
-	\ForAll{$a in actions(state)$}
-		\State $v \gets max(v, \Call{$min\_value$}{$result\_state(state, a)$})$
+\Function{$ max\_value $}{$ state $}
+	\If{$ terminal\_test(state) $} \State \Return $ utility(state) $ \EndIf
+	\State $ v  \gets -\infty$
+	\ForAll{$ a  \in  actions(state) $}
+		\State $v \gets \max( v , \Call{$ min\_value $}{$ result\_state(state, a) $})$
 	\EndFor
 	\State \Return $v$
 \EndFunction
 \\
-\Function{$min\_value$}{$state$}
-	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
-	\State $v \gets \infty$
-	\ForAll{$a in actions(state)$}
-		\State $v \gets min(v, \Call{$max\_value$}{$result\_state(state, a)$})$
+\Function{$ min\_value $}{$state$}
+	\If{$ terminal\_test(state) $} \State \Return $ utility(state) $ \EndIf
+	\State $ v  \gets \infty$
+	\ForAll{$ a  \in  actions(state) $}
+		\State $v \gets \min( v , \Call{$ max\_value $}{$ result\_state(state, a) $})$
 	\EndFor
 	\State \Return $v$
 \EndFunction
@@ -322,7 +322,7 @@ In Abbildung \ref{fig:alpha_beta_chess} kann dies nochmal anhand eines realen Be
 \end{figure}
 %a step by step guide
 
-Gehen wir dabei aus, dass zuerst der rechte Zweig (1.) vollständig evaluiert wurde, wofür zunächst alle Knoten dieses Zweigs (2.-5.) betrachtet wurden. Nach diesen Berechnungen wird Knoten 1 das Minimum aller Zweige von 1 zugewiesen. Dieses beträgt -50. Danach soll der linke Zweig (6.) evaluiert werden. Dabei wird zuerst Knoten 7 betrachtet und ein Ergebnis für -80 ermittelt. Da Knoten 6 das Minimum aller seiner Zweige ermitteln wird, wird das Ergebnis kleiner oder gleich -80 sein. Der Ursprungsknoten wird später also das Maximum aus -50 und $z | z \leq -80$ ermitteln, das unabhängig vom endgültigen Wert für z auf jeden Fall -50 betragen wird. Deshalb müssen alle anderen Zweige von 6 gar nicht mehr betrachtet werden, da diese ohnehin kein Einfluss auf das Ergebnis hätten.
+Gehen wir dabei aus, dass zuerst der rechte Zweig (1.) vollständig evaluiert wurde, wofür zunächst alle Knoten dieses Zweigs (2.-5.) betrachtet wurden. Nach diesen Berechnungen wird Knoten 1 das Minimum aller Zweige von 1 zugewiesen. Dieses beträgt -50. Danach soll der linke Zweig (6.) evaluiert werden. Dabei wird zuerst Knoten 7 betrachtet und ein Ergebnis für -80 ermittelt. Da Knoten 6 das Minimum aller seiner Zweige ermitteln wird, wird das Ergebnis kleiner oder gleich -80 sein. Der Ursprungsknoten wird später also das Maximum aus -50 und $z   z \leq -80$ ermitteln, das unabhängig vom endgültigen Wert für z auf jeden Fall -50 betragen wird. Deshalb müssen alle anderen Zweige von 6 gar nicht mehr betrachtet werden, da diese ohnehin kein Einfluss auf das Ergebnis hätten.
 
 Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positionen und erhöht die Performanz des Minimax Algorithmus dadurch deutlich. Im Beispiel zu sehen in Abbildung \ref{fig:chess_example} hätten wir bei einer Tiefe von 4 mit einem herkömmlichen Minimax Algorithmus noch ganze 879.750 Positionen zu evaluieren. Durch die Verbesserung des Algorithmus mittels Alpha-Beta-Pruning sinkt diese Zahl der zu evaluierenden Positionen um ein beachtliches auf lediglich noch 61.721, und somit um mehr als ein zehnfaches. \cite{Hartikka}
 
@@ -347,35 +347,35 @@ Dies kann in einen Algorithmus verpackt werden, wie in Algorithmus \ref{alg:alph
 \caption{Alpha Beta Algorithmus \cite{Russell2010}}
 \label{alg:alpha_beta}
 \begin{algorithmic}
-\Function{$alpha\_beta\_search$}{$state$}
-	\ForAll{$a in actions(state)$}
-		\State $value \gets \Call{$min\_value$}{result\_state(state, a), -\infty, +\infty}$
-		\If{$value > best\_value$}
-			\State $best\_value \gets value$
-			\State $best\_move \gets a$
+\Function{$ alpha\_beta\_search $}{$ state $}
+	\ForAll{$ a  \in  actions(state) $}
+		\State $ value  \gets \Call{$ min\_value $}{ result\_state(state, a) , -\infty, +\infty}$
+		\If{$ value  >  best\_value $}
+			\State $ best\_value  \gets  value $
+			\State $ best\_move  \gets  a $
 		\EndIf
 	\EndFor
-	\State \Return $best\_move$
+	\State \Return $ best\_move $
 \EndFunction
 \\
-\Function{$max\_value$}{$state, \alpha, \beta$}
-	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
+\Function{$ max\_value $}{$ state , \alpha, \beta$}
+	\If{$ terminal\_test(state) $} \State \Return $ utility(state) $ \EndIf
 	\State $v \gets -\infty$
-	\ForAll{$a in actions(state)$}
-		\State $v \gets max(v, \Call{$min\_value$}{result\_state(state, a), \alpha, \beta})$
-		\If{$v \geq \beta$} \State \Return $v$ \EndIf
-		\State $\alpha \gets max(\alpha, v)$
+	\ForAll{$ a  \in  actions(state) $}
+		\State $ v  \gets \max( v , \Call{$ min\_value $}{ result\_state(state, a) , \alpha, \beta})$
+		\If{$v \geq \beta$} \State \Return $ v $ \EndIf
+		\State $\alpha \gets \max(\alpha,  v )$
 	\EndFor
-	\State \Return $v$
+	\State \Return $ v $
 \EndFunction
 \\
-\Function{$min\_value$}{$state, \alpha, \beta$}
-	\If{$terminal\_test(state)$} \State \Return $utility(state)$ \EndIf
-	\State $v \gets \infty$
-	\ForAll{$a in actions(state)$}
-		\State $v \gets min(v, \Call{$max\_value$}{result\_state(state, a), \alpha, \beta})$
+\Function{$ min\_value $}{$ state , \alpha, \beta$}
+	\If{$ terminal\_test(state) $} \State \Return $ utility(state) $ \EndIf
+	\State $ v  \gets \infty$
+	\ForAll{$ a  \in  actions(state) $}
+		\State $ v  \gets \min( v , \Call{$ max\_value $}{ result\_state(state, a) , \alpha, \beta})$
 		\If{$v \leq \alpha$} \State \Return $v$ \EndIf
-		\State $\beta \gets min(\beta, v)$
+		\State $\beta \gets \min(\beta, v)$
 	\EndFor
 	\State \Return $v$
 \EndFunction
@@ -405,7 +405,7 @@ Das erste Problem bei diesem Ansatz jedoch ist, dass Spiele nicht mehr nach dem 
 
 Zum Abbrechen der redundanten Aufrufe der Funktionen bei einer gewissen Bedingung, beispielsweise einer festgelegten Tiefe, muss diese in die Abbruchbedingung der rekursiven Funktion(en) hinzugefügt werden. 
 
-Im simpelsten Ansatz einer festgelegten Tiefe, die die einzelnen Pfade maximal durchlaufen werden, kann dies mittels einer Funktion $\mathtt{cutoff_test}$ gemacht werden, die die Parameter des aktuellen Spielzustands sowie die Tiefe übermittelt bekommt. Sie gibt den Wert wahr zurück, wenn der mitgegebene Zustand ein Endzustand oder wenn die Tiefe größer oder gleich der festgelegten Tiefe ist. \cite{Russell2010}
+Im simpelsten Ansatz einer festgelegten Tiefe, die die einzelnen Pfade maximal durchlaufen werden, kann dies mittels einer Funktion $\mathtt{endstate\_test}$ gemacht werden, die die Parameter des aktuellen Spielzustands sowie die Tiefe übermittelt bekommt. Sie gibt den Wert wahr zurück, wenn der mitgegebene Zustand ein Endzustand oder wenn die Tiefe größer oder gleich der festgelegten Tiefe ist. \cite{Russell2010}
 
 Wichtig ist dabei, dass bei jedem rekursiven Aufruf der Funktion der festgelegte Tiefen-Parameter stets um eins steigt, damit dieser Wert für die Abbruchfunktion zuverlässig verwendet werden kann. Als Beispiel ist hier eine modifizierte Version der maxValue Funktion aus Algorithmus \ref{alg:alpha_beta} zu sehen.
 
@@ -413,20 +413,20 @@ Wichtig ist dabei, dass bei jedem rekursiven Aufruf der Funktion der festgelegte
 \caption{Tiefenlimit Alpha Beta Pruning \cite{Russell2010}}
 \label{alg:depth_limit}
 \begin{algorithmic}
-\Function{$max\_value$}{$state, \alpha, \beta, depth$}
-\If{$cutoff\_test(state, depth)$} \State \Return $utility(state)$ \EndIf
-\State $v \gets -\infty$
-\ForAll{$a \in actions(state)$}
-\State $v \gets max(v, \Call{$min\_value$}{result\_state(state, a), \alpha, \beta, depth + 1})$
-\If{$v \geq \beta$} \State \Return $v$ \EndIf
-\State $\alpha \gets max(\alpha, v)$
+\Function{$ max\_value $}{$ state , \alpha, \beta,  depth $}
+\If{$ endstate\_test(state, depth) $} \State \Return $ utility(state) $ \EndIf
+\State $ v  \gets -\infty$
+\ForAll{$ a  \in  actions(state) $}
+\State $ v  \gets \max( v , \Call{$ min\_value $}{ result\_state(state, a) , \alpha, \beta,  depth  + 1})$
+\If{$ v  \geq \beta$} \State \Return $ v $ \EndIf
+\State $\alpha \gets \max(\alpha,  v )$
 \EndFor
-\State \Return $v$
+\State \Return $ v $
 \EndFunction
 \\
-\Function{$cutoff\_test$}{$state, depth$}
-\If{$terminal\_test(state)$} \State \Return $True$ \EndIf
-\If{$depth \geq MAX\_DEPTH$} \State \Return $True$ \EndIf
+\Function{$ endstate\_test $}{$ state ,  depth $}
+\If{$ terminal\_test(state) $} \State \Return $True$ \EndIf
+\If{$ depth  \geq  MAX\_DEPTH $} \State \Return $True$ \EndIf
 \State \Return $False$
 \EndFunction 
 \end{algorithmic}
