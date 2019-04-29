@@ -182,7 +182,8 @@ A.~Newell, J.~C. Shaw, and H.~A. Simon, ``{Chess-Playing Programs and the
 \BIBentrySTDinterwordspacing
 
 \bibitem{O.V.2013}
-O.V., \emph{{Computer Chess Compendium}}, 2013.
+D.~Levy, \emph{{Computer Chess Compendium}}.\hskip 1em plus 0.5em minus
+  0.4em\relax Springer Verlag, 2013.
 
 \bibitem{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
 \BIBentryALTinterwordspacing
@@ -242,13 +243,10 @@ K.~Stroetmann, ``{Script: An Introduction to Artificial Intelligence},'' 2018.
 \BIBentrySTDinterwordspacing
 
 \bibitem{Tweedale1993}
-\BIBentryALTinterwordspacing
 G.~Tweedale, ``{William Poundstone, Prisoner's Dilemma: John von Neumann, Game
   Theory, and the Puzzle of the Bomb. Oxford: Oxford University Press, 1992.
   Pp. xi + 290. ISBN 0-19-286162-X},'' \emph{The British Journal for the
-  History of Science}, vol.~26, no.~3, pp. 375--376, 1993. [Online]. Available:
-  \url{https://www.cambridge.org/core/article/william-poundstone-prisoners-dilemma-john-von-neumann-game-theory-and-the-puzzle-of-the-bomb-oxford-oxford-university-press-1992-pp-xi-290-isbn-019286162x-799-paperback-edition/49F2341C5BE239D7DA55CEE5D34F1C76}
-\BIBentrySTDinterwordspacing
+  History of Science}, vol.~26, no.~3, pp. 375--376, 1993.
 
 \bibitem{Elo1987}
 \BIBentryALTinterwordspacing

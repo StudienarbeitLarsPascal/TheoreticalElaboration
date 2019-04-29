@@ -4,11 +4,11 @@
 \nocite{*}
 
 In diesem Kapitel werden die theoretischen Hintergründe zur Spieletheorie im Generellen und vor Allem der Entwicklung von Spiele-Spielenden-Computern eingegangen. Dies wird im Verlauf der Kapitel stets auf das Spiel Schach spezialisiert, da sich der Schwerpunkt dieser Arbeit auf dieses Spiel fokussiert. 
-Zunächst werden die klassischen Spieletypen nach der Spieletheorie betrachtet und Schach in diese Kategorien eingeordnet. Darauf folgend wird als Einführung zu Spiele-\acs{KI}s (\acl{KI}) die Geschichte der Entwicklung dieser betrachtet, um Zusammenhänge mit technischen und mathematischen Fortschritten besser zum Verständnis zu bringen.
+Zunächst werden die klassischen Spieletypen nach der Spieletheorie betrachtet und Schach in diese Kategorien eingeordnet. Darauf folgend wird als Einführung zu Spiele-\acs{KI}s (\acl{KI}) die Geschichte der Entwicklung dieser betrachtet, um Zusammenhänge mit technischen und mathematischen Fortschritten besser verständlich zu machen.
 
 Anschließend wird speziell auf Algorithmen zur Entwicklung einer Spiele-KI von sequenziellen Nullsummenspielen wie Schach eingegangen. Dabei wird zuerst der grundlegende ``Minimax-Algorithmus'' betrachtet und zudem auf die Optimierung dieses durch ``Alpa-Beta Pruning'' eingegangen. Darauffolgend werden zudem die Problematiken der Anwendung dieser auf komplexe Spiele beschrieben und mögliche Lösungen vorgeschlagen. 
 
-Abschließend für dieses Kapitel werden durch genannte Problematiken nötig werdende Evaluierungsfunktionen der einzelnen Spielzustände im Spiel Schach genannt und beschrieben, womit die theoretische Grundlagenschaffung für das Entwickeln einer Schach-KI abgeschlossen ist.
+Abschließend für dieses Kapitel werden durch genannte Problematiken benötigte Evaluierungsfunktionen der einzelnen Spielzustände im Spiel Schach genannt und beschrieben, womit die theoretische Grundlagenschaffung für das Entwickeln einer Schach-KI abgeschlossen ist.
 
 \section{Einordnung der Spieltypen für Schach} \label{game_types}
 
@@ -23,25 +23,25 @@ In der klassischen Spieletheorie werden Spiele anhand von fünf Kategorien unter
 
 Diese werden nun alle einzeln beschrieben sowie der Unterschied erläutert. Außerdem wird das Spiel Schach jeweils einer der Spieltypen zugeordnet.
 
-Im ersten Schritt wird zwischen symmetrischen und asymmetrischen Spielen unterschieden. Bei symmetrischen Spielen hat jeder Spieler dieselben Ziele, um das Spiel zu gewinnen. Der Sieg ist dabei abhängig von den gewählten Strategien. Bei asymmetrischen Spielen dagegen verfolgen die teilnehmenden Parteien unterschiedliche Ziele. \cite{Rodriguez} Ein klassisches Beispiel ist dabei das Spiel des Jägers und des Gejagten - während der Jäger versucht den Gejagten zu fangen, versucht der Gejagte zu entkommen. Unter Umständen wird auch der Erfolg im Nachhinein anhand verschiedener Kriterien evaluiert, so dass unter Umständen beide Seiten für sich einen Sieg erringen können.
+Im ersten Schritt wird zwischen symmetrischen und asymmetrischen Spielen unterschieden. Bei symmetrischen Spielen hat jeder Spieler dieselben Ziele, um das Spiel zu gewinnen. Der Sieg ist dabei abhängig von den gewählten Strategien. Bei asymmetrischen Spielen dagegen verfolgen die teilnehmenden Parteien unterschiedliche Ziele. \cite{Rodriguez} Ein klassisches Beispiel ist dabei das Spiel des Jägers und des Gejagten - während der Jäger versucht den Gejagten zu fangen, versucht der Gejagte zu entkommen. Unter Umständen wird auch der Erfolg im Nachhinein anhand verschiedener Kriterien evaluiert, sodass unter Umständen beide Seiten für sich einen Sieg erringen können.
 
 Schach stellt dabei ein klassisches Beispiel eines symmetrischen Spiels dar. Beide Seiten versuchen jeweils den gegnerischen König Schachmatt zu setzen, ohne dabei selbst zuvor Schachmatt gesetzt zu werden.
 
-Vollständige und unvollständige Informationslagen in Spielen kategorisieren Spiele nach dem Wissen, den der Spieler über das Spiel hat. Vollständige Informationslage bedeutet, dass der Spieler über alle getätigten Züge und Spielzustände informiert ist und nicht aus Unwissenheit heraus agieren muss. Bei unvollständiger Informationslage ist das Gegenteil der Fall. \cite{Rodriguez} Bei vielen Kartenspielen beispielsweise, wie Poker oder Black Jack, hat ein Spieler keine Informationen über die Karten in der Hand der anderen Spieler. Dies ist dann als unvollständige Informationslage zu bezeichnen.
+Vollständige und unvollständige Informationslagen in Spielen kategorisieren Spiele nach dem Wissen, das der Spieler über das Spiel hat. Vollständige Informationslage bedeutet, dass der Spieler über alle getätigten Züge und Spielzustände informiert ist und nicht aus Unwissenheit heraus agieren muss. Bei unvollständiger Informationslage ist das Gegenteil der Fall. \cite{Rodriguez} Bei vielen Kartenspielen, beispielsweise Poker oder Black Jack, hat ein Spieler keine Informationen über die Karten der anderen Spieler. Dies ist dann als unvollständige Informationslage zu bezeichnen.
 
 Im Spiel Schach jedoch sind die Figuren und dessen Positionen beider Spieler für alle Seiten offengelegt und einsehbar. Dadurch können sich beide Spieler ein Gesamtbild über die Situation machen, ohne dass ein Mangel an Information herrscht.
 
-Bei kooperativen Spielen handelt es sich um Spiele, in denen mehrere Spieler zusammen an einem Ziel arbeiten können oder gar müssen, um ihr Ergebnis zu verbessern. Dies kann in Bündnissen münden, die mehrere Spieler zusammen eingehen, um an einem Ziel zu arbeiten, dass alle gemeinsam erreichen können. \cite{Rodriguez} Ein Beispiel dafür sind ist das Spiel Scotland Yard. Dabei müssen verschiedene Spieler zusammen arbeiten, um einen Spieler, der die Rolle des Mister X übernimmt, ausfindig zu machen. Dazu müssen sie Hinweise des Aufenthaltortes nutzen und den Gegenspieler dann gemeinsam versuchen zu umstellen, so dass dieser nicht mehr fliehen kann. Es ist also eine direkte Zusammenarbeit mehrerer Spieler nötig, um das Spiel gewinnen zu können. \cite{Ravensburg2000} In Nicht-kooperativen Spielen dagegen ist es verboten oder nicht zielführend Allianzen zu formen, da kein gemeinsamer Sieg errungen werden kann. \cite{Rodriguez}
+Bei kooperativen Spielen handelt es sich um Spiele, in denen mehrere Spieler zusammen an einem Ziel arbeiten können oder gar müssen, um ihr Ergebnis zu verbessern. Dies kann in Bündnissen münden, die mehrere Spieler zusammen eingehen, um an einem gemeinsamen Ziel zu arbeiten, dass alle gemeinsam erreichen können. \cite{Rodriguez} Ein Beispiel dafür ist das Spiel Scotland Yard. Dabei müssen verschiedene Spieler zusammen arbeiten, um einen Spieler, der die Rolle des Mister X übernimmt, ausfindig zu machen. Dazu müssen sie Hinweise des Aufenthaltortes nutzen und den Gegenspieler dann gemeinsam versuchen zu umstellen, sodass dieser nicht mehr fliehen kann. Es ist also eine direkte Zusammenarbeit mehrerer Spieler nötig, um das Spiel gewinnen zu können. \cite{Ravensburg2000} In Nicht-kooperativen Spielen dagegen ist es verboten oder nicht zielführend Allianzen zu formen, da kein gemeinsamer Sieg errungen werden kann. \cite{Rodriguez}
 
 %https://www.ravensburger.com/spielanleitungen/ecm/Spielanleitungen/Scotland_Yard_W_And_B_GB.pdf
 
 Schach stellt dabei ein Nicht-kooperatives Spiel dar, da die Spieler nicht miteinander, sondern nur gegeneinander antreten können.
 
-Simultane Spiele sind Spiele, bei denen alle Spieler gleichzeitig Aktionen unternehmen können. Ein Beispiel stellt dabei ein Kampf dar, in der beide Seiten sich gleichzeitig bewegen können und in Echtzeit auf die Bewegungen des Gegners reagieren müssen. Bei sequenziellen Spielen dagegen wechseln sich alle Seiten mit ihren Zügen ab. Dies bedeutet auch, dass die Spieler über die vorangegangenen Züge ihrer Gegner Bescheid wissen. \cite{Rodriguez}
+Simultane Spiele sind Spiele, bei denen alle Spieler gleichzeitig Aktionen unternehmen können. Ein Beispiel stellt dabei ein Kampf dar, in der beide Seiten sich gleichzeitig bewegen können und in Echtzeit auf die Bewegungen des Gegners reagieren müssen. Dagegen wechseln sich bei sequenziellen Spielen  alle Seiten mit ihren Zügen ab. Dies bedeutet auch, dass die Spieler über die vorangegangenen Züge ihrer Gegner Bescheid wissen. \cite{Rodriguez}
 
 Wie die meisten Brettspiele stellt Schach dabei ein sequentielles Spiel dar. Die Spieler wechseln sich mit ihren Zügen ab und wissen über die durch den Gegner bewegten Figuren Bescheid.
 
-Als letzte Unterscheidung gelten Nullsummenspiele und Nicht-Nullsummenspiele. Bei Nullsummenspielen ist Gewinn für den einen Spieler immer einhergehend mit einem gleichzeitigen Verlust für einen anderen Spieler. Dies bedeutet, dass Werte für Gewinn und Verluste für alle Spieler zusammen gerechnet immer auf den Wert Null hinauslaufen. Bei Nicht-Nullsummenspielen ist dies nicht der Fall. Dabei können von einer Aktion eines Akteurs mehrere Akteure gleichzeitig profitieren, ohne dass andere darunter leiden.\cite{Rodriguez} Ein Beispiel dafür ist das Gefangenendilemma. Dabei können zwei Gefangene jeweils die Entscheidung treffen, ob sie ihr Verbrechen gestehen oder Schweigen. Von ihrem Handeln sowie dem Handeln der anderen Partei hängt die Länge ihrer Strafe ab. \cite{Tweedale1993} Diese ist folgender Tabelle zu entnehmen:
+Als letzte Unterscheidung gelten Nullsummenspiele und Nicht-Nullsummenspiele. Bei Nullsummenspielen ist der Gewinn für den einen Spieler immer einhergehend mit einem gleichzeitigen Verlust für einen anderen Spieler. Dies bedeutet, dass Werte für Gewinn und Verluste für alle Spieler zusammen gerechnet immer auf den Wert Null hinauslaufen. Bei Nicht-Nullsummenspielen ist dies nicht der Fall. Dabei können von einer Aktion eines Akteurs mehrere Akteure gleichzeitig profitieren, ohne dass andere darunter leiden.\cite{Rodriguez} Ein Beispiel dafür ist das Gefangenendilemma. Dabei können zwei Gefangene jeweils die Entscheidung treffen, ob sie ihr Verbrechen gestehen oder Schweigen. Von ihrem Handeln sowie dem Handeln der anderen Partei hängt die Länge ihrer Strafe ab. \cite{Tweedale1993} Diese ist folgender Tabelle zu entnehmen:
 
 \begin{tabular}{l c c}
 & \textbf{B schweigt} & \textbf{B gesteht} \\
@@ -55,20 +55,20 @@ Dies ist als klassisches Nicht-Nullsummenspiel bekannt, da beide Seiten je nach 
 
 Anders ist dies bei Schach. Schach ist als Nullsummenspiel zu betrachten, da am Ende des Spiels immer entweder eine Seite gewonnen (+1) und die andere verloren (-1) hat oder beide Seiten ein Unentschieden/Patt erreicht haben (0).
 
-Nachdem nun Schach in die Spieletheorie-Typen eingeordnet ist, wird in folgenden Kapiteln näher auf die Möglichkeiten zur Durchführung des Schach Spiels durch einen Computer eingegangen.
+Nachdem nun Schach in die Spieletheorie-Typen eingeordnet wurde, wird in folgenden Kapiteln näher auf die Möglichkeiten eines Computers zur Durchführung des Schach Spiels  eingegangen.
 
 %What Data Scientists Should Know About Game Theory: Types of Games
 
 
 \section{Geschichte der Spieltheorie}\label{history}
 
-Die Geschichte der Spieltheorie im Computerumfeld beginnt mit Claude Shannon im Jahre 1949, als dieser seine Gedanken zur möglichen Realisierung eines Schach spielenden Computers veröffentlicht. Dabei begründet er zunächst seine Auswahl auf das Spiel Schach für sein langfristiges Ziel eines spielenden Computers und legt dann das Ziel an sich fest.
+Die Geschichte der Spieltheorie im Computerumfeld beginnt mit Claude Shannon im Jahre 1949, als dieser seine Gedanken zur möglichen Realisierung eines Schach spielenden Computers veröffentlicht. Dabei begründet er zunächst seine Wahl des Spiels Schach durch sein langfristiges Ziel eines spielenden Computers und legt daraufhin das Ziel an sich fest.
 
 \begin{quote}
 “The chess machine is an ideal one to start with, since: (1) the problem is sharply defined both in allowed operations (the moves) and in the ultimate goal (checkmate); (2) it is neither so simple as to be trivial nor too difficult for satisfactory solution; (3) chess is generally considered to require ‘thinking’ for skillful play; a solution of this problem will force us either to admit the possibility of a mechanized thinking or to further restrict our concept of ‘thinking’; (4) the discrete structure of chess fits well into the digital nature of modern computers. … It is clear then that the problem is not that of designing a machine to play perfect chess (which is quite impractical) nor one which merely plays legal chess (which is trivial). We would like to play a skillful game, perhaps comparable to that of a good human player.” \cite{Shannon1950}
 \end{quote} 
 
-Der vorgeschlagene Ansatz zum Evaluieren der Züge stellt dabei ein Algorithmus dar, der heute unter ``Minimax-Algorithmus'' bekannt ist. Dieser Ansatz wird in Kapitel \ref{minimax} erklärt.
+Der vorgeschlagene Ansatz zur Evaluierung der Züge stellt dabei ein Algorithmus dar, der heute unter ``Minimax-Algorithmus'' bekannt ist. Dieser Ansatz wird in Kapitel \ref{minimax} erklärt.
 
 %http://www.andreykurenkov.com/writing/ai/a-brief-history-of-game-ai/
 
@@ -78,7 +78,7 @@ Dabei wird vom aktuellen Zustand aus einige Züge vorausgeschaut und bewertet, w
 
 %image?
 
-Auch wurden hier erste Machine-learning Algorithmen verwendet, die dem Computer innerhalb kürzester Zeit das Spiel so gut beibringen, dass dieser dazu in der Lage ist menschliche Spieler zu schlagen. Samuel verwendete dazu zwei Methoden - Einerseits  das Auswendiglernen, das die Werte von bestimmten Spielzuständen, die bereits evaluiert wurden, abspeichert, so dass die Berechnung kein weiteres Mal durchgeführt werden muss. Zum anderen ``learning-by-generalization'', das die Parameter der Evaluierungsfunktionen basierend auf vorherigen Spielen anpasst. Dies geschah mit dem Ziel, den Unterschied zwischen dem berechneten Evaluierungswert des Zustands und dem tatsächlichen, auf den Ausgang des jeweiligen Spiels basierenden Werts zu minimieren. \cite{Samuel1959}
+Auch wurden hier erste Machine-learning Algorithmen verwendet, die dem Computer innerhalb kürzester Zeit das Spiel so gut beibringen, dass dieser dazu in der Lage ist menschliche Spieler zu schlagen. Samuel verwendete dazu zwei Methoden - Einerseits  das Auswendiglernen, das die Werte von bestimmten Spielzuständen, die bereits evaluiert wurden, abspeichert, sodass die Berechnung kein weiteres Mal durchgeführt werden muss. Zum anderen ``learning-by-generalization'', das die Parameter der Evaluierungsfunktionen basierend auf vorherigen Spielen anpasst. Dies geschah mit dem Ziel, den Unterschied zwischen dem berechneten Evaluierungswert des Zustands und dem tatsächlichen, auf den Ausgang des jeweiligen Spiels basierenden Werts zu minimieren. \cite{Samuel1959}
 
 %https://www.cs.virginia.edu/~evans/greatworks/samuel1959.pdf
 
@@ -88,7 +88,7 @@ Auf Grund dieser Komplexität des Schach Spiels, sowie der begrenzten Rechenkapa
 
 %Minimax Tree image?
 
-Diese Limitationen jedoch ermöglichten lediglich ein relativ simples, wenn auch passables Schachspiel.
+Diese Limitationen ermöglichten lediglich ein relativ simples, wenn auch passables Schachspiel.
 
 %https://d1yx3ys82bpsa0.cloudfront.net/chess/computer-v-chessplayer.bernstein-roberts.scientific-american.june-1958.062303059.pdf
 
@@ -100,9 +100,9 @@ Diese neue Vorgehensweise kann einiges an Rechenkapazitäten sparen und soll so 
 
 Durch Verbesserung der Algorithmen und erweiterten Rechenkapazitäten durch immer bessere und performantere Computer, teilweise extra optimiert auf das Schach Spiel, konnten Stück für Stück neue Erfolge erzielt werden. 1962 konnte eine KI von Arthur Samuel erstmals einen renommierten Spieler, Robert Nealy, schlagen. \cite{Kurenkov2019}
 
-1994 konnten die besten Dame Spieler der Welt eine KI namens ``CHINOOK'' nur noch ein Unentschieden abverlangen. \cite{Schaeffer1996} Bereits 1988 gelang einem Programm namens ``Deep Thought'' von Feng-hsiung Hsu, später von IBM weiterentwickelt unter dem Namen ``Deep Blue'' bekannt, ähnliches im Schach Spiel und schlug den Schach-Großmeister Bent Larsen. Im Jahre 1997 schlug die weiterentickelte Version ``Deep Blue'' Schachweltmeister Kasparov.\cite{Kurenkov2019}
+1994 konnten die besten Dame Spieler der Welt eine KI namens ``CHINOOK'' nur noch ein Unentschieden abverlangen. \cite{Schaeffer1996} Bereits 1988 gelang einem Programm namens ``Deep Thought'' von Feng-hsiung Hsu, später von IBM unter dem Namen ``Deep Blue'' weiterentwickelt, ähnliches im Schach Spiel und schlug den Schach-Großmeister Bent Larsen. Im Jahre 1997 schlug die weiterentickelte Version ``Deep Blue'' Schachweltmeister Kasparov.\cite{Kurenkov2019}
 
-Beide Programme basierten dabei auf drei wesentlichen Punkten: Eine Datenbank von Eröffnungszügen entnommen von professionellen Spielern, alpha-beta Suchbäume mit einer Menge an Evaluierungsfunktionen sowie einer Endspiel Datenbank sobald nur noch eine geringe Anzahl an Spielfiguren existiert. \cite{Kurenkov2019}
+Beide Programme basierten dabei auf drei wesentlichen Punkten: Eine Datenbank von Eröffnungszügen, entnommen von professionellen Spielern, alpha-beta Suchbäume mit einer Menge an Evaluierungsfunktionen, sowie einer Endspiel Datenbank sobald nur noch eine geringe Anzahl an Spielfiguren existiert. \cite{Kurenkov2019}
 
 %http://www.andreykurenkov.com/writing/ai/a-brief-history-of-game-ai-part-2/
 
@@ -112,7 +112,7 @@ Lange war Stockfish unbesiegt, dies änderte sich jedoch im Jahr 2017 als AlphaZ
 
 %L. Fischer Künstliche Intelligenz schlägt...
 
-An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nicht. Besonders durch den Fortschritt im Bereich der neuronalen Netze und speziell im ``Deep Learning'' Bereich werden immer komplexere Spiele durch den Computer beherrscht, immer öfter auch besser als vom Menschen. Ein Beispiel stellt dabei Alpha Star dar, das im Jahre 2019 eines der besten Teams im Echtzeit-Strategiespiel ``Starcraft 2'' geschlagen hat. Diese Entwicklung wird sich wohl auch in den kommenden Jahren fortsetzen, auch außerhalb der Spiele Szene, weshalb KI in unserer Gesellschaft immer mehr an Bedeutung gewinnt. \cite{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
+An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nicht. Besonders durch den Fortschritt im Bereich der neuronalen Netze und speziell im ``Deep Learning'' Bereich werden immer komplexere Spiele durch den Computer beherrscht, immer öfter auch besser als vom Menschen. Ein Beispiel stellt dabei Alpha Star dar, das im Jahre 2019 eines der besten Teams im Echtzeit-Strategiespiel ``Starcraft 2'' geschlagen hat. Diese Entwicklung wird sich wohl auch außerhalb der Spiele Szene in den kommenden Jahren fortsetzen, weshalb KI in unserer Gesellschaft immer mehr an Bedeutung gewinnt. \cite{OriolVinyalsIgorBabuschkinJunyoungChungMichaelMathieuMaxJaderbergWojtekCzarneckiAndrewDudzikAjaHuangPetkoGeorgievRichardPowellTimoEwaldsDanHorganManuelKroissIvoDanihelkaJohnAgapiouJunhyukOhValentinDalibard}
 
 %AlphaStar: Mastering...
 
@@ -128,13 +128,13 @@ Dabei wird davon ausgegangen, dass das Spiel von Spieler A gestartet wird, der s
 
 wobei $S$ für die Menge der Züge steht und $\mathtt{Player}$ für die Menge der Spieler. Aus der Angabe eines Zuges und eines Spielers aus den jeweiligen Mengen ergibt sich eine rationale Zahl, die als Bewertung des Zuges zu betrachten ist. Dabei gilt: Umso höher die Zahl, desto besser der Zug für den angegebenen Spieler.
 
-Dann wird das Minimum aller Bewertungen der Endzustände für jeden Zug $s \in S$ gewählt. Diesen Zug nennen wir $\min (S)$ und dessen Bewertung somit $\mathtt{utility}(\min (s, p)))$, wobei gilt $s \in S$ und $p \in \mathtt{Player}$. Nun wird der Zug $s_{best} \in S$ gewählt, so dass gilt:
+Dann wird das Minimum aller Bewertungen der Endzustände für jeden Zug $s \in S$ gewählt. Diesen Zug nennen wir $\min (S)$ und dessen Bewertung somit $\mathtt{utility}(\min (s, p))$, wobei gilt $s \in S$ und $p \in \mathtt{Player}$. Nun wird der Zug $s_{best} \in S$ gewählt, sodass gilt:
 
 \begin{equation}
 \forall s \in S : (s \neq s_{best} \rightarrow \mathtt{utility}(\min(s, p)) \leq \mathtt{utility}(\min(s_{best})))
 \end{equation}
 
-Anders ausgedrückt - existiert also eine Menge X von Strategien von Spieler A und eine auf X folgende Menge Y von möglichen Strategien von Spieler B, so lautet die Optimierungsregel für Spieler A
+Anders ausgedrückt - existiert eine Menge X von Strategien von Spieler A und eine auf X folgende Menge Y von möglichen Strategien von Spieler B, so lautet die Optimierungsregel für Spieler A
 
 \begin{equation}
 \max\limits_X[\min\limits_Yu(X,Y)]
@@ -148,13 +148,13 @@ Umgekehrt versucht Spieler B das für Spieler A ungünstigste Ergebnis zu wähle
 
 %Strategische Spiele
 
-Dadurch kann Spieler B den Ertrag des Spielers A auf diesen Wert begrenzen. Es gilt also
+Dadurch kann Spieler B den Ertrag des Spielers A auf diesen Wert begrenzen. Es gilt
 
 \begin{equation}
 \max\limits_X[\min\limits_Yu(X,Y)] \leq \min\limits_Y[\max\limits_Xu(X,Y)] \cite{Dresher1961}
 \end{equation}
 
-Das Theorem geht dabei davon aus, dass es also einen Sattelpunkt $v$ geben muss, bei dem sich die beiden Optimierungen für Spieler A und B einpendeln. Dieser Sattelpunkt lautet
+Das Theorem geht dabei davon aus, dass es einen Sattelpunkt $v$ geben muss, bei dem sich die beiden Optimierungen für Spieler A und B einpendeln. Dieser Sattelpunkt lautet
 
 \begin{equation}
 \max\limits_X[\min\limits_Yu(X,Y)] = \min\limits_Y[\max\limits_Xu(X,Y)] = v \cite{Dresher1961}
@@ -191,9 +191,9 @@ Mittels dieser Funktion kann eine Menge $terminal\_states$ als Menge aller Endzu
 wobei diese den Zustand aus Sicht des gegebenen Spielers bewertet. Umso höher das Resultat dieser Berechnung also, desto besser das Ergebnis für Spieler P.
 \end{itemize}
 
-Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge von s $\mathtt{actions}(s)$ alle erreichbaren Zustände $result\_states$ berechnet. Von jedem Zustand $s \in \mathtt{result\_states}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustand erreichen. Der Fall ist dies, wenn $\mathtt{terminal_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
+Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge von s $\mathtt{actions}(s)$ alle erreichbaren Zustände $result\_states$ berechnet. Von jedem Zustand $s \in \mathtt{result\_states}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustands erreichen. Der Fall ist dies, wenn $\mathtt{terminal_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
 
-Entscheidend für die Wahl eines Zuges ist dann die Bewertung jedes einzelnen Zustandes. Dies ist solange umsetzbar, wie der Computer ohne Probleme alle möglichen Zustände berechnen und evaluieren kann. Um dies an einem Beispiel zu zeigen - Beim Spiel ``Tic Tac Toe'', bei dem in einem 3x3 Feld zwei Spieler gegeneinander antreten mit dem Ziel drei aneinander angrenzende (vertikal, horizontal oder diagonal) Felder mit ihrer Figur zu belegen, gibt es insgesamt 255.168 verschiedene Spielverläufe. \cite{Kaplan2017} Diese sind von heutigen Computern in akzeptabler Zeit berechen- und auswertbar.
+Entscheidend für die Wahl eines Zuges ist dann die Bewertung jedes einzelnen Zustands. Dies ist solange umsetzbar, wie der Computer ohne Probleme alle möglichen Zustände berechnen und evaluieren kann. Um dies an einem Beispiel zu zeigen - Beim Spiel ``Tic Tac Toe'', bei dem in einem 3x3 Feld zwei Spieler gegeneinander antreten mit dem Ziel drei aneinander angrenzende (vertikal, horizontal oder diagonal) Felder mit ihrer Figur zu belegen, gibt es insgesamt 255.168 verschiedene Spielverläufe. \cite{Kaplan2017} Diese sind von heutigen Computern in akzeptabler Zeit berechen- und auswertbar.
 
 %https://books.google.de/books?id=mUIzDwAAQBAJ&pg=PT18&lpg=PT18&dq=tic+tac+toe+m%C3%B6gliche+255+168&source=bl&ots=CcuZA068gP&sig=ACfU3U0XQ053sl4-BcVsL-hPnm76l1ZHyg&hl=de&sa=X&ved=2ahUKEwiL_snW6oLhAhXBIVAKHc7tD40Q6AEwAHoECAcQAQ#v=onepage&q=tic%20tac%20toe%20m%C3%B6gliche%20255%20168&f=false
 
@@ -212,14 +212,14 @@ Dabei werden vom Ausgangszustand, der den Zustand des aktuellen Spiels widerspie
 
 In diesem Beispiel wird sich der Computer somit für den dritten Zug von links entscheiden, da bei beiden anderen ein Sieg des Gegenspielers bevorsteht, sollte dieser jeweils die perfekten Züge spielen. Beim dritten Zug kann der Gegner maximal noch ein Unentschieden erreichen.
 
-Diese Strategie gerät jedoch dann an ihre Grenzen, wenn nicht mehr alle möglichen Zustände berechnet werden können. Bei dem Spiel Schach beispielsweise belaufen sich Schätzungen schon nach den ersten 40 Spielzügen auf 10\textsuperscript{115} - 10\textsuperscript{120} verschiedene Spielverläufe. \cite{Bonsdorff1978} Dies ist auch für einen Computer in tolerierbarer Zeit unmöglich berechenbar. Aus diesem Grund muss die Strategie für solch komplexere Spiele abgewandelt werden. Die verschiedenen Ansätze dazu sind in Kapitel \ref{depth_limit} beschrieben.
+Diese Strategie gerät jedoch dann an ihre Grenzen, wenn nicht mehr alle möglichen Zustände berechnet werden können. Bei dem Spiel Schach belaufen sich Schätzungen schon nach den ersten 40 Spielzügen auf 10\textsuperscript{115} - 10\textsuperscript{120} verschiedene Spielverläufe. \cite{Bonsdorff1978} Dies ist auch für einen Computer in tolerierbarer Zeit unmöglich berechenbar. Aus diesem Grund muss die Strategie für solche komplexere Spiele abgewandelt werden. Die verschiedenen Ansätze dazu sind in Kapitel \ref{depth_limit} beschrieben.
 
 % Eero Bonsdorff, Karl Fabel, Olavi Riihimaa: Schach und Zahl. 3. Auflage, Rau, Düsseldorf 1978.
 %https://de.wikipedia.org/wiki/Schach#cite_note-6
 
 Um diesen Algorithmus in die Praxis umzusetzen, verlangt es drei Funktionen, die jeweils auf den Parameter \textbf{state} angewiesen sind. Dieser Parameter gibt Aufschluss über den aktuellen Zustand des Spiels.
 
-Zusätzlich verlangt der Algorithmus neben der genannten Funktionen $utility$ und $finished$ eine Funktion $min$ sowie eine Funktion $max$, die jeweils mehrere Werte vergleichen und den Minimum bzw. Maximum aller verglichenen Werte zurück geben. Eine beispielhafte Implementierung eines solchen mittels drei verschiedener Funktionen kann in Algorithmus \ref{alg:minimax} gesehen werden.
+Zusätzlich verlangt der Algorithmus neben der genannten Funktionen $utility$ und $finished$ eine Funktion $min$ sowie eine Funktion $max$, die jeweils mehrere Werte vergleichen und den Minimum bzw. Maximum aller verglichenen Werte zurückgeben. Eine beispielhafte Implementierung eines solchen Algorithmus mittels drei verschiedener Funktionen kann in Algorithmus \ref{alg:minimax} gesehen werden.
 
 \begin{algorithm}[h]
 \caption{Minimax Algorithmus \cite{Russell2010}}
@@ -256,7 +256,7 @@ Zusätzlich verlangt der Algorithmus neben der genannten Funktionen $utility$ un
 \end{algorithmic}
 \end{algorithm}
 
-Die erste Funktion geht dabei jeden möglichen Zug vom gegebenen Ursprungszustand durch und gibt am Ende den Zustand zurück, der den besten Minimum-Wert durch die Evaluierungsfunktion $utility$ erreicht. Dazu gibt die Funktion jeden der erreichbaren Zustände zu der minValue Funktion. Diese gibt entweder den durch die $utility$ Funktion errechneten Wert des Zustands zurück, sollte der Zustand ein Endzustand sein, oder sie gibt das Minimum aller Maxima-Werte der erreichbaren Zustände zurück. Dazu wiederum wird die maxValue Funktion verwendet, die genau das Gegenteil der minValue Funktion macht. Ist der Endzustand erreicht, gibt zwar auch die maxValue Funktion den Wert des Zustands direkt zurück, andernfalls aber gibt sie das Maximum aller Minimum Werte der vom gegebenen Zustand aus erreichbaren Zustände zurück, wozu wiederum auf die minValue Funktion zurückgegriffen wird. Dies ganze wiederholt sich also rekursiv so lange, bis alle neu errechneten Zustände den Wert eines Endzustandes erreicht haben. \cite{Russell2010}
+Die erste Funktion geht dabei jeden möglichen Zug vom gegebenen Ursprungszustand durch und gibt am Ende den Zustand zurück, der den besten Minimum-Wert durch die Evaluierungsfunktion $utility$ erreicht. Dazu gibt die Funktion jeden der erreichbaren Zustände zu der minValue Funktion. Diese gibt entweder den durch die $utility$ Funktion errechneten Wert des Zustands zurück, sollte der Zustand ein Endzustand sein, oder sie gibt das Minimum aller Maxima-Werte der erreichbaren Zustände zurück. Dazu wiederum wird die maxValue Funktion verwendet, die genau das Gegenteil der minValue Funktion macht. Ist der Endzustand erreicht, gibt zwar auch die maxValue Funktion den Wert des Zustands direkt zurück, andernfalls aber gibt sie das Maximum aller Minimum Werte der vom gegebenen Zustand aus erreichbaren Zustände zurück, wozu wiederum auf die minValue Funktion zurückgegriffen wird. Dieses Vorgehen wiederholt sich rekursiv, bis alle neu errechneten Zustände den Wert eines Endzustandes erreicht haben. \cite{Russell2010}
 
 Diesen Endzuständen werden dann Werte zugewiesen, die aufsteigend rekursiv miteinander verglichen und abwechselnd Minimum und Maximum gewählt werden, um dem Minimax-Theorem dahingehend zu folgen. Um das Ganze zu verdeutlichen kann Abbildung \ref{fig:minimax_tree} als Beispiel genommen werden:
 
@@ -273,11 +273,12 @@ Von diesen ausgerechneten Minima wird dann auf Ebene 1 das Maximum berechnet. Da
 
 Somit ist es mit dem Minimax-Algorithmus möglich anhand für den Computer möglicher Berechnungen ein Spiel zu evaluieren und den besten Zug zu wählen unter der Annahme, dass der Gegenspieler ebenso handeln wird. Problematisch dabei ist jedoch besonders bei komplexeren Spielen die Dauer der Evaluierung aller Züge. Dies liegt zum einen daran, dass jeder einzelne Zug evaluiert wird und somit bei komplexen Spielen eine enorm hohe Zahl an Zuständen evaluiert werden muss. Zum anderen ist das größte Problem aber wohl, dass es zwangsweise das Spiel bis in die Endzustände berechnen muss, was eine enorm hohe Anzahl an zu evaluierenden Positionen verlangt und somit eine extreme Zeitspanne zum Berechnen mit sich zieht. So ist die Zeitkomplexität bei einem Spiel der Tiefe m und einer Anzahl b an möglichen Zügen gleich $O(b^m)$. \cite[S.169]{Russell2010}
 %169
+%187
 
 
 %genaue Zahl?
 
-Das erste Problem, dass jeder einzelne Zug berechnet wird, wird mit dem Ansatz des Alpha Beta Pruning versucht zu minimieren. Dieser Ansatz wird im Kapitel \ref{alpha_beta} erklärt. Das Problem, dass stets bis in die Endzustände gerechnet werden muss, wird in Kapitel \ref{depth_limit} genauer erläutert sowie einige Lösungsansätze dargestellt.
+Das erste Problem, dass jeder einzelne Zug berechnet wird, wird mit dem Ansatz des Alpha Beta Prunings versucht zu minimieren. Dieser Ansatz wird im Kapitel \ref{alpha_beta} erklärt. Das Problem, dass stets bis in die Endzustände gerechnet werden muss, wird in Kapitel \ref{depth_limit} genauer erläutert sowie einige Lösungsansätze dargestellt.
 
 % bessre Überleitung formuliere
 
@@ -286,7 +287,7 @@ Das erste Problem, dass jeder einzelne Zug berechnet wird, wird mit dem Ansatz d
 
 \section{Alpha-beta pruning}\label{alpha_beta}
 
-Ein Problem bei dem Minimax Algorithmus ist, wie bereits in Kapitel \ref{minimax} angesprochen, die Evaluierung eines jeden möglichen Zuges, obwohl manche Züge eventuell schon im Vorhinein mittels trivialer Berechnungen ausgeschlossen werden können und gar nicht mehr näher betrachtet werden müssten. Auch ein guter Schachspieler geht ja nicht jeden möglichen Zug im Kopf durch, sondern schaut sich nur spezielle Züge bis zu einer gewissen Tiefe an und sobald er erkennt, dass dieser nicht gewinnbringend ist, schließt er diesen direkt aus, ohne ihn weiter zu evaluieren.
+Ein Problem bei dem Minimax Algorithmus ist, wie bereits in Kapitel \ref{minimax} angesprochen, die Evaluierung eines jeden möglichen Zuges, obwohl manche Züge eventuell schon im Vorhinein mittels trivialer Berechnungen ausgeschlossen werden können und gar nicht mehr näher betrachtet werden müssten. Auch ein guter Schachspieler geht nicht jeden möglichen Zug im Kopf durch, sondern schaut sich nur spezielle Züge bis zu einer gewissen Tiefe an und sobald er erkennt, dass dieser nicht gewinnbringend ist, schließt er diesen direkt aus, ohne ihn weiter zu evaluieren.
 
 Für ein ähnliches Schema gibt es eine erweiternde Technik des Minimax-Algorithmus. Diese nennt sich Alpha-Beta-Pruning. Dabei wird versucht große Teile des Minimax Baums bereits auszuschließen, bei denen auf triviale Weise erkannt werden kann, dass diese die finale Entscheidung nicht beeinflussen würden. 
 
@@ -324,7 +325,7 @@ In Abbildung \ref{fig:alpha_beta_chess} kann dies nochmal anhand eines realen Be
 
 Gehen wir dabei aus, dass zuerst der rechte Zweig (1.) vollständig evaluiert wurde, wofür zunächst alle Knoten dieses Zweigs (2.-5.) betrachtet wurden. Nach diesen Berechnungen wird Knoten 1 das Minimum aller Zweige von 1 zugewiesen. Dieses beträgt -50. Danach soll der linke Zweig (6.) evaluiert werden. Dabei wird zuerst Knoten 7 betrachtet und ein Ergebnis für -80 ermittelt. Da Knoten 6 das Minimum aller seiner Zweige ermitteln wird, wird das Ergebnis kleiner oder gleich -80 sein. Der Ursprungsknoten wird später also das Maximum aus -50 und $z | z \leq -80$ ermitteln, das unabhängig vom endgültigen Wert für z auf jeden Fall -50 betragen wird. Deshalb müssen alle anderen Zweige von 6 gar nicht mehr betrachtet werden, da diese ohnehin kein Einfluss auf das Ergebnis hätten.
 
-Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positionen und erhöht die Performanz des Minimax Algorithmus dadurch deutlich. Im Beispiel zu sehen in Abbildung \ref{fig:chess_example} hätten wir bei einer Tiefe von 4 mit einem herkömmlichen Minimax Algorithmus noch ganze 879.750 Positionen zu evaluieren. Durch die Verbesserung des Algorithmus mittels Alpha-Beta-Pruning sinkt diese Zahl der zu evaluierenden Positionen um ein beachtliches auf lediglich noch 61.721, und somit um mehr als ein zehnfaches. \cite{Hartikka}
+Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positionen und erhöht die Performanz des Minimax Algorithmus dadurch deutlich. In Abbildung \ref{fig:chess_example} würde bei einer Tiefe von 4 ein herkömmlichen Minimax Algorithmus 879.750 Positionen evaluieren. Durch die Verbesserung des Algorithmus mittels Alpha-Beta-Pruning sinkt diese Zahl der zu evaluierenden Positionen um ein beachtliches auf lediglich noch 61.721, und somit um mehr als ein zehnfaches. \cite{Hartikka}
 
 \begin{figure}[h]
 \centering
@@ -339,7 +340,7 @@ Zur Umsetzung eines solchen Algorithmuses werden zwei Werte benötigt - $\alpha$
 $\alpha$ gleicht dabei dem bisher besten (sprich höchsten) Wert in dem $\max$ Pfad des Minimax-Baums.\\
 $\beta$ gleicht dagegen dem bisher besten (sprich niedrigsten) Wert in dem $\min$ Pfad des Minimax-Baums. \cite{Russell2010}
 
-Diese Werte werden kontinuierlich aktualisiert und sobald bekannt ist, dass der Wert eines Knoten schlechter als das aktuelle $\alpha$ (bei $\max$ Ebenen) beziehungsweise $\beta$ (bei $\min$ Ebenen) sein wird, werden die restlichen Zweige dieses Knoten nicht mehr in Betracht gezogen und somit übersprungen. \cite{Russell2010}
+Diese Werte werden kontinuierlich aktualisiert und sobald bekannt ist, dass der Wert eines Knoten schlechter als das aktuelle $\alpha$ (bei $\max$ Ebenen) beziehungsweise $\beta$ (bei $\min$ Ebenen) sein wird, werden die restlichen Zweige dieses Knotens nicht mehr in Betracht gezogen und somit übersprungen. \cite{Russell2010}
 
 Dies kann in einen Algorithmus verpackt werden, wie in Algorithmus \ref{alg:alpha_beta} zu sehen.
 
@@ -382,19 +383,19 @@ Dies kann in einen Algorithmus verpackt werden, wie in Algorithmus \ref{alg:alph
 \end{algorithmic}
 \end{algorithm}
 
-Dieser Algorithmus gleicht im Grunde dem Minimax Algorithmus, vorgestellt in Kapitel \ref{minimax} Jedoch unterscheiden die beiden Algorithmen sich um die ergänzten Werte $\alpha$ und $\beta$. Diese werden dabei jeweils in die Funktionen maxValue bzw. minValue mitgegeben. Innerhalb dieser wird dann beim Iterieren über alle erreichbaren Zustände geprüft, ob einer dieser Zustände bereits größer als $\beta$, das bisherige Minimum im min Pfad, im Fall der maxValue Funktion beziehungsweise kleiner als $\alpha$, das bisherige Maximum im max-Pfad, im Fall der minValue Funktion ist. In dem Fall wird direkt der errechnete Wert zurückgegeben und Evaluierungen aller weiteren Zustände ausgelassen, da diese ohnehin irrelevant wären.
+Dieser Algorithmus gleicht im Grunde dem Minimax Algorithmus, vorgestellt in Kapitel \ref{minimax} Jedoch unterscheiden sich die beiden Algorithmen um die Werte $\alpha$ und $\beta$. Diese werden dabei jeweils in die Funktionen maxValue bzw. minValue mitgegeben. Innerhalb dieser wird dann beim Iterieren über alle erreichbaren Zustände geprüft, ob einer dieser Zustände bereits größer als $\beta$, das bisherige Minimum im min Pfad, im Fall der maxValue Funktion beziehungsweise kleiner als $\alpha$, das bisherige Maximum im max-Pfad, im Fall der minValue Funktion ist. In dem Fall wird direkt der errechnete Wert zurückgegeben und Evaluierungen aller weiteren Zustände ausgelassen, da diese ohnehin irrelevant wären.
 
 Die Effektivität dieses Algorithmus hängt jedoch von der Reihenfolge der Evaluierung der einzelnen Zustände ab. Im besten Fall werden stets zuerst die scheinbar besten Zustände evaluiert, die ein weiteres Evaluieren der restlichen Zustände weitestgehend überflüssig machen. Im besten Fall könnte so die in Kapitel \ref{minimax} angesprochene Zeitkomplexität eines Spiels mit einer Tiefe m und einer Anzahl b an möglichen Zügen von $O(b^m)$ auf $O(b^\frac{m}{2})$ reduziert werden. Bei einer zufälligen Auswahl der Reihenfolge von zu evaluierenden Zügen dagegen würde sich die Zeitkomplexität immerhin noch auf $O(b^\frac{3m}{4})$ reduzieren. \cite{Russell2010}
 
-Verschiedene Ansätze können dabei helfen die Reihenfolge der zu evaluierenden Züge zu verbessern. Einer dieser Ansätze ist die Züge zu sortieren, so dass zunächst die Züge evaluiert werden, bei der Figuren geschlagen werden können und daraufhin die, bei denen Bedrohungen aufgebaut werden können. Von den übrig gebliebenen Zügen werden dann zunächst die Vorwärtsbewegungen evaluiert und erst zum Schluss die Rückwärtsbewegungen. Nach diesem Schema kann die Zeitkomplexität ungefähr auf $2 \cdot O(b^\frac{m}{2})$ gebracht werden. \cite{Russell2010}
+Verschiedene Ansätze können dabei helfen die Reihenfolge der zu evaluierenden Züge zu verbessern. Einer dieser Ansätze ist die Züge zu sortieren, sodass zunächst die Züge evaluiert werden, bei der Figuren geschlagen werden können und daraufhin die, bei denen Bedrohungen aufgebaut werden können. Von den übrig gebliebenen Zügen werden dann zunächst die Vorwärtsbewegungen evaluiert und erst zum Schluss die Rückwärtsbewegungen. Nach diesem Schema kann die Zeitkomplexität ungefähr auf $2 \cdot O(b^\frac{m}{2})$ gebracht werden. \cite{Russell2010}
 
 Andere Methoden sind die Züge zusätzlich danach zu sortieren, welche Züge bei vergangenen Spielen zu Erfolg geführt haben. Eine Methode dazu ist, zunächst die Züge der ersten Ebene zuerst zu evaluieren und dann eine Ebene tiefer zu gehen, die Züge dabei aber nach den Ergebnissen aus der ersten Evaluierungsiteration zu sortieren. Dies nennt sich ``Iterative Deepening''. \cite{Russell2010}
 
-Diese Optimierung des Minimax Algorithmus spart bereits einige zu evaluierende Zustände und somit einiges an Rechenkapazitäten. Die Anzahl aller möglichen Spielzüge in Schach bleibt jedoch zu hoch, um über jeden einzelnen in angemessener Zeit zu iterieren. Auf Grund dessen muss die Tiefe, nach der die Züge evaluiert werden, reduziert werden. Ansätze dazu werden in Kapitel \ref{depth_limit} beschrieben.
+Diese Optimierung des Minimax Algorithmus spart bereits einige zu evaluierende Zustände und somit einiges an Rechenkapazität. Die Anzahl aller möglichen Spielzüge in Schach bleibt jedoch zu hoch, um über jeden einzelnen in angemessener Zeit zu iterieren. Auf Grund dessen muss die Tiefe, nach der die Züge evaluiert werden, reduziert werden. Ansätze dazu werden in Kapitel \ref{depth_limit} beschrieben.
 
 \section{Problematik komplexerer Spiele}\label{depth_limit}
 
-Der in Kapitel \ref{minimax} beschriebene Minimax-Algorithmus hat - auch mit der Optimierung durch Alpha-Beta-Pruning (Kapitel \ref{alpha_beta}) - das Problem, dass zur Entscheidungsfindung alle Pfade bis zum Ende des Spiels abgegangen werden müssen. Beim Spiel Schach beispielsweise gibt es schon nach 40 Spielzügen $10^{120}$ Möglichkeiten das Spiel zu führen. Selbst unter der sehr optimistischen Annahme, dass eine Million verschiedene Züge pro Sekunde evaluiert werden könnten, würde die Evaluation aller Spielzüge $10^{108}$ Jahre benötigen. \cite{Bernstein1958} Zum Vergleich - das Alter der Erde wird auf nicht viel mehr als $10^{9}$ Jahre geschätzt. \cite{Braterman} An dieser Tatsache ändert auch eine Reduzierung der zu evaluierenden Möglichkeiten durch Alpha-Beta Pruning nichts Wahrnehmbares.
+Der in Kapitel \ref{minimax} beschriebene Minimax-Algorithmus hat - auch mit der Optimierung durch Alpha-Beta-Pruning (Kapitel \ref{alpha_beta}) - das Problem, dass zur Entscheidungsfindung alle Pfade bis zum Ende des Spiels abgegangen werden müssen. Beim Spiel Schach beispielsweise gibt es schon nach 40 Spielzügen $10^{120}$ Möglichkeiten das Spiel zu führen. Selbst unter der sehr optimistischen Annahme, dass eine Millionen verschiedene Züge pro Sekunde evaluiert werden könnten, würde die Evaluation aller Spielzüge $10^{108}$ Jahre benötigen. \cite{Bernstein1958} Zum Vergleich - das Alter der Erde wird auf nicht viel mehr als $10^{9}$ Jahre geschätzt. \cite{Braterman} An dieser Tatsache ändert auch eine Reduzierung der zu evaluierenden Möglichkeiten durch Alpha-Beta Pruning nichts Wahrnehmbares.
 
 %https://d1yx3ys82bpsa0.cloudfront.net/chess/computer-v-chessplayer.bernstein-roberts.scientific-american.june-1958.062303059.pdf
 %Braterman, Paul S. (2013). "How Science Figured Out the Age of Earth". Scientific American.
@@ -473,7 +474,7 @@ Wie bereits Stuart Russell und Peter Norvig in Artificial Intelligence – A Mod
 
 Die Lösung zur Implementierung eines Eröffnungsspiels, ohne die Verwendung von komplexen Suchverfahren, liegt in den sogenannten Opening-Books. Opening-Books sind eine Ansammlung von verschiedenen dokumentierten Eröffnungsstrategien, die es ermöglichen auf eine aktuelle Spielsituation, in der Eröffnung, den passenden Zug zu finden.
 
-Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller sind. Der deutliche Performanceunterschied erfolgt aus der Tatsache, dass in Opening-Books die besten Züge nachgeschlagen und nicht berechnet werden müssen. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie ``Ruy Lopez``, oder auch die ``Spanische Eröffnung`` genannt, die bereits 1561 im Zuge der veröffentlicht des Buchs ``Libro de la invención liberal y arte del juego del ajedrez`` von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die bemessen, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Bemessungen zurückgegriffen.\cite{Chess.comTeamInternational2018}
+Der Vorteil von Opening-Books im Gegensatz zu Suchverfahren ist, dass sie nur eine bestimmte Tiefe von Zügen unterstützen und somit deutlich schneller sind. Der deutliche Performanceunterschied erfolgt aus der Tatsache, dass in Opening-Books die besten Züge nachgeschlagen und nicht berechnet werden müssen. Ebenfalls bilden die Opening-Books sinnvolle Strategien ab, die teilweise bereits seit mehreren Jahrhunderten analysiert und verbessert wurden. Beispielsweise gibt es die Strategie ``Ruy Lopez``, oder auch die ``Spanische Eröffnung`` genannt, die bereits 1561 im Zuge der veröffentlicht des Buchs ``Libro de la invención liberal y arte del juego del ajedrez`` von Ruy López de Segura publiziert wurde. Somit müssen nicht erst Berechnungen durchgeführt werden, die evaluieren, ob bzw. inwiefern ein Zug in dieser Situation zielführend ist oder nicht. Stattdessen wird auf eine Datenbank von Zügen und deren Messungen zurückgegriffen.\cite{Chess.comTeamInternational2018}
 
 % https://www.chess.com/article/view/the-ruy-lopez-chess-opening-explained
 
@@ -501,6 +502,7 @@ Da jedoch nicht alle Figuren vom gleichen Wert sind, ist es vorteilhaft den einz
 
 Claude Shannon hat dazu 1949 den einzelnen Figuren folgende Werte zugewiesen, die seitdem als Richtwerte für Evaluierungen gelten. \cite{Shannon1950}
 
+\begin{center}
 \begin{tabular}{ l c r }
 \textbf{Bauer} & 1\\
 \textbf{Springer} & 3 \\
@@ -509,7 +511,7 @@ Claude Shannon hat dazu 1949 den einzelnen Figuren folgende Werte zugewiesen, di
 \textbf{Dame} & 9 \\
 \textbf{König} & 200
 \end{tabular}
-
+\end{center}
 %https://www.pi.infn.it/~carosi/chess/shannon.txt
 
 Die Berechnung des Wertes eines Schachbretts kann dann wie folgt aussehen:
@@ -647,7 +649,7 @@ Abschließend werden diese berechneten Werte ``attack\_weight'' und ``value\_of\
 
 Dieser Wert gibt dann guten Aufschluss darüber, wie gut oder schlecht die Sicherheit des Königs gewährleistet wird. Dabei werden jedoch nur Offiziersfiguren betrachtet.
 
-Mittels dieser Ansatzes ist es möglich die Sicherheit seines eigenen Königs zu berechnen. Dies ist ein besonders wichtiger Ansatz bei der Evaluation eines Spielzustandes, damit die KI den eigenen König nicht unbedacht offen stellt, was langfristige, negative Folgen für sein Spiel haben kann. 
+Mittels dieser Ansatzes ist es möglich die Sicherheit seines eigenen Königs zu berechnen. Dies ist ein besonders wichtiger Ansatz bei der Evaluation eines Spielzustandes, damit die KI den eigenen König nicht unbedacht offen stellt, was langfristige negative Folgen für sein Spiel haben kann. 
 
 %https://www.chessprogramming.org/King_Safety
 
@@ -655,9 +657,9 @@ Mittels dieser Ansatzes ist es möglich die Sicherheit seines eigenen Königs zu
 
 Neben der Verteidigung spielen auch die Möglichkeiten zum Angriff auf den Gegner eine Rolle, um einen Spielzustand zu evaluieren.
 
-Ein erster, simpler Ansatz ist dabei neben dem Wert der Materialien auch die möglichen Angriffe auf Figuren mit in die Evaluation mit einzubeziehen. Auch dabei gilt es den Wert der angegriffenen Funktion mit einzuberechnen sowie die Anzahl der angreifenden Figuren. Am Ende müssen diese Werte sowohl für von schwarz angegriffene als auch von weiß angegriffene Figuren berechnet und voneinander subtrahiert werden, um den Vorteil im Angriff berechnen zu können. Diese Möglichkeit der Evaluation ist nur dann möglich, wenn es sich nicht um einen ruhigen Zustand handelt, wie in Kapitel \ref{quiescence} erklärt. 
+Ein erster, simpler Ansatz ist dabei neben des Werts der Materialien auch die möglichen Angriffe auf Figuren mit in die Evaluation mit einzubeziehen. Auch dabei gilt es den Wert der angegriffenen Funktion mit einzuberechnen sowie die Anzahl der angreifenden Figuren. Am Ende müssen diese Werte sowohl für von schwarz angegriffene als auch von weiß angegriffene Figuren berechnet und voneinander subtrahiert werden, um den Vorteil im Angriff berechnen zu können. Diese Möglichkeit der Evaluation ist nur dann möglich, wenn es sich nicht um einen ruhigen Zustand handelt, wie in Kapitel \ref{quiescence} erklärt. 
 
-Ein weiterer, wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle des Zentrums. Beim Zentrum handelt es sich dabei um die Felder d4, d5, e4 und e5. Dies ist ein wichtiger Ansatz bei in Kapitel \ref{opening_evaluation} beschriebenen ``Opening-books'', sowie bei in Kapitel \ref{material_evaluation} beschriebenen Matrizen zur Bewertung der Positionierung der Figuren auf einem Schachbrett. 
+Ein weiterer wichtiger Ansatzpunkt für aufbauende Angriffe ist die Kontrolle des Zentrums. Beim Zentrum handelt es sich dabei um die Felder d4, d5, e4 und e5. Dies ist ein wichtiger Ansatz bei in Kapitel \ref{opening_evaluation} beschriebenen ``Opening-books'', sowie bei in Kapitel \ref{material_evaluation} beschriebenen Matrizen zur Bewertung der Positionierung der Figuren auf einem Schachbrett. 
 
 Um dies dennoch extra zu evaluieren, kann durch alle Figuren durchiteriert werden. Dabei wird nach den Figuren gefiltert, denen es möglich ist im nächsten Zug das Zentrum des Spielfeldes zu erreichen. Anschließend werden diese Figuren mit ihren zugehörigen Werten multipliziert und die Ergebnisse daraus aufsummiert. Letzlich wird dies für beide Farben durchgeführt und die Differenz zwischen der Werte der verschiedenen Farben zurück gegeben. \cite{O.V.2019}
 
@@ -673,7 +675,7 @@ Dies kann jedoch noch um verschiedene Faktoren erweitert werden. Dies ist beispi
 
 Zudem kann zur Bewertung eines Angriffs auch die Sicherheit des gegnerischen Königs zur Hilfe genommen werden. Wie diese berechnet wird, ist in Kapitel \ref{defense_evaluation} aufgeführt.
 
-All diese Kriterien führen zu einer guten Möglichkeit Angriffe beziehungsweise den Aufbau von Angriffen bewerten zu können und gehen somit über die beschriebene Defensivstrategie hinaus.
+Die Summe dieser Kriterien führt zu einer guten Möglichkeit Angriffe beziehungsweise den Aufbau von Angriffen bewerten zu können und gehen somit über die beschriebene Defensivstrategie hinaus.
 
 %Blockierte Bauern?
 %Trap?
@@ -690,7 +692,7 @@ Die Aussagekraft ist vor Allem dann kräftig, umso höher die Zahl ist. Wenn es 
 
 Deshalb gilt es eine möglichst große Historie aufzubauen, die vor Allem in der Anfangsphase, in der noch nicht so viele verschiedene Zustände erreichbar sind, guten Aufschluss über die Qualität des Zustands geben kann. Umso fortgeschrittener jedoch das Spiel ist, desto schwieriger wird es eine angemessene Anzahl an Iterationen über die speziellen Zustände zu erreichen, da diese immer häufiger vorkommen.
 
-Da im Spiel Schach $10^{40}$ verschiedene Spielzustände existieren \cite{Stroetmann2018} , ist es kaum möglich alle Zustände in angemessener Anzahl durchgegangen zu sein und abzuspeichern. Selbst unter der Annahme, dass ein Zustand inklusive dessen Bilanz in nur 20 Bit gespeichert werden kann (12 Bits für Schachspiel \cite{Speight} und 8 Bits für Bilanz), würde dies 
+Da im Spiel Schach $10^{40}$ verschiedene Spielzustände existieren \cite{Stroetmann2018}, ist es kaum möglich alle Zustände in angemessener Anzahl durchgegangen zu sein und abzuspeichern. Selbst unter der Annahme, dass ein Zustand inklusive dessen Bilanz in nur 20 Bit gespeichert werden kann (12 Bits für das Schachspiel \cite{Speight} und 8 Bits für die Bilanz), würde dies 
 
 \begin{equation}
 \begin{aligned}
@@ -707,7 +709,7 @@ Aus diesem Grund stellt dies zwar eine gute Größe für den Beginn des Spiels d
 % Computer Chess Compendium
 
 \subsection{Endspiel}\label{finishing_evaluation}
-Nach dem Eröffnungsspiel und dem Mittelteil einer Schachpartie, folgt das Endspiel. Das Endspiel beschreibt dabei eine Situation, bei der sich nur eine geringe Anzahl an schwarzen und weißen Figuren auf dem Schachbrett befinden. 
+Nach dem Eröffnungsspiel und dem Mittelteil einer Schachpartie, folgt das Endspiel. Das Endspiel beschreibt dabei eine Situation, bei der sich nur eine geringe Anzahl an schwarzen und weißen Steinen auf dem Schachbrett befinden. 
 
 Zum zielstrebigen Gewinnen des Spiels, ohne überflüssige Züge, ist es hilfreich sich grundlegende Muster anschauen, die es ermöglichen den Gegner Schachmatt zu setzen. Neben der Möglichkeit zielstrebig und effizient das Spiel gewinnen zu können, kann das Wissen über solche Muster auch dazu beitragen den Gegner vom Gewinnen abzuhalten, da ersichtlicher wird was dessen Strategie ist.
 
@@ -726,7 +728,7 @@ Ein Ausweg aus der drohenden Niederlage ist die 50-Züge-Regel, mittels der die 
 
 Im Laufe der Jahre seitdem es das Schachspiel gibt wurden bereits einige Endspiele analysiert und evaluiert um daraus mögliche Muster und Strategien zu erhalten, die zu einem Sieg in einem Endspiel führen können. Diese vorliegenden Analysen helfen bei der Umsetzung einer Schach-KI, da mittels solcher Informationen schnell evaluiert werden kann welcher Zug am Gewinnbringendsten für den Spieler ist. 
 
-Theoretisch lässt sich auch durch die Verwendung von Suchalgorithmen, wie das bereits vorgestellte Alpha-Beta-Pruning, der beste Zug ermitteln, jedoch kann dies deutlich länger dauern als das Zurückgreifen auf bereits durchgeführte Analysen. Dies hat den Grund, da beispielsweise bereits bei drei verschiedenen Figuren, die sich zu Ende des Spiels auf dem Brett befinden, eine sehr große Anzahl an verschiedenen Zugmöglichkeiten ergibt. Dies ist unter anderem darin begründet, dass diese drei verbliebenen Figuren aus einer unterschiedlichen Konstellation aus Steinen bestehen. Neben den beiden Königen kann der dritte Stein jeder beliebige andere als ein König sein. Dabei hat diese dritte Figur pro Stein unterschiedliche Sprungeigenschaften, wie bspw. Distanz und Richtung. Ebenfalls hat die Position, auf der sich die Figuren befinden einen großen Einfluss auf die Möglichkeiten. Somit ergibt sich in Summe für ein Endspiel mit drei Figuren bereits eine Anzahl von 368.079 (siehe \ref{table:nulp}) verschiedenen Positionen.
+Theoretisch lässt sich auch durch die Verwendung von Suchalgorithmen, wie das bereits vorgestellte Alpha-Beta-Pruning, der beste Zug ermitteln, jedoch kann dies deutlich länger dauern als das Zurückgreifen auf bereits durchgeführte Analysen. Dies hat den Grund, dass beispielsweise bereits bei drei verschiedenen Figuren, die sich zu Ende des Spiels auf dem Brett befinden, eine sehr große Anzahl an verschiedenen Zugmöglichkeiten ergibt. Dies ist unter anderem darin begründet, dass diese drei verbliebenen Figuren aus einer unterschiedlichen Konstellation aus Steinen bestehen. Neben den beiden Königen kann der dritte Stein jeder beliebige andere als ein König sein. Dabei hat diese dritte Figur pro Stein unterschiedliche Sprungeigenschaften, wie bspw. Distanz und Richtung. Ebenfalls hat die Position, auf der sich die Figuren befinden einen großen Einfluss auf die Möglichkeiten. Somit ergibt sich in Summe für ein Endspiel mit drei Figuren bereits eine Anzahl von 368.079 (siehe \ref{table:nulp}) verschiedenen Positionen.
 
 \begin{center}
 \begin{tabular}{| p{5cm} | p{5cm} |}
