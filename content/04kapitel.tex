@@ -69,6 +69,10 @@ indem der Befehl
 durchlaufen wird. Dadurch gelangt man direkt in den Programmablauf. Wie
 dies bedient werden kann, ist in Kapitel \ref{bedienen-des-programms} beschrieben.
 
+\subsection{Verwenden der Schach KI direkt im Jupyter Notebook}\label{verwenden-der-schach-ki-direkt-im-jupyter-notebook}
+
+Die Schach KI ist in einer simplifizierten Version, in der Erstellen der Spieler und dynamische Abfragen wegfallen, auch direkt im Jupyter Notebook ausführbar. Dazu muss das Jupyter Notebook 'Chess-AI.ipynb' gestartet werden und jede Zelle von oben bis unten durchlaufen werden. Sobald die letzte Zelle erreicht ist wird das Spiel gestartet. Dabei wird zunächst der Spieler zu einer Eingabe aufgefordert, ehe die KI den 2. Zug übernimmt. Dies wiederholt sich so lange bis das Spiel vorbei ist. Wie diese vereinfachte Verwaltung aufgebaut ist, ist in Kapitel \ref{starten-des-spiels-im-jupyter-notebook} zu sehen.
+
 \subsection{Bedienen des Programms}\label{bedienen-des-programms}
 
 Nach Start des Programmes folgen, wenn keine Startparameter
@@ -753,33 +757,38 @@ von dem \texttt{ChessMaster} aufgefordert und dazu das aktuelle
 board mit übergeben. Die Findung des Zuges findet dann in der Datei
 \texttt{player/ai.py} statt:
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}move}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
-                 \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+  \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{OPENING\PYZus{}MAX\PYZus{}FULLMOVE\PYZus{}NUM} \PY{o}{=} \PY{l+m+mi}{6}
+         \PY{n}{FINISHING\PYZus{}MAX\PYZus{}PIECES} \PY{o}{=} \PY{l+m+mi}{13}
+         \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
          
-                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{2}
-                 \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluate\PYZus{}board}
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{2}
+                 \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n}{evaluate\PYZus{}board}
                  
-                 \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{fullmove\PYZus{}number} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{10}\PY{p}{:}
-                     \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{1}
-                     \PY{n}{move} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opening\PYZus{}book}\PY{p}{)}
+                 \PY{n}{opening\PYZus{}book} \PY{o}{=} \PY{n}{import\PYZus{}opening\PYZus{}book}\PY{p}{(}\PY{n}{OPENING\PYZus{}BOOK\PYZus{}LOC}\PY{p}{)}
+                 
+                 \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{fullmove\PYZus{}number} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{OPENING\PYZus{}MAX\PYZus{}FULLMOVE\PYZus{}NUM}\PY{p}{:}
+                     \PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{1}
+                     \PY{n}{move} \PY{o}{=} \PY{n}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opening\PYZus{}book}\PY{p}{)}
                      \PY{k}{if} \PY{o+ow}{not} \PY{n}{move} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{:}
                          \PY{k}{return} \PY{n}{move}
                  
-                 \PY{n}{white\PYZus{}material} \PY{o}{=} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} 
-			\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
-                 \PY{n}{black\PYZus{}material} \PY{o}{=} \PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} 
-			\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
-                 \PY{k}{if} \PY{n}{white\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{13} \PY{o+ow}{and} \PY{n}{black\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{13}\PY{p}{:}
-                     \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{3}
-                     \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}dtz\PYZus{}value}
+                 \PY{n}{white\PYZus{}material} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+                 \PY{n}{black\PYZus{}material} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{k+kc}{False}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{white\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{FINISHING\PYZus{}MAX\PYZus{}PIECES} \PY{o+ow}{and} \PY{n}{black\PYZus{}material} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{FINISHING\PYZus{}MAX\PYZus{}PIECES}\PY{p}{:}
+                     \PY{n}{game\PYZus{}status} \PY{o}{=} \PY{l+m+mi}{3}
+                     
+                 \PY{n}{pieces\PYZus{}counter\PYZus{}white} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{piece\PYZus{}type} \PY{o+ow}{in} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
+                 \PY{n}{pieces\PYZus{}counter\PYZus{}black} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{)} \PY{k}{for} \PY{n}{piece\PYZus{}type} \PY{o+ow}{in} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
                  
-                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict} \PY{o}{=} 
-			\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status}\PY{p}{,} 
-			\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{difficulty}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{pieces\PYZus{}counter\PYZus{}white} \PY{o}{+} \PY{n}{pieces\PYZus{}counter\PYZus{}black} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mi}{5}\PY{p}{:}
+                     \PY{n}{board}\PY{o}{.}\PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n}{get\PYZus{}dtz\PYZus{}value}
+                     \PY{n}{evaluation\PYZus{}func} \PY{o}{=} \PY{n}{get\PYZus{}dtz\PYZus{}value}
+                 
+                 \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict} \PY{o}{=} \PY{n}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
          
-                 \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n}{board}\PY{p}{,} 
-			\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
 \end{Verbatim}
 
     Dabei gibt es 3 erreichbare Status, in der sich das Spiel befinden kann:
@@ -823,63 +832,77 @@ Gewichtungsfaktoren, die den einzelnen Evaluierungsfunktionen zugewiesen
 werden, um diese je nach Spielsituation optimal miteinander zu
 kombinieren. Diese Funktion sieht wie folgt aus:
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}16}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{,} \PY{n}{difficulty}\PY{p}{)}\PY{p}{:}
-             \PY{n}{factor\PYZus{}dict} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}
+  \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{MAX\PYZus{}DEPTH\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{4}
+         \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{50}
+         \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{50}
+         \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{50}
+         \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{4}
+         \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}START} \PY{o}{=} \PY{l+m+mi}{1}
+         
+         \PY{n}{MAX\PYZus{}DEPTH\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{4}
+         \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{50}
+         \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{25}
+         \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{25}
+         \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{4}
+         \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}MID} \PY{o}{=} \PY{l+m+mi}{0}
+         
+         \PY{n}{MAX\PYZus{}DEPTH\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{50}
+         \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{20}
+         \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}END} \PY{o}{=} \PY{l+m+mi}{5}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}evaluation\PYZus{}funcs\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{,} \PY{n}{difficulty}\PY{p}{)}\PY{p}{:}
+             \PY{n}{factor\PYZus{}dict} \PY{o}{=} \PY{n}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}
              \PY{n}{funcs\PYZus{}by\PYZus{}deg\PYZus{}of\PYZus{}dif} \PY{o}{=} \PY{p}{\PYZob{}}
-                 \PY{l+m+mi}{1}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
-                 \PY{l+m+mi}{2}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
-                 \PY{l+m+mi}{3}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} 
-			\PY{n}{EvaluationLib}\PY{o}{.}\PY{n}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{:} 
-			\PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{p}{\PYZob{}}\PY{n}{get\PYZus{}board\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{:} \PY{n}{factor\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{\PYZcb{}}
              \PY{p}{\PYZcb{}}
              \PY{k}{return} \PY{n}{funcs\PYZus{}by\PYZus{}deg\PYZus{}of\PYZus{}dif}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{difficulty}\PY{p}{)}
          
-         \PY{k}{def} \PY{n+nf}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}factors\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{p}{\PYZob{}}
                  \PY{l+m+mi}{1}\PY{p}{:} \PY{p}{\PYZob{}}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}start}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}start}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}START}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}START}
                  \PY{p}{\PYZcb{}}\PY{p}{,}
                  \PY{l+m+mi}{2}\PY{p}{:} \PY{p}{\PYZob{}}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}mid}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}mid}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}MID}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}MID}
                  \PY{p}{\PYZcb{}}\PY{p}{,}
                  \PY{l+m+mi}{3}\PY{p}{:} \PY{p}{\PYZob{}}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}value\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{attacked\PYZus{}pieces\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{board\PYZus{}positions\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}board\PYZus{}positions\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{king\PYZus{}safety\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{opp\PYZus{}king\PYZus{}safety\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{mobility\PYZus{}fact\PYZus{}end}\PY{p}{,}
-                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{history\PYZus{}fact\PYZus{}end}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}value}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}VALUE\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attacked\PYZus{}pieces}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{ATTACKED\PYZus{}PIECES\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}board\PYZus{}position}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}BOARD\PYZus{}POSITIONS\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{opp\PYZus{}king\PYZus{}safety}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{OPP\PYZus{}KING\PYZus{}SAFETY\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mobility}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{MOBILITY\PYZus{}FACTOR\PYZus{}END}\PY{p}{,}
+                     \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{history}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{HISTORY\PYZus{}FACTOR\PYZus{}END}
                  \PY{p}{\PYZcb{}}
              \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{game\PYZus{}status}\PY{p}{]}
 \end{Verbatim}
@@ -900,11 +923,11 @@ Dazu wird zunächst allerdings noch die maximale Tiefe anhand des
 Spielstatus ermittelt:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}20}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}max\PYZus{}depth\PYZus{}by\PYZus{}game\PYZus{}status}\PY{p}{(}\PY{n}{game\PYZus{}status}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{p}{\PYZob{}}
-                 \PY{l+m+mi}{1}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}start}\PY{p}{,} 
-                 \PY{l+m+mi}{2}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}mid}\PY{p}{,}
-                 \PY{l+m+mi}{3}\PY{p}{:} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}depth\PYZus{}end}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{MAX\PYZus{}DEPTH\PYZus{}START}\PY{p}{,} 
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{n}{MAX\PYZus{}DEPTH\PYZus{}MID}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{n}{MAX\PYZus{}DEPTH\PYZus{}END}
              \PY{p}{\PYZcb{}}\PY{p}{[}\PY{n}{game\PYZus{}status}\PY{p}{]}
 \end{Verbatim}
 
@@ -933,7 +956,7 @@ vorliegen, der im folgenden Codeausschnitt in eine globale Konstante
 der Datei \texttt{player/ai.py}statt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{OPENING\PYZus{}BOOK\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/polyglot/Performance.bin}\PY{l+s+s2}{\PYZdq{}}
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{OPENING\PYZus{}BOOK\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/polyglot/Performance.bin}\PY{l+s+s2}{\PYZdq{}}
 \end{Verbatim}
 
     Für das Laden eines Buches in eine Variable wird die Funktion
@@ -954,7 +977,7 @@ sein, so wird ein \emph{File Not Found}-Fehler geworfen, der dabei den
 vermeintlichen Pfad mit übergibt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}opening\PYZus{}book}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{book\PYZus{}location}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}22}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}opening\PYZus{}book}\PY{p}{(}\PY{n}{book\PYZus{}location}\PY{p}{)}\PY{p}{:}
                  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
          \PY{l+s+sd}{        load an opening book}
          \PY{l+s+sd}{        raise an error if system cannot find the opening\PYZhy{}book file}
@@ -1010,11 +1033,10 @@ Nachdem dies durchgeführt wurde, muss das Opening-Book geschlossen
 werden, damit es bei der nächsten Verwendung korrekt genutzt werden
 kann. Ebenfalls wird der erfolgreich extrahierte Zug zurückgegeben.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}20}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{opening\PYZus{}book}\PY{p}{)}\PY{p}{:}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opening\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opening\PYZus{}book}\PY{p}{)}\PY{p}{:}
                  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
-         \PY{l+s+sd}{        get the current board and return move, as string,} 
-	 \PY{l+s+sd}{        for this situation}
+         \PY{l+s+sd}{        get the current board and return move, as string, for this situation}
          \PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
                  \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{opening\PYZus{}book} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
                      \PY{k}{try}\PY{p}{:}
@@ -1052,7 +1074,7 @@ Opening-Books. Ebenfalls muss zuerst in einer Konstanten der Pfad zu der
 Endspiel Datenbank angegeben werden.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{SYZYGY\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/syzygy}\PY{l+s+s2}{\PYZdq{}}
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{SYZYGY\PYZus{}LOC} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/syzygy}\PY{l+s+s2}{\PYZdq{}}
 \end{Verbatim}
 
     Ebenfalls analog zu dem Vorgehen bei Opening-Books wird in der Funktion
@@ -1072,7 +1094,7 @@ verweisen, dann wird ebenfalls ein \emph{File Not Found Error} geworfen,
 der den angegebenen Pfad enthält.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}22}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}syzygy}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{syzygy\PYZus{}location}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}25}]:} \PY{k}{def} \PY{n+nf}{import\PYZus{}syzygy}\PY{p}{(}\PY{n}{syzygy\PYZus{}location}\PY{p}{)}\PY{p}{:}
                  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
          \PY{l+s+sd}{        load a syzygy tablebase}
          \PY{l+s+sd}{        raise an error if system cannot find the file}
@@ -1081,8 +1103,7 @@ der den angegebenen Pfad enthält.
                      \PY{k}{return} \PY{n}{chess}\PY{o}{.}\PY{n}{syzygy}\PY{o}{.}\PY{n}{open\PYZus{}tablebase}\PY{p}{(}\PY{n}{syzygy\PYZus{}location}\PY{p}{)}
                  \PY{k}{else}\PY{p}{:}
                      \PY{k}{raise} \PY{n+ne}{FileNotFoundError}\PY{p}{(}
-                         \PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{,} \PY{n}{os}\PY{o}{.}\PY{n}{strerror}\PY{p}{(}\PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{)}\PY{p}{,} 
-				\PY{n}{syzygy\PYZus{}location}\PY{p}{)}
+                         \PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{,} \PY{n}{os}\PY{o}{.}\PY{n}{strerror}\PY{p}{(}\PY{n}{errno}\PY{o}{.}\PY{n}{ENOENT}\PY{p}{)}\PY{p}{,} \PY{n}{syzygy\PYZus{}location}\PY{p}{)}
 \end{Verbatim}
 
     Wie bereits aus dem Importieren der Opening-Books bekannt, wird die
@@ -1111,7 +1132,7 @@ wurde. Falls es zu einem \emph{Key Error} kommen sollte wird der Wert
 \texttt{None} zurückgegeben.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}dtz\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{tablebase}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}26}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}dtz\PYZus{}value}\PY{p}{(}\PY{n}{tablebase}\PY{p}{,} \PY{n}{board}\PY{p}{)}\PY{p}{:}
                  \PY{k}{try}\PY{p}{:}
                      \PY{k}{return} \PY{n}{tablebase}\PY{o}{.}\PY{n}{probe\PYZus{}dtz}\PY{p}{(}\PY{n}{board}\PY{p}{)}
                  \PY{k}{except} \PY{n+ne}{KeyError}\PY{p}{:}
@@ -1153,44 +1174,51 @@ folgende Algorithmus zeigt, wie der Prozess des Iterative Deepening in
 der \texttt{player/ai.py} implementiert ist.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}24}]:}    \PY{k}{def} \PY{n+nf}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{max\PYZus{}depth}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
-                 \PY{n}{depth} \PY{o}{=} \PY{l+m+mi}{1}
-                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{counter}\PY{o}{=}\PY{l+m+mi}{0}
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k}{def} \PY{n+nf}{iterative\PYZus{}deepening}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{max\PYZus{}depth}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}\PY{p}{:}
+             \PY{n}{depth} \PY{o}{=} \PY{l+m+mi}{1}
          
-                 \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
-                 \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time} \PY{o}{+} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{time\PYZus{}limit}
-                 \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time}
+             \PY{n}{time\PYZus{}limit} \PY{o}{=} \PY{n}{get\PYZus{}timeout\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
          
-                 \PY{n}{player} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}
-                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{=}
-		 	\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+             \PY{n}{start\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+             \PY{n}{end\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time} \PY{o}{+} \PY{n}{time\PYZus{}limit}
+             \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n}{start\PYZus{}time}
          
-                 \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
-                 \PY{k}{while} \PY{n}{current\PYZus{}time} \PY{o}{\PYZlt{}} \PY{n}{end\PYZus{}time} \PY{o+ow}{and} \PY{n}{depth} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{max\PYZus{}depth}\PY{p}{:}
-                     \PY{n+nb}{print}\PY{p}{(}\PY{n}{depth}\PY{p}{)}
-                     \PY{n}{move\PYZus{}val\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+             \PY{n}{player} \PY{o}{=} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}
+             \PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{=} \PY{n}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
          
-                     \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-                     \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{legal\PYZus{}moves}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
+             \PY{k}{while} \PY{n}{current\PYZus{}time} \PY{o}{\PYZlt{}} \PY{n}{end\PYZus{}time} \PY{o+ow}{and} \PY{n}{depth} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{max\PYZus{}depth}\PY{p}{:}
+                 \PY{n}{move\PYZus{}val\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
          
-                     \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                         \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-                         \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                         \PY{n}{value} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} 
-				\PY{n}{player}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} 
-				\PY{n}{end\PYZus{}time}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}
-                         \PY{n}{move\PYZus{}val\PYZus{}dict}\PY{p}{[}\PY{n}{move}\PY{p}{]} \PY{o}{=} \PY{n}{value}
-                         \PY{k}{if} \PY{n}{value} \PY{o}{==} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}\PY{p}{:}
-                             \PY{k}{return} \PY{n}{move}
-                         \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}value}\PY{p}{:}
-                             \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n}{value}
-                             \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
-                     
-                     \PY{n}{legal\PYZus{}moves}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{key}\PY{o}{=}\PY{n}{move\PYZus{}val\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-                     \PY{n}{depth} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
-                     \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
-                     
-                 \PY{k}{return} \PY{n}{best\PYZus{}move}
+                 \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                 \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{legal\PYZus{}moves}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         
+                 \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                     \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                     \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                     \PY{n}{value} \PY{o}{=} \PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{end\PYZus{}time}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
+                     \PY{k}{if} \PY{n}{value} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
+                         \PY{n}{value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+                     \PY{n}{move\PYZus{}val\PYZus{}dict}\PY{p}{[}\PY{n}{move}\PY{p}{]} \PY{o}{=} \PY{n}{value}
+                     \PY{k}{if} \PY{n}{value} \PY{o}{==} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}\PY{p}{:}
+                         \PY{k}{return} \PY{n}{move}
+                     \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}value}\PY{p}{:}
+                         \PY{n}{best\PYZus{}value} \PY{o}{=} \PY{n}{value}
+                         \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
+         
+                 \PY{n}{legal\PYZus{}moves}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{key}\PY{o}{=}\PY{n}{move\PYZus{}val\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{,} \PY{n}{reverse}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+                 \PY{n}{depth} \PY{o}{*}\PY{o}{=} \PY{l+m+mi}{2}
+                 \PY{n}{current\PYZus{}time} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         
+             \PY{k}{return} \PY{n}{best\PYZus{}move}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}timeout\PYZus{}by\PYZus{}dif}\PY{p}{(}\PY{n}{difficulty}\PY{p}{)}\PY{p}{:}
+             \PY{n}{time\PYZus{}limit} \PY{o}{=} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{l+m+mi}{5}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{l+m+mi}{10}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{l+m+mi}{45}
+             \PY{p}{\PYZcb{}}
+             \PY{k}{return} \PY{n}{time\PYZus{}limit}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{difficulty}\PY{p}{)}
 \end{Verbatim}
 
     Zunächst wird die Starttiefe auf 1 festgesetzt. Danach wird die
@@ -1207,7 +1235,7 @@ nicht mehr möglich ist) und dementsprechend zu bewerten. Die Funktion
 sieht wie folgt aus.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}25}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}best\PYZus{}possible\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
              \PY{k}{if} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}\PY{p}{:}
                  \PY{k}{return} \PY{l+m+mi}{0}
              \PY{k}{if} \PY{o+ow}{not} \PY{n}{player} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{has\PYZus{}insufficient\PYZus{}material}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}\PY{p}{:}
@@ -1244,7 +1272,7 @@ Wert festgelegt. Der Anfangswert des besten Zugs wird auf den ersten Zug
 festgesetzt. Der Wert dieses wird auf den Wert ``- Unendlich`` gesetzt.
 
 Nun wird über alle legalen Züge iteriert und für jeden Zug ein
-temporäres "board" angelegt, das den erreichbaren Zustand widerspiegelt. Nun
+temporäres "board'' angelegt, das den erreichbaren Zustand widerspiegelt. Nun
 wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
 Dabei wird als Alpha ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben.
 Was die Werte Alpha und Beta aussagen, wird im Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}
@@ -1255,8 +1283,9 @@ mitgegeben, zu der der Algorithmus enden muss, damit der Minimax
 Algorithmus dementsprechend endet und das Zeitlimit nicht überschreitet.
 
 Nachdem der Minimax-Algorithmus fertig durchlaufen ist, wird der Wert
-mit dem Zug zu dem Dictionary hinzugefügt. Gleicht der Wert dem
-maximalen Wert für einen Zustand, ist also dementsprechend ein Sieg,
+mit dem Zug zu dem Dictionary hinzugefügt. Dazu wird zuvor jedoch noch überprüft, ob der Wert 'False' zurückgegeben wurde. Ist dies der Fall, ist das Zeitlimit abgelaufen und der Zug somit ungültig. In dem Fall wird dem Zug der maximal schlechteste Wert zugewiesen. 
+
+Gleicht der Wert ansonsten dem maximalen Wert für einen Zustand, ist also dementsprechend ein Sieg,
 wird der Zug direkt zurückgegeben, da mit diesem dann auf jeden Fall ein
 Sieg erreicht werden kann. Andernfalls wird der Wert verglichen, ob er
 besser ist als der aktuelle Wert. Ist dies der Fall, so wird der neue
@@ -1296,28 +1325,31 @@ den besten Ausgang für den Gegner. Letztere berechnet den bestmöglichen Ausgan
 folgendem Code-Snippet zu sehen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}26}]:} \PY{k}{def} \PY{n+nf}{min\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} 
-	   \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{min\PYZus{}value}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}\PY{p}{:}
              \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
              \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
          
              \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
-                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
              \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
-                 \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 \PY{k}{return} \PY{k+kc}{False}
          
              \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
                  \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
                  \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} 
-			\PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{)}
+         
+                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{max\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{deeper\PYZus{}val} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
+                     \PY{k}{return} \PY{k+kc}{False}            
+                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{deeper\PYZus{}val}\PY{p}{)}  
+         
                  \PY{k}{if} \PY{n}{v} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{alpha}\PY{p}{:}
                      \PY{k}{return} \PY{n}{v}
                  \PY{n}{beta} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{beta}\PY{p}{,} \PY{n}{v}\PY{p}{)}
              \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
-    Neben dem akteullen Zustand des Spiels in FEN-Notation und dem Spieler,
+    Neben des aktuellen Zustands des Spiels in FEN-Notation und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
 sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
 Beta sind dabei, wie in Kapitel \ref{alpha_beta} erklärt, dazu da, um den
@@ -1331,9 +1363,8 @@ Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
 überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe
 auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
 und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
-bereits erreicht wurde. In dem Fall wird der maximal negative Wert
-zurückgegeben, damit dieser Zug keine weitere Beachtung mehr bei der
-endgültigen Auswahl findet.
+bereits erreicht wurde. In dem Fall wird der Wert 'False' 
+zurückgegeben, damit dieser Zug später automatisch den maximal negativen Wert zugewiesen bekommen kann (siehe Iterative Deepening).
 
 Ist auch dies nicht der Fall, werden alle von dem gegebenen Zustand aus
 erreichbaren Zustände durchgegangen. Dazu wird zunächst ein temporäres
@@ -1361,21 +1392,24 @@ Außerdem gibt dieser bei der um eins tieferen Iteration in die
 unverändert.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}27}]:} \PY{k}{def} \PY{n+nf}{max\PYZus{}value}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} 
-	   \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{max\PYZus{}value}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}\PY{p}{:}
              \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
              \PY{n}{v} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
          
              \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{depth} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
-                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{evaluation\PYZus{}func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
              \PY{k}{if} \PY{n+nb}{int}\PY{p}{(}\PY{n}{time}\PY{o}{.}\PY{n}{time}\PY{p}{(}\PY{p}{)}\PY{p}{)} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{time\PYZus{}limit}\PY{p}{:}
-                 \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inf}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 \PY{k}{return} \PY{k+kc}{False}
          
              \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
                  \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
                  \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} 
-			\PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{)}\PY{p}{)}
+         
+                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{deeper\PYZus{}val} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
+                     \PY{k}{return} \PY{k+kc}{False}
+                 \PY{n}{v} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{deeper\PYZus{}val}\PY{p}{)}
+         
                  \PY{k}{if} \PY{n}{v} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{beta}\PY{p}{:}
                      \PY{k}{return} \PY{n}{v}
                  \PY{n}{alpha} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{alpha}\PY{p}{,} \PY{n}{v}\PY{p}{)}
@@ -1404,22 +1438,20 @@ Spieler, für den dieser zu evaluieren ist, in die Funktion
 Diese befindet sich in der \texttt{player/ai.py}.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{def} \PY{n+nf}{evaluate\PYZus{}board}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{def} \PY{n+nf}{evaluate\PYZus{}board}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}\PY{p}{:}
              \PY{n}{player\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{player} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
-             \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{counter}\PY{o}{+}\PY{o}{=}\PY{l+m+mi}{1}
          
              \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
                  \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{:}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{:}
                      \PY{k}{return} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
-                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{n}{best\PYZus{}possible\PYZus{}result} \PY{o}{*} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
                      \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{MAX\PYZus{}BOARD\PYZus{}VALUE}
          
              \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{l+m+mi}{0}
-             \PY{k}{for} \PY{n}{func}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{func}\PY{p}{,} \PY{n}{value} \PY{o+ow}{in} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{o}{.}\PY{n}{items}\PY{p}{(}\PY{p}{)}\PY{p}{:}
                  \PY{k}{if} \PY{n}{value} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
-                     \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{n}{evaluation\PYZus{}val} \PY{o}{+} \PY{n}{value} \PY{o}{*} 
-			\PY{n}{func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player\PYZus{}color}\PY{p}{)}
+                     \PY{n}{evaluation\PYZus{}val} \PY{o}{=} \PY{n}{evaluation\PYZus{}val} \PY{o}{+} \PY{n}{value} \PY{o}{*} \PY{n}{func}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{player\PYZus{}color}\PY{p}{)}
              \PY{k}{return} \PY{n}{evaluation\PYZus{}val}
 \end{Verbatim}
 
@@ -1473,8 +1505,15 @@ werden dann über die \texttt{map} Funktion nach Farbe in der
 \texttt{get\_value\_by\_color} Funktion für alle auf den Feldern
 befindlichen Figuren zusammengerechnet.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{PAWN\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{1}
+         \PY{n}{ROOK\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{5}
+         \PY{n}{KNIGHT\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{BISHOP\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{3}
+         \PY{n}{QUEEN\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{9}
+         \PY{n}{KING\PYZus{}VALUE} \PY{o}{=} \PY{l+m+mi}{15}
+         
+         \PY{k}{def} \PY{n+nf}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{p}{\PYZob{}}
                  \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{PAWN\PYZus{}VALUE}\PY{p}{,}
                  \PY{l+m+mi}{2}\PY{p}{:} \PY{n}{KNIGHT\PYZus{}VALUE}\PY{p}{,}
@@ -1483,19 +1522,19 @@ befindlichen Figuren zusammengerechnet.
                  \PY{l+m+mi}{5}\PY{p}{:} \PY{n}{QUEEN\PYZus{}VALUE}\PY{p}{,}
                  \PY{l+m+mi}{6}\PY{p}{:} \PY{n}{KING\PYZus{}VALUE} \PY{k}{if} \PY{n}{count\PYZus{}king} \PY{k}{else} \PY{l+m+mi}{0}
              \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
-             
-         \PY{k}{def} \PY{n+nf}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{color}\PY{p}{)}\PY{p}{:}
-             \PY{n}{attacked\PYZus{}pieces\PYZus{}value} \PY{o}{=} 
-		\PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{piece\PYZus{}type} \PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)} \PY{o}{*} 
-		\PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
-             \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{attacked\PYZus{}pieces\PYZus{}value}\PY{p}{)}
          
-         \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
-             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
-             
-             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} 
-		\PY{k}{else} \PY{n}{black\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{white\PYZus{}value}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+             \PY{n}{pieces\PYZus{}value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}
+                 \PY{k}{lambda} \PY{n}{piece\PYZus{}type}\PY{p}{:} \PY{n+nb}{len}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{pieces}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)} \PY{o}{*} \PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{p}{)}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{PIECE\PYZus{}TYPES}\PY{p}{)}
+             \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{pieces\PYZus{}value}\PY{p}{)}
+         
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{p}{)}
+             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{n}{count\PYZus{}king}\PY{p}{)}
+         
+             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n}{black\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{white\PYZus{}value}
 \end{Verbatim}
 
     Um den Gesamtwert des Schachbretts zu berechnen muss zunächst der Wert
@@ -1521,24 +1560,27 @@ negativer Wert zum Vorteil des Gegenübers. Ebenso gilt umso höher der
 Wert, desto deutlicher der Vorteil.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{defender\PYZus{}color}\PY{p}{)}\PY{p}{:}
-             \PY{n}{attackedSquares} \PY{o}{=} \PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} 
-			\PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}attacked\PYZus{}by}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} 
-			\PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{and} 
-			\PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{color} \PY{o+ow}{is} \PY{n}{defender\PYZus{}color}\PY{p}{,} 
-			\PY{n}{chess}\PY{o}{.}\PY{n}{SQUARES}\PY{p}{)}
-             \PY{n}{attackedPieces} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{square} \PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{,} 
-			\PY{n}{attackedSquares}\PY{p}{)}
-             \PY{n}{value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{,} \PY{n}{attackedPieces}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{defender\PYZus{}color}\PY{p}{)}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} filters squares for attacked squares, on which a figure of defender is placed}
+             \PY{n}{attacked\PYZus{}squares} \PY{o}{=} \PY{n+nb}{filter}\PY{p}{(}\PY{k}{lambda} \PY{n}{square}\PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}attacked\PYZus{}by}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)} \PY{o+ow}{and} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}
+                 \PY{n}{square}\PY{p}{)} \PY{o+ow}{is} \PY{k+kc}{None} \PY{o+ow}{and} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{color} \PY{o+ow}{is} \PY{n}{defender\PYZus{}color}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{SQUARES}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} maps piece type to attacked figure}
+             \PY{n}{attacked\PYZus{}pieces} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{k}{lambda} \PY{n}{square}\PY{p}{:} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{square}\PY{p}{)}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{attacked\PYZus{}squares}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} maps piece value to attacked pieces}
+             \PY{n}{value} \PY{o}{=} \PY{n+nb}{map}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}value}\PY{p}{,} \PY{n}{attacked\PYZus{}pieces}\PY{p}{)}
+             \PY{c+c1}{\PYZsh{} sums piece value of all attacked pieces}
              \PY{k}{return} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{value}\PY{p}{)}
-              
-         \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} 
-			\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
-             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} 
-			\PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
+         
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} factor for weakening value if opponet turn comes first}
+             \PY{n}{white\PYZus{}factor} \PY{o}{=} \PY{l+m+mi}{1} \PY{k}{if} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)} \PY{k}{else} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{2}
+             \PY{n}{black\PYZus{}factor} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{2} \PY{k}{if} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)} \PY{k}{else} \PY{l+m+mi}{1}
              
-             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value}
+             \PY{n}{white\PYZus{}value} \PY{o}{=} \PY{n}{white\PYZus{}factor} \PY{o}{*} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{)}
+             \PY{n}{black\PYZus{}value} \PY{o}{=} \PY{n}{black\PYZus{}factor} \PY{o}{*} \PY{n}{get\PYZus{}attacked\PYZus{}pieces\PYZus{}value\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE}\PY{p}{)}
+         
+             \PY{k}{return} \PY{n}{white\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{black\PYZus{}value} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n}{black\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{white\PYZus{}value}
 \end{Verbatim}
 
     Um diese Werte der attackierten Figuren zu berechnen wird jedes Feld
@@ -1563,16 +1605,81 @@ verschachtelten Schleife gelöst, die zunächst alle Reihen durchgeht und
 dann die einzelnen Felder in dieser Reihe.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         
+         \PY{n}{PAWN\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}      \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{KNIGHT\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}    \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{BISHOP\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}    \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{ROOK\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}      \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{QUEEN\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}     \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{n}{KING\PYZus{}POSITION\PYZus{}MATRIX} \PY{o}{=}      \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}   \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{50}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{40}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{30}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{,}
+                                                 \PY{p}{[}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{:}
+             \PY{k}{return} \PY{p}{\PYZob{}}
+                 \PY{l+m+mi}{1}\PY{p}{:} \PY{n}{PAWN\PYZus{}POSITION\PYZus{}MATRIX}\PY{p}{,}
+                 \PY{l+m+mi}{2}\PY{p}{:} \PY{n}{KNIGHT\PYZus{}POSITION\PYZus{}MATRIX}\PY{p}{,}
+                 \PY{l+m+mi}{3}\PY{p}{:} \PY{n}{BISHOP\PYZus{}POSITION\PYZus{}MATRIX}\PY{p}{,}
+                 \PY{l+m+mi}{4}\PY{p}{:} \PY{n}{ROOK\PYZus{}POSITION\PYZus{}MATRIX}\PY{p}{,}
+                 \PY{l+m+mi}{5}\PY{p}{:} \PY{n}{QUEEN\PYZus{}POSITION\PYZus{}MATRIX}\PY{p}{,}
+                 \PY{l+m+mi}{6}\PY{p}{:} \PY{n}{KING\PYZus{}POSITION\PYZus{}MATRIX}
+             \PY{p}{\PYZcb{}}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+         
+         \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n+nb}{sum} \PY{o}{=} \PY{l+m+mi}{0}
              \PY{k}{for} \PY{n}{rank} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
                  \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
                      \PY{n}{piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
                      \PY{k}{if} \PY{p}{(}\PY{n}{piece} \PY{o+ow}{and} \PY{n}{piece}\PY{o}{.}\PY{n}{color} \PY{o}{==} \PY{n}{color}\PY{p}{)}\PY{p}{:}
-                         \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} 
-				\PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}
+                         \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}
                          \PY{n+nb}{sum} \PY{o}{+}\PY{o}{=} \PY{n}{piece\PYZus{}pos\PYZus{}value}
-             \PY{k}{return} \PY{n+nb}{sum} \PY{o}{/} \PY{l+m+mi}{10}
+             \PY{k}{return} \PY{n+nb}{sum} \PY{o}{/} \PY{l+m+mi}{100}
 \end{Verbatim}
 
     Nachdem die Figur ermittelt wurde wird diese, falls diese der
@@ -1590,11 +1697,9 @@ In der Funktion \texttt{get\_position\_value\_by\_square} wird mittels
 der Matrix der Wert der Figur an der gegebenen Position ermittelt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}32}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}position\PYZus{}value\PYZus{}by\PYZus{}square}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{rank}\PY{p}{,} \PY{n}{file}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{piece\PYZus{}type} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}type\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)}
-             \PY{n}{piece\PYZus{}matrix} \PY{o}{=} \PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)} 
-		\PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} 
-		\PY{k}{else} \PY{n}{np}\PY{o}{.}\PY{n}{flip}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{)}
+             \PY{n}{piece\PYZus{}matrix} \PY{o}{=} \PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{np}\PY{o}{.}\PY{n}{flip}\PY{p}{(}\PY{n}{assign\PYZus{}piece\PYZus{}matrix}\PY{p}{(}\PY{n}{piece\PYZus{}type}\PY{p}{)}\PY{p}{)}
              \PY{n}{piece\PYZus{}pos\PYZus{}value} \PY{o}{=} \PY{n}{piece\PYZus{}matrix}\PY{p}{[}\PY{n}{rank}\PY{p}{,}\PY{n}{file}\PY{p}{]}
              \PY{k}{return} \PY{n}{piece\PYZus{}pos\PYZus{}value}
 \end{Verbatim}
@@ -1612,7 +1717,7 @@ dienen, die die angegebene Farbe invertiert und so den Wert der
 gegnerischen Positionen berechnen und zurückgeben kann.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}opp\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{opp\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
              \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{get\PYZus{}board\PYZus{}positions\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opp\PYZus{}color}\PY{p}{)}
 \end{Verbatim}
@@ -1625,8 +1730,8 @@ Dazu wird diese Zone berechnet und dann alle Figuren, die diese Zone
 angreifen ermittelt. Mittels der in Kapitel \ref{defense_evaluation} vorgestellten
 Berechnung wird dann der Wert des Angriffs auf die Königszone berechnet.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{attacker\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
              \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}
              \PY{n}{attackers} \PY{o}{=} \PY{n}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{king\PYZus{}zone}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}
@@ -1635,7 +1740,7 @@ Berechnung wird dann der Wert des Angriffs auf die Königszone berechnet.
              \PY{k}{for} \PY{n}{attacker} \PY{o+ow}{in} \PY{n}{attackers}\PY{p}{:}
                  \PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{+}\PY{o}{=} \PY{n}{get\PYZus{}king\PYZus{}attack\PYZus{}constants}\PY{p}{(}\PY{n}{attacker}\PY{o}{.}\PY{n}{piece\PYZus{}type}\PY{p}{)}
              
-             \PY{k}{return} \PY{p}{(}\PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{*} \PY{n}{attack\PYZus{}weight}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{1000}
+             \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{p}{(}\PY{n}{value\PYZus{}of\PYZus{}attack} \PY{o}{*} \PY{n}{attack\PYZus{}weight}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{1000}
 \end{Verbatim}
 
     Dabei wird zuerst die Farbe des Angreifers berechnet, indem die gegebene
@@ -1644,18 +1749,16 @@ Farbe umgekehrt wird. Danach wird mittels der Funktion
 gibt eine Menge von Feldern zurück, die der Königszone angehören.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}39}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}king\PYZus{}zone}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{king\PYZus{}zone} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{SquareSet}\PY{p}{(}\PY{p}{)}
-             \PY{n}{king\PYZus{}rank}\PY{p}{,} \PY{n}{king\PYZus{}file} \PY{o}{=} \PY{n}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} 
-		\PY{n}{chess}\PY{o}{.}\PY{n}{Piece}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)}
+             \PY{n}{king\PYZus{}rank}\PY{p}{,} \PY{n}{king\PYZus{}file} \PY{o}{=} \PY{n}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{chess}\PY{o}{.}\PY{n}{Piece}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{)}
          
              \PY{n}{rank\PYZus{}range} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)} \PY{k}{if} \PY{n}{color} \PY{o}{==} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{else} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
              \PY{k}{for} \PY{n}{rank\PYZus{}summand} \PY{o+ow}{in} \PY{n}{rank\PYZus{}range}\PY{p}{:}
                  \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
                      \PY{k}{for} \PY{n}{file\PYZus{}summand} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{:}
                          \PY{k}{if} \PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{)} \PY{o+ow}{in} \PY{n+nb}{range} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
-                             \PY{n}{king\PYZus{}zone}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{,} 
-				\PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)}\PY{p}{)}
+                             \PY{n}{king\PYZus{}zone}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{king\PYZus{}file} \PY{o}{+} \PY{n}{file\PYZus{}summand}\PY{p}{,} \PY{n}{king\PYZus{}rank} \PY{o}{+} \PY{n}{rank\PYZus{}summand}\PY{p}{)}\PY{p}{)}
              
              \PY{k}{return} \PY{n}{king\PYZus{}zone}
 \end{Verbatim}
@@ -1664,8 +1767,8 @@ gibt eine Menge von Feldern zurück, die der Königszone angehören.
 Dabei werden alle Felder durchgegangen bis der König der entsprechenden
 Farbe gefunden wurde. Dann wird Reihe sowie Spalte zurückgegeben:
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{piece}\PY{p}{)}\PY{p}{:}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}piece\PYZus{}position}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{piece}\PY{p}{)}\PY{p}{:}
              \PY{k}{for} \PY{n}{rank} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
                  \PY{k}{for} \PY{n}{file} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
                      \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{square}\PY{p}{(}\PY{n}{file}\PY{p}{,} \PY{n}{rank}\PY{p}{)}\PY{p}{)} \PY{o}{==} \PY{n}{piece}\PY{p}{:}
@@ -1684,17 +1787,15 @@ Als nächstes wird dann für diese Menge an Feldern ermittelt, welche
 Figuren diese Felder angreifen. Dies wird mittels der
 \texttt{get\_attackers\_by\_squares} Funktion durchgeführt.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{square\PYZus{}set}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}\PY{p}{:}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}attackers\PYZus{}by\PYZus{}squares}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{square\PYZus{}set}\PY{p}{,} \PY{n}{attacker\PYZus{}color}\PY{p}{)}\PY{p}{:}
              \PY{n}{attacker\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
              \PY{k}{for} \PY{n}{square} \PY{o+ow}{in} \PY{n}{square\PYZus{}set}\PY{p}{:}
                  \PY{n}{attacker\PYZus{}square\PYZus{}set} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{attackers}\PY{p}{(}\PY{n}{attacker\PYZus{}color}\PY{p}{,} \PY{n}{square}\PY{p}{)}
                  \PY{k}{for} \PY{n}{attacker\PYZus{}square} \PY{o+ow}{in} \PY{n}{attacker\PYZus{}square\PYZus{}set}\PY{p}{:}
                      \PY{n}{attacker\PYZus{}piece} \PY{o}{=} \PY{n}{board}\PY{o}{.}\PY{n}{piece\PYZus{}at}\PY{p}{(}\PY{n}{attacker\PYZus{}square}\PY{p}{)}
-                     \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{PAWN} \PY{o+ow}{or} 
-			\PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{)}\PY{p}{:}
-                         \PY{n}{attacker\PYZus{}dict}\PY{p}{[}\PY{n}{attacker\PYZus{}piece}\PY{p}{]} \PY{o}{=} 
-				\PY{n}{attacker\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}
+                     \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{PAWN} \PY{o+ow}{or} \PY{n}{attacker\PYZus{}piece}\PY{o}{.}\PY{n}{piece\PYZus{}type} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{KING}\PY{p}{)}\PY{p}{:}
+                         \PY{n}{attacker\PYZus{}dict}\PY{p}{[}\PY{n}{attacker\PYZus{}piece}\PY{p}{]} \PY{o}{=} \PY{n}{attacker\PYZus{}dict}\PY{o}{.}\PY{n}{get}\PY{p}{(}\PY{n}{attacker\PYZus{}piece}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{+} \PY{l+m+mi}{1}
              \PY{k}{return} \PY{n}{attacker\PYZus{}dict}
 \end{Verbatim}
 
@@ -1712,8 +1813,8 @@ Attacke ermittelt. Dabei wird die Anzahl der verschiedenen Figuren, die
 die Zone angreifen, zur Hilfe genommen und ein entsprechender Wert
 zurückgegeben, wie in Kapitel \ref{defense_evaluation} beschrieben.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}38}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}king\PYZus{}attack\PYZus{}weight}\PY{p}{(}\PY{n}{piece\PYZus{}counter}\PY{p}{)}\PY{p}{:}
+        \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}king\PYZus{}attack\PYZus{}weight}\PY{p}{(}\PY{n}{piece\PYZus{}counter}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{p}{\PYZob{}}
                  \PY{l+m+mi}{0}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,}
                  \PY{l+m+mi}{1}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{,}
@@ -1746,7 +1847,7 @@ berechnet werden, indem die Funktion ausgeführt wird, nachdem zuvor die
 angegebene Farbe invertiert wird.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}39}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}43}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}opp\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{opp\PYZus{}color} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n}{color} \PY{o+ow}{is} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
              \PY{k}{return} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1} \PY{o}{*} \PY{n}{calculate\PYZus{}king\PYZus{}zone\PYZus{}safety}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{opp\PYZus{}color}\PY{p}{)}
 \end{Verbatim}
@@ -1766,7 +1867,19 @@ Evaluierungsfunktion so viel Zeit in Anspruch genommen, dass die
 Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{def} \PY{n+nf}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}44}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}num\PYZus{}of\PYZus{}legal\PYZus{}moves\PYZus{}by\PYZus{}color}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+             \PY{n}{player} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
+             \PY{k}{if} \PY{n}{player} \PY{o}{==} \PY{n}{color} \PY{o+ow}{or} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)} \PY{o+ow}{is} \PY{l+m+mi}{0}\PY{p}{:}
+                 \PY{k}{return} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+             \PY{k}{else}\PY{p}{:}
+                 \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{=} \PY{l+m+mi}{0}
+                 \PY{k}{for} \PY{n}{action} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                     \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+                     \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{action}\PY{p}{)}
+                     \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{return} \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+             
+         \PY{k}{def} \PY{n+nf}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{player} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{WHITE} \PY{k}{if} \PY{n+nb}{bool}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)} \PY{k}{else} \PY{n}{chess}\PY{o}{.}\PY{n}{BLACK}
              \PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
          
@@ -1803,7 +1916,7 @@ offen sind. Dabei kann eine angelegte Historie helfen, die Aufschluss
 kann, wurde in Kapitel \ref{verwalten-des-schachspiels-und-pflege-des-spielverlaufs} besprochen.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}45}]:} \PY{k}{def} \PY{n+nf}{get\PYZus{}board\PYZus{}value\PYZus{}by\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
              \PY{n}{dataset} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{HISTORY\PYZus{}FILE\PYZus{}LOC}\PY{p}{)}
              \PY{n}{row} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{dataset}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{board}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
              \PY{n}{value} \PY{o}{=} \PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{value}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1} \PY{k}{else} \PY{l+m+mi}{0}
@@ -2108,3 +2221,61 @@ Beschreibung der Konsole übermittelt.
                      \PY{n+nb}{print}\PY{p}{(}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{l+m+mi}{8} \PY{o}{\PYZhy{}} \PY{n}{row\PYZus{}index}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{center}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{print\PYZus{}alphabetical\PYZus{}description}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
+
+
+\hypertarget{starten-des-spiels-im-jupyter-notebook}{%
+\section{Starten des Spiels im Jupyter
+Notebook}\label{starten-des-spiels-im-jupyter-notebook}}
+
+Um das Spiel auch im Jupyter Notebook starten zu können ist hier eine
+vereinfachte Variante des \texttt{chess\_master} vorzufinden. Dabei
+werden keine Spieler dynamisch erstellt, sondern abwechselnd der Nutzer und die KI nach einem Zug gefragt.
+
+Zum Ausgeben des aktuellen Zustands ist hier außerdem noch eine Funktion zu sehen, mittels der die Schachbretter als SVG im Jupyter Notebook ausgegeben werden können.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{k+kn}{from} \PY{n+nn}{IPython}\PY{n+nn}{.}\PY{n+nn}{display} \PY{k}{import} \PY{n}{SVG}\PY{p}{,} \PY{n}{display}
+         
+         \PY{k}{def} \PY{n+nf}{print\PYZus{}board\PYZus{}svg}\PY{p}{(}\PY{n}{board}\PY{p}{)}\PY{p}{:}
+             \PY{n}{display}\PY{p}{(}\PY{n}{SVG}\PY{p}{(}\PY{n}{chess}\PY{o}{.}\PY{n}{svg}\PY{o}{.}\PY{n}{board}\PY{p}{(}\PY{n}{board}\PY{o}{=}\PY{n}{board}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+    Im vereinfachten Verwalter des Spiels wird auf ein Anlegen und Verwalten der Spielhistorie verzichtet. Stattdessen wird nach Erstellen des Spiels zunächst der Spieler nach seinem nächsten Zug gefragt und im nächsten Zug die KI aufgefordert einen zu berechnen. Danach wird der Zug zu dem board hinzugefügt und im nächsten Durchlauf wieder ausgegeben. Dies wird solange wiederholt bis das Spiel vorüber ist. Dazu sind zunächst noch alle nötigen Importe für das Spiel aufzulisten.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{import} \PY{n+nn}{misc}\PY{n+nn}{.}\PY{n+nn}{tools} \PY{k}{as} \PY{n+nn}{Tools}
+        \PY{k+kn}{import} \PY{n+nn}{chess}
+        \PY{k+kn}{import} \PY{n+nn}{chess}\PY{n+nn}{.}\PY{n+nn}{svg}
+        \PY{k+kn}{import} \PY{n+nn}{chess}\PY{n+nn}{.}\PY{n+nn}{polyglot}
+        \PY{k+kn}{import} \PY{n+nn}{os}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{time}
+        
+        \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+        \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{print\PYZus{}board\PYZus{}svg}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+            \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{:}
+                \PY{n}{legal\PYZus{}moves} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{uci}\PY{p}{,} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                \PY{n}{move} \PY{o}{=} \PY{k+kc}{None}
+                \PY{k}{while} \PY{n}{move} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{legal\PYZus{}moves}\PY{p}{:}
+                    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Legal moves:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                    \PY{n+nb}{print}\PY{p}{(}\PY{n}{legal\PYZus{}moves}\PY{p}{)}
+                    \PY{n}{move} \PY{o}{=} \PY{n+nb}{input}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Please enter your move: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                \PY{n}{move} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Move}\PY{o}{.}\PY{n}{from\PYZus{}uci}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{move} \PY{o}{=} \PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+        
+            \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+        
+        \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+        \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+        \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            
+\end{Verbatim}
+
+Dies ermöglicht ein Spielen des Spiels auch direkt im Jupyter Notebook, wenn auch mit eingeschränkten Funktionalitäten. Die KI jedoch ist voll funktionsfähig.
