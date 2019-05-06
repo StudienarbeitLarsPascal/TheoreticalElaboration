@@ -567,7 +567,7 @@ Dies sieht wie folgt aus:
 \end{Verbatim}
 
     Dabei wird zuerst das Ergebnis an Hand der \texttt{get\_board\_result}
-Funktion aus der Hilfsklasse "Tools" ermittelt. Diese sieht wie folgt
+Funktion aus der Hilfsklasse "Tools`` ermittelt. Diese sieht wie folgt
 aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -587,8 +587,8 @@ aus:
              \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{can\PYZus{}claim\PYZus{}draw}\PY{p}{(}\PY{p}{)}\PY{p}{:}
                  \PY{k}{return} \PY{l+m+mi}{0}
          
-             \PY{c+c1}{\PYZsh{} Seventyfive\PYZhy{}move rule or fivefold repetition.}
-             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}seventyfive\PYZus{}moves}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}fivefold\PYZus{}repetition}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+             \PY{c+c1}{\PYZsh{} Fifty\PYZhy{}move rule or fivefold repetition.}
+             \PY{k}{if} \PY{n}{board}\PY{o}{.}\PY{n}{can\PYZus{}claim\PYZus{}fifty\PYZus{}moves}\PY{p}{(}\PY{p}{)} \PY{o+ow}{or} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}fivefold\PYZus{}repetition}\PY{p}{(}\PY{p}{)}\PY{p}{:}
                  \PY{k}{return} \PY{l+m+mi}{0}
          
              \PY{c+c1}{\PYZsh{} Insufficient material.}
