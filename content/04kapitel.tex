@@ -754,8 +754,7 @@ Evaluierungsfunktionen (beschrieben in Kapitel \ref{evaluierung-eines-gegebenen-
 Die zentrale Aufgabe der KI ist es, den bestmöglichen Zug für eine
 gegebene Situation zu finden. Dazu wird es
 von dem \texttt{ChessMaster} aufgefordert und dazu das aktuelle
-board mit übergeben. Die Findung des Zuges findet dann in der Datei
-\texttt{player/ai.py} statt:
+board mit übergeben.
 
   \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}18}]:} \PY{n}{OPENING\PYZus{}MAX\PYZus{}FULLMOVE\PYZus{}NUM} \PY{o}{=} \PY{l+m+mi}{6}
@@ -1020,7 +1019,7 @@ Als Übergabewert wird die zuvor definierte Konstante
 Opening-Book enthält.
 
     Um das Opening-Book verwenden zu können und aus diesem mögliche
-Eröffnungsstrategien verwenden zu können wird die Funktion
+Eröffnungsstrategien verwenden zu können, wird die Funktion
 \texttt{get\_opening\_move(self,\ board,\ opening\_book)} benötigt, die
 als Übergabewerte das aktuelle Schachbrett und das importierte Book
 erhält.
@@ -1036,8 +1035,7 @@ damit einhergehenden Aufruf der Funktion \texttt{import\_opening\_book}
 korrekt initialisiert wurde.
 
 Sollte dies nicht der Fall sein wird von der Funktion ein \texttt{None}
-zurückgegeben. Der Wert \texttt{None} ist in der Sprache Python der
-leere Zustand.
+zurückgegeben.
 
 Falls das Opening-Book korrekt geladen werden konnte wird durch ein
 try-except versucht einen passenden Schachzug zu finden. Hierbei wird
