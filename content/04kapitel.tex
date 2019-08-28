@@ -544,26 +544,35 @@ Ausgabe erfolgt zur aktuellen Version ausschließlich über die Konsole.
 Dies sieht wie folgt aus:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
-             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
-             \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}14}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
+             \PY{n}{repeat} \PY{o}{=} \PY{l+m+mi}{1}
+             \PY{k}{while} \PY{n}{repeat} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+         
+                 \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
+                 \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
+                 \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                     \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
+                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
+         
+                     \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                     \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+         
+                     \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+         
                  \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
                  \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
          
-                 \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
+                 \PY{k}{else}\PY{p}{:}
+                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
          
-             \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-             \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-         
-             \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-             \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-             \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-             \PY{k}{else}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}
+                 \PY{n}{repeat} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{n}{GAME\PYZus{}FINISHED\PYZus{}MESSAGE}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
     Dabei wird zuerst das Ergebnis an Hand der \texttt{get\_board\_result}
@@ -627,36 +636,7 @@ sind.
 
 Zum Speichern der Züge in einem Verlauf wird die Funktion zum einen um
 eine Liste \texttt{turn\_list} erweitert, in die die Züge dann als
-FEN Notation abgespeichert werden, die in \ref{FEN-Notation} erklärt wurde. Dazu wird die Funktion wie
-folgt angepasst.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
-             \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
-             \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
-             \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                 \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-         
-                 \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-         
-                 \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
-         
-             \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-             \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-         
-             \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-             \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-             \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-             \PY{k}{else}\PY{p}{:}
-                 \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         
-             \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}
-\end{Verbatim}
+FEN Notation abgespeichert werden, die in \ref{FEN-Notation} erklärt wurde.
 
     Nach Ende des Spiels muss diese Liste noch in die bestehende Historie
 eingepflegt werden. Dies ist in folgendem Code-Snippet zu sehen.
@@ -712,38 +692,6 @@ Spiel mit den gleichen Einstellungen nochmal wiederholen zu können. Dazu
 wird am Ende des Spiels abgefragt, ob das Spiel wiederholt werden soll.
 Solange dies mit einer "1" bestätigt wird, wird das Spiel von vorne
 gestartet. Andernfalls wird das Spiel und somit das Programm beendet.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}14}]:} \PY{k}{def} \PY{n+nf}{start\PYZus{}chess\PYZus{}game}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{players}\PY{p}{)}\PY{p}{:}
-             \PY{n}{repeat} \PY{o}{=} \PY{l+m+mi}{1}
-             \PY{k}{while} \PY{n}{repeat} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
-         
-                 \PY{n}{board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{p}{)}
-                 \PY{n}{turn\PYZus{}list} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{p}{)}
-                 \PY{k}{while} \PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{is\PYZus{}game\PYZus{}over}\PY{p}{(}\PY{p}{)}\PY{p}{:}
-                     \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-         
-                     \PY{n}{move} \PY{o}{=} \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                     \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-                     \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{submit\PYZus{}move}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-         
-                     \PY{n}{turn\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
-         
-                 \PY{n}{current\PYZus{}player} \PY{o}{=} \PY{n}{players}\PY{p}{[}\PY{n+nb}{int}\PY{p}{(}\PY{o+ow}{not} \PY{n}{board}\PY{o}{.}\PY{n}{turn}\PY{p}{)}\PY{p}{]}
-                 \PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{print\PYZus{}board}\PY{p}{(}\PY{n}{current\PYZus{}player}\PY{o}{.}\PY{n}{name}\PY{p}{,} \PY{n}{board}\PY{p}{)}
-         
-                 \PY{n}{result} \PY{o}{=} \PY{n}{Tools}\PY{o}{.}\PY{n}{get\PYZus{}board\PYZus{}result}\PY{p}{(}\PY{n}{board}\PY{p}{)}
-                 \PY{k}{if} \PY{n}{result} \PY{o+ow}{is} \PY{l+m+mi}{1}\PY{p}{:}
-                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (White) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-                 \PY{k}{elif} \PY{n}{result} \PY{o+ow}{is} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
-                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ (Black) has won}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{players}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{name}\PY{p}{)}\PY{p}{)}
-                 \PY{k}{else}\PY{p}{:}
-                     \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Draw}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         
-                 \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{groom\PYZus{}board\PYZus{}history}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{turn\PYZus{}list}\PY{p}{)}
-                 \PY{n}{repeat} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{input}\PY{p}{(}\PY{n}{GAME\PYZus{}FINISHED\PYZus{}MESSAGE}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
 
     Dies ermöglicht nicht nur eine Verwaltung des Spiels, sondern
 gleichzeitig auch eine Speicherung aller möglichen Zustände, die bei den
@@ -818,7 +766,7 @@ ersten 10 Züge (5 Züge pro Spieler) befindet. In dem Fall wird es noch
 als Eröffnungsspiel gewertet und es wird zuerst ein
 Eröffnungsspielzugbuch geprüft, ob dies einen passenden Zug zur
 Verfügung hat. Dies ist in Kapitel \ref{einbinden-und-verwendung-von-opening-books} beschrieben. Andernfalls wird
-standardmäßig in die ``Iterative Deepening`` Funktion gegeben, die in
+standardmäßig in die ``iterative Tiefensuche`` Funktion gegeben, die in
 Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} beschrieben wird.
 
 Die zweite Möglichkeit ist, dass sich das Spiel im Endspiel befindet.
@@ -934,7 +882,7 @@ passenden Gewichtungsfaktoren zurückgegeben.
 
 Nachdem diese Schritte durchgeführt wurden und nicht schon bereits
 vorher ein Zug durch die Eröffnungs- oder Endspieldatenbank
-zurückgegeben wurde, wird die Funktion des ``Iterative Deepening``, die in
+zurückgegeben wurde, wird die Funktion der ``iterative Tiefensuche``, die in
 Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} erklärt wird, aufgerufen und das der Rückgabewert dieser
 Funktion als durchzuführender Zug ausgewählt und somit zurückgegeben.
 Dazu wird zunächst allerdings noch die maximale Tiefe anhand des
@@ -1040,11 +988,14 @@ zurückgegeben.
 Falls das Opening-Book korrekt geladen werden konnte wird durch ein
 try-except versucht einen passenden Schachzug zu finden. Hierbei wird
 ein try-except verwendet, da die aufgerufene Funktion
-\texttt{opening\_book.find(board)} einen \emph{Index Error} wirft, falls
+\texttt{opening\_book.weighted\_choice(board)} einen \emph{Index Error} wirft, falls
 das Opening-Book keinen passenden Zug kennt. Wenn dieser Fall eintreten
 sollte wird ebenfalls ein \texttt{None} zurückgegeben. Sollte jedoch das
 Buch einen passenden Zug haben, dann wird dieser Zug in eine Variable
 \texttt{main\_entry} geladen und aus dieser der Zug extrahiert.
+ Die Funktion \texttt{weighted\_choice} wählt dabei aus den Zügen, die am besten 
+ zu dieser Situation passen, einen zufällig aus. Dies macht das Spiel weniger
+ vorhersehbar, wenn der gleiche Gegner mehrfach gegen die KI spielt.
 
 Nachdem dies durchgeführt wurde, muss das Opening-Book geschlossen
 werden, damit es bei der nächsten Verwendung korrekt genutzt werden
@@ -1058,7 +1009,7 @@ kann. Ebenfalls wird der erfolgreich extrahierte Zug zurückgegeben.
          \PY{l+s+sd}{        \PYZsq{}\PYZsq{}\PYZsq{}}
                  \PY{k}{if} \PY{o+ow}{not} \PY{p}{(}\PY{n}{opening\PYZus{}book} \PY{o+ow}{is} \PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
                      \PY{k}{try}\PY{p}{:}
-                         \PY{n}{main\PYZus{}entry} \PY{o}{=} \PY{n}{opening\PYZus{}book}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                         \PY{n}{main\PYZus{}entry} \PY{o}{=} \PY{n}{opening\PYZus{}book}\PY{o}{.}\PY{n}{weighted\_choice}\PY{p}{(}\PY{n}{board}\PY{p}{)}
                          \PY{n}{move} \PY{o}{=} \PY{n}{main\PYZus{}entry}\PY{o}{.}\PY{n}{move}\PY{p}{(}\PY{p}{)}
                          \PY{n}{opening\PYZus{}book}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
                          \PY{k}{return} \PY{n}{move}
@@ -1157,10 +1108,10 @@ wurde. Falls es zu einem \emph{Key Error} kommen sollte wird der Wert
                      \PY{k}{return} \PY{k+kc}{None}
 \end{Verbatim}
 
-    \section{Implementierung des Iterative Deepening
+    \section{Implementierung der iterativen Tiefensuche
 Algorithmus}\label{implementierung-des-iterative-deepening-algorithmus}
 
-Um den besten Zug zu finden muss eine Schach-KI im Optimalfall alle
+Um den besten Zug, zu finden muss eine Schach-KI im Optimalfall alle
 möglichen Züge bis zum Ende des Spiels durchgehen, diese bewerten und
 den aussichtsreichsten Zug wählen. Da dies aber technisch nicht
 realistisch ist, werden die Züge nur
@@ -1181,14 +1132,13 @@ wird anfangs die Tiefe auf 1 gesetzt und dann mittels des
 Minimax-Algorithmus die Züge evaluiert. Danach wird die Tiefe um 1
 erhöht und erneut der Minimax-Algorithmus angewandt. Dies wird solange
 wiederholt, bis die angegebene Zeit abgelaufen ist. Dieser Algorithmus
-nennt sich ``Iterative Deepening``. Nähere Informationen dazu sind in
-Kapitel \ref{implementierung-des-iterative-deepening-algorithmus} aufgeführt.
+nennt sich ``iterative Tiefensuche``.
 
 Dem Algorithmus muss dazu der aktuelle Zustand sowie eine maximale Tiefe
-mitgegeben werden. Ist diese erreicht bricht der Algorithmus ab,
+mitgegeben werden. Ist diese erreicht, bricht der Algorithmus ab,
 unabhängig davon, ob das Zeitlimit überschritten ist oder nicht.
 Zunächst müssen beim Ausführen einige Werte festgelegt werden. Der
-folgende Algorithmus zeigt, wie der Prozess des Iterative Deepening in
+folgende Algorithmus zeigt, wie der Prozess der iterative Tiefensuche in
 der \texttt{player/ai.py} implementiert ist.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -1271,19 +1221,19 @@ sieht wie folgt aus.
 
     Dabei muss der Funktion der aktuelle Zustand sowie der Spieler, der an
 der Reihe ist, mitgegeben werden. Ist der aktuelle Spieler der der
-weißen Figuren (player == True) und hat weiß unzureichende Materialien
+weißen Figuren (player == True) und hat Weiß unzureichende Materialien
 für einen Sieg, so ist der bestmögliche Zustand ein Remis. Das gleiche
 Ergebnis wird zurückgegeben, wenn der Spieler der der schwarzen Figuren
-ist (player == False) und schwarz unzureichende Materialien hat.
+ist (player == False) und Schwarz unzureichende Materialien hat.
 
-Ist der Spieler jedoch weiß und er hat noch ausreichend Materialien, so
+Ist der Spieler jedoch Weiß und er hat noch ausreichend Materialien, so
 wird der Wert 1 zurückgegeben, da ein Sieg noch erreichbar ist. Genauso
 wird für den schwarzen Spieler der Wert -1 zurückgegeben, falls er noch
 ausreichende Materialien besitzt, da dieser noch einen Sieg erreichen
 kann und der Wert -1 für einen Sieg von Schwarz steht.
 
-Nach dieser Abfrage wird der eigentliche Algorithmus des ``Iterative
-Deepening` durchgeführt.
+Nach dieser Abfrage wird der eigentliche Algorithmus der ``iterativen
+Tiefensuche` durchgeführt.
 
     Dabei wird zunächst eine Liste aller legalen Züge erstellt. Dann wird
 eine Schleife so lange durchlaufen, bis entweder die Zeit abgelaufen ist
@@ -1391,7 +1341,7 @@ Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
 auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
 und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
 bereits erreicht wurde. In dem Fall wird der Wert 'False' 
-zurückgegeben, damit dieser Zug später automatisch den maximal negativen Wert zugewiesen bekommen kann (siehe Iterative Deepening).
+zurückgegeben, damit dieser Zug später automatisch den maximal negativen Wert zugewiesen bekommen kann (siehe iterative Tiefensuche).
 
 Ist auch dies nicht der Fall, werden alle von dem gegebenen Zustand aus
 erreichbaren Zustände durchgegangen. Dazu wird zunächst ein temporäres
@@ -1732,7 +1682,7 @@ angegebenen Farbe angehört, gemeinsam mit den Werten für Reihe und
 Spalte an die Funktion \texttt{get\_position\_value\_by\_square}
 übergeben. Nachdem diese den Wert zurückgegeben hat wird dies zu der
 bisherigen Summe aufaddiert und am Ende die Summe aller Figuren geteilt
-durch 10 zurückgegeben. Der Divisor 10 rührt daher, dass die Positionen
+durch 100 zurückgegeben. Der Divisor 100 rührt daher, dass die Positionen
 der einzelnen Figuren in dessen Matrizen recht hoch gewertet sind und
 somit insgesamt noch etwas abgeschwächt werden müssen, um die Funktion
 mit den restlichen Evaluierungsfunktionen ungefähr auf eine

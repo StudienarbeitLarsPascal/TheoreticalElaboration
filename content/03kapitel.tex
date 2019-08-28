@@ -12,7 +12,7 @@ Nachdem in Kapitel \ref{zweck_und_ziel} bereits auf das Ziel der wissenschaftlic
 
 Grundlegend wird eine Künstliche Intelligenz für das Spiel Schach entwickelt worden sein. Der Fokus dieser Implementierung liegt dabei auf den in Kapitel \ref{theoretische_hintergründe} vorgestellten Algorithmen und auf der Demonstration von deren Wirkungsweise.
 
-Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein, ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist.\cite{E.V.} 
+Dabei wird das Programm nach Beendigung der Implementierung darauf ausgelegt sein, ein Schachspiel zwischen einem Spieler und einer KI über eine Konsole durchzuführen. Die dazu zu entwickelnde Künstliche Intelligenz benötigt dafür den Elo Wert eines Amateurs. Der Elo Wert ist benannt nach seinem Erfinder Professor Arpad Elo, der ein Bewertungssystem entwickelt hat, das ein Gradmesser für die Spielstärke eines Schachspielers ist \cite{E.V.}. 
 
 Jeder Schachspieler erhält einen Elo-Wert zugewiesen, der Aufschluss über die Stärke eines Spielers gibt. Umso höher der Elo-Wert eines Spielers, desto besser ist dieser. Sobald zwei Konkurrenten gegeneinander antreten lässt sich aus den ihn zugewiesenen Elo-Zahlen, mittels des Erwartungswertes, eine Punktezahl errechnen, die Aufschluss über den Ausgang des Spiels gibt. 
 Berechnet wird der Erwartungswert($E_{A}$) des Punktestands für Spieler A vor einem Spiel, indem dieser aus der bisherigen Elo-Zahl von Spieler A($R_{A}$) und Spieler B($R_{B}$) evaluiert wird.
@@ -28,11 +28,10 @@ Nachdem ein Spiel beendet wurde, wird die Diskrepanz zwischen dem zuvor berechne
 \begin{equation}
 \begin{aligned}
 R'_{A} = R_{A} + K \cdot (S_{A} - E_{A})
-\cite{Elo1987}
 \end{aligned}
 \end{equation}
 
-Zur Ermittlung des Elo-Werts eines neuen Spielers wird dessen Wert geschätzt. In dem \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}, das in den Statuten der Fédération Internationale des Échecs verwendet wird, ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat. Alle Spieler mit einem geringeren Wert werden nicht gelistet.\cite{FIDE2017}
+Zur Ermittlung des Elo-Werts eines neuen Spielers wird dessen Wert geschätzt. In dem \href{https://www.fide.com/fide/handbook.html?id=197&view=article}{Bewertungssystem}, das in den Statuten der Fédération Internationale des Échecs verwendet wird, ist definiert, dass ein Amateurspieler einen Elo Wert von 1000 hat. Alle Spieler mit einem geringeren Wert werden nicht gelistet \cite{FIDE2017}.
 
 Durch die Entwicklung von Evaluierungsfunktionen wird die Schach KI die Möglichkeit besitzen die besten Züge für eine spezielle Spielsituation ermitteln zu können. Dabei wird eine Historie integriert sein, die es ermöglicht auf einer Basis von vergangenen Spielen Zügen einen Wert zuzuweisen und daraus einen optimalen auszuwählen. Ebenfalls wird die Schach KI anhand der Anzahl und Wert attackierter Steine, sowie des insgesamten Wertes aller sich auf dem Spielfeld befindlichen Steine, einen guten Zug auszuwählen.
 
@@ -156,7 +155,7 @@ Installation der ``python-chess-library`` erläutert.
 
 \subsection{FEN-Notation}\label{FEN-Notation}
 
-Die ``\acs{FEN}`` Notation, oder auch \acl{FEN}, ist eine gekürzte Form der Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig identifizierbar bleibt. Dabei wird neben der Figurenstellung, dem Zugrecht, dem Rochaderecht, ein möglicher En-passant-Schlag und den bereits gespielten Halbzügen seit des letzten Bauernzugs oder eines Schlagens, die Nummer des nächsten Zugs angegeben.\cite{FEN2019}
+Die ``\acs{FEN}`` Notation, oder auch \acl{FEN}, ist eine gekürzte Form der Darstellung des Spielbretts, wobei das Spielbrett dennoch eindeutig identifizierbar bleibt. Dabei wird neben der Figurenstellung, dem Zugrecht, dem Rochaderecht, ein möglicher En-passant-Schlag und den bereits gespielten Halbzügen seit des letzten Bauernzugs oder eines Schlagens, die Nummer des nächsten Zugs angegeben \cite{FEN2019}.
 
 Diese Notation ist ein essenzieller Bestandteil der einzuführenden Python Bibliothek. Folgend ist ein Beispiel gegeben, das die Startposition eines neuen Schachspiels widerspiegelt.
 
@@ -638,8 +637,8 @@ gewinnen. Umso höher der Wert in den positiven Bereich fällt, desto
 wahrscheinlicher ist ein Sieg für Spieler 1. Umso höher der Wert in den
 negative Bereich fällt, desto besser sind die Aussichten für Spieler 2.
 
-Diese Erkenntnis kann dann von der KI genutzt werde, um beim ``Iterative
-Deepening`` Prozess alle möglichen Schachbretter zu evaluieren und sich
+Diese Erkenntnis kann dann von der KI genutzt werde, um beim ``iterative
+Tiefensuche`` Prozess alle möglichen Schachbretter zu evaluieren und sich
 so für den besten Zug zu entscheiden.
 
 Der folgende Code koordiniert die Abläufe der Funktionen um die Datei
@@ -909,7 +908,7 @@ Strategien verfügbar sind und somit ein anspruchsvolles Spiel
 ermöglichen.
 
 Sobald das Opening-Book, im Verlauf des Spiels, keinen passenden Zug als
-Antwort bereitstellen kann, übernimmt die Iterative Deepening Funktion mit ihren Evaluierungsfunktionen.
+Antwort bereitstellen kann, übernimmt die iterative Tiefensuche Funktion mit ihren Evaluierungsfunktionen.
 
 Für das Einbinden eines Opening-Books werden einige Funktionen aus der
 Core Chess Library genutzt und müssen somit eingebunden werden.
@@ -940,9 +939,9 @@ somit wird in diesem Beispiel der weiße Bauer von \texttt{e2} nach
          \PY{n}{book} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{polyglot}\PY{o}{.}\PY{n}{open\PYZus{}reader}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{res/polyglot/Performance.bin}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
          
          \PY{k}{def} \PY{n+nf}{get\PYZus{}move}\PY{p}{(}\PY{n}{board}\PY{p}{)}\PY{p}{:}
-             \PY{c+c1}{\PYZsh{} find the move with the highest weight for the current board}
+             \PY{c+c1}{\PYZsh{} Selects a random entry for the given position, distributed by the weights of the entries}
              \PY{k}{try}\PY{p}{:}
-                 \PY{n}{main\PYZus{}entry} \PY{o}{=} \PY{n}{book}\PY{o}{.}\PY{n}{find}\PY{p}{(}\PY{n}{board}\PY{p}{)}
+                 \PY{n}{main\PYZus{}entry} \PY{o}{=} \PY{n}{book}\PY{o}{.}\PY{n}{weighted\_choice}\PY{p}{(}\PY{n}{board}\PY{p}{)}
                  \PY{n}{all\PYZus{}entries} \PY{o}{=} \PY{n}{book}\PY{o}{.}\PY{n}{find\PYZus{}all}\PY{p}{(}\PY{n}{board}\PY{p}{)}
          
                  \PY{n}{move} \PY{o}{=} \PY{n}{main\PYZus{}entry}\PY{o}{.}\PY{n}{move}\PY{p}{(}\PY{p}{)}
@@ -1000,8 +999,8 @@ oder ein Remis berechnet und diese können auf der Basis eines aktuellen
 Schachbretts abgerufen werden.
 
 Für das Abfragen der Chancen gibt es verschiedene Tabellentypen.
-Speziell erwähnt wird hier die traditionelle Nalimov-Datenbank\cite{Chessprogramming.org2019} und das
-neue Format Syzygy\cite{Chessprogramming.org2019a}. Beide Datenbanken geben dem Nutzer aufgrund der
+Speziell erwähnt wird hier die traditionelle Nalimov-Datenbank \cite{Chessprogramming.org2019} und das
+neue Format Syzygy \cite{Chessprogramming.org2019a}. Beide Datenbanken geben dem Nutzer aufgrund der
 aktuellen Spielsituation ein Ergebnis, welches aussagt, welche der
 spielenden Parteien am Gewinnen ist und welche nicht. Das Ziel der sich
 im Vorteil befindenden Partei liegt offensichtlicher Weise darin, die
@@ -1029,8 +1028,7 @@ fünf Figuren entschieden, da diese etwa 1GB Speicherplatz benötigt und
 die Datenbank mit der nächst höherer Anzahl an Figuren bereits das
 150-fache davon verbraucht.
 
-Syzygy ist in die zwei Tabellen WDL (win/draw/loss) und DTZ (distance to
-zero) unterteilt. Eine weitere Eigenschaft dieser Datenbank ist, dass
+Syzygy ist in die zwei Tabellen \acs{WDL} (\acl{WDL}) und \acs{DTZ} (\acl{DTZ}) unterteilt. Eine weitere Eigenschaft dieser Datenbank ist, dass
 Syzygy sowohl En-Passant als auch Rochaden als Züge nicht
 berücksichtigt.
 
