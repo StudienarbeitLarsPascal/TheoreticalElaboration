@@ -120,47 +120,7 @@ An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nich
 
 Der Minimax Algorithmus basiert auf dem ``Minimax-Theorem'' von John von Neumann.
 
-Dabei wird davon ausgegangen, dass das Spiel von Spieler A gestartet wird, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler A davon ausgeht, dass Spieler B stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler A den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler A also eine Menge $S$ an Zügen zur Auswahl, werden alle Szenarien von jedem Zug $s \in S$ evaluiert. Die Bewertungsfunktion dieser Züge definieren wir mit
-
-\begin{equation}
-\mathtt{utility}: S \times \mathtt{Player} \rightarrow \mathbb{R}
-\end{equation}
-
-wobei $S$ für die Menge der Züge steht und $\mathtt{Player}$ für die Menge der Spieler. Aus der Angabe eines Zuges und eines Spielers aus den jeweiligen Mengen ergibt sich eine rationale Zahl, die als Bewertung des Zuges zu betrachten ist. Dabei gilt: Umso höher die Zahl, desto besser der Zug für den angegebenen Spieler.
-
-Dann wird das Minimum aller Bewertungen der Endzustände für jeden Zug $s \in S$ gewählt. Diesen Zug nennen wir $\min (S)$ und dessen Bewertung somit $\mathtt{utility}(\min (s, p))$, wobei gilt $s \in S$ und $p \in \mathtt{Player}$. Nun wird der Zug $s_{best} \in S$ gewählt, sodass gilt:
-
-\begin{equation}
-\forall s \in S : (s \neq s_{best} \rightarrow \mathtt{utility}(\min(s, p)) \leq \mathtt{utility}(\min(s_{best})))
-\end{equation}
-
-Anders ausgedrückt - existiert eine Menge X von Strategien von Spieler A und eine auf X folgende Menge Y von möglichen Strategien von Spieler B, so lautet die Optimierungsregel für Spieler A
-
-\begin{equation}
-\max\limits_X[\min\limits_Yu(X,Y)]
-\end{equation}
-
-Umgekehrt versucht Spieler B das für Spieler A ungünstigste Ergebnis zu wählen und wählt daher die Strategie, die das Minimum der für Spieler A jeweils nach dem Zug noch bestmöglichen Ergebnisse versprechen. Somit lautet die Optimierungsregel für Spieler B
-
-\begin{equation}
-\min\limits_Y[\max\limits_Xu(X,Y)]
-\end{equation}
-
-%Strategische Spiele
-
-Dadurch kann Spieler B den Ertrag des Spielers A auf diesen Wert begrenzen. Es gilt
-
-\begin{equation}
-\max\limits_X[\min\limits_Yu(X,Y)] \leq \min\limits_Y[\max\limits_Xu(X,Y)]
-\end{equation}
-
-Das Minimax-Theorem geht dabei davon aus, dass es einen Sattelpunkt $v$ geben muss, bei dem sich die beiden Optimierungen für Spieler A und B einpendeln. Dieser Sattelpunkt lautet
-
-\begin{equation}
-\max\limits_X[\min\limits_Yu(X,Y)] = \min\limits_Y[\max\limits_Xu(X,Y)] = v
-\end{equation}
-
-Diese Strategie basiert auf puren Berechnungen und ist für einen Computer somit leicht durchführbar. Dafür verlangt es folgende Informationen \cite{Stroetmann2018}:
+Das Spiel, um das sich der Algorithmus dreht, ist dabei ein Zwei-Spieler Nullsummenspiel bei nicht vollständiger Informationslage handelt nach der Definition aus Kapitel \ref{game_types}. Es wird davon ausgegangen, dass das Spiel von Spieler A gestartet wird, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler A davon ausgeht, dass Spieler B stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler A den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler A also eine Menge $S$ an erreichbaren Spielzuständen zur Auswahl, werden alle Szenarien von jedem Zustand $s \in S$ evaluiert. Dazu bedarf es folgender Informationen:
 
 \begin{itemize}
 \item \textbf{$\mathtt{States}$}: Alle möglichen Zustände des Spiels
@@ -191,7 +151,39 @@ Mittels dieser Funktion kann eine Menge $terminal\_states$ als Menge aller Endzu
 wobei diese den Zustand aus Sicht des gegebenen Spielers bewertet. Umso höher das Resultat dieser Berechnung also, desto besser das Ergebnis für Spieler P.
 \end{itemize}
 
-Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge von s $\mathtt{actions}(s)$ alle erreichbaren Zustände $result\_states$ berechnet. Von jedem Zustand $s \in \mathtt{result\_states}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustands erreichen. Der Fall ist dies, wenn $\mathtt{terminal\_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
+Nach dem Minimax-Theorem wird das Maximum aller Bewertungen der Endzustände aus Sicht des Spielers $p1 \in P$ für jeden erreichbaren Zustand $s \in S$ gewählt. Dafür wird der Zustand $\max_{p1}[S] \in S$ gewählt, sodass gilt:
+
+\begin{equation}
+\forall s \in S : (s \neq \max_{p1}[S] \rightarrow \mathtt{utility}(s, p1) \leq \mathtt{utility}(\max_{p1}[S], p1))
+\end{equation}
+
+Die daraus resultierende Liste an erreichbaren Spielzuständen nennen wir $\mathtt{possible\_states}(\max_{p1}[S])$. Nun ist Spieler $p2 \in P$ an der Reihe und versucht den Ertrag, also das Ergebnis der $\mathtt{utility}$ Funktion, für Spieler $p1$ zu minimieren. Sprich den Zug zu wählen, der das Minimum an Ertrag für Spieler $p1$ ergibt. Diesen nennen wir $\min_{p1}[\mathtt{possible\_states}(\max_{p1}[S])]$ und für diesen gilt:
+
+\begin{equation}
+\forall s \in \mathtt{possible\_states}(\max_{p1}[S]) : (s \neq \min_{p1}[S2] \rightarrow \mathtt{utility}(s, p1) \geq \mathtt{utility}(\min_{p1}[S2], p1))
+\end{equation}
+
+Das bedeutet, Spieler $p2$ versucht den für Spieler $p1$ schlechtesten der Züge zu wählen, die aus dem Zug resultieren, den $p1$ gewählt hat. Letzterer ist dabei der Zug, der den meisten Ertrag für Spieler $p1$ ergeben hat. Spieler $p2$ verhält sich also nach folgender Optimierungsregel:
+
+\begin{equation}
+\min_{p1}[\mathtt{possible\_states}(\max_{p1}[S])]
+\end{equation}
+
+Genauso verhält sich Spieler $p1$ so, dass dieser den für sich besten Zug aus den für ihn durch das Verhalten von $p2$ noch zur Verfügung stehenden Zügen wählt. Dieser geht bei der Zugwahl also bereits davon aus, dass Spieler $p2$ auf seinen Zug folgend den aus seiner Sicht schlechtesten Zug wählt. Dieser versucht den Ertrag also wieder zu maximieren. Demnach lautet die Optimierungsregel für Spieler $p1$:
+
+\begin{equation}
+\max_{p1}[\mathtt{possible\_states}(\min_{p1}[S])]
+\end{equation}
+
+Spieler $p2$ kann durch sein Verhalten also den Ertrag des Spielers $p1$ auf einen spezifischen Wert begrenzen. Es gilt
+
+\begin{equation}
+\max_{p1}[\mathtt{possible\_states}(\min_{p1}[S])] \leq \min_{p1}[\mathtt{possible\_states}(\max_{p1}[S])]
+\end{equation}
+
+Diese Strategie des stetigen Befolgens dieser Optimierungsregel basiert auf puren Berechnungen und ist für einen Computer somit leicht durchführbar. Dafür müssen jedoch die oben genannten Funktionen implementiert werden:
+
+Um die erreichbaren Zustände zu erhalten, benötigt es einen Algorithmus, der anhand der Spielregeln und eines Ausgangszustands $s_0$ und einer Liste aller Züge $\mathtt{actions}(s_0)$ alle erreichbaren Zustände $possible\_states(s_0) := [\mathtt{result\_states}(s) | s \in actions(s_0)]$ berechnet. Von jedem Zustand $s \in \mathtt{possible\_states(s_0)}$ wird dann wiederum jeder mögliche erreichbare Zustand berechnet. Diese Schleife wird fortgeführt, bis die berechneten Zustände den Status einen Endzustands erreichen. Der Fall ist dies, wenn $\mathtt{terminal\_test}(s) = \mathtt{True}$ ergibt und somit von diesem Zustand aus keine Änderungen mehr möglich sind.
 
 Entscheidend für die Wahl eines Zuges ist dann die Bewertung jedes einzelnen Zustands. Dies ist solange umsetzbar, wie der Computer ohne Probleme alle möglichen Zustände berechnen und evaluieren kann. Um dies an einem Beispiel zu zeigen - Beim Spiel ``Tic Tac Toe'', bei dem in einem 3x3 Feld zwei Spieler gegeneinander antreten mit dem Ziel drei aneinander angrenzende (vertikal, horizontal oder diagonal) Felder mit ihrer Figur zu belegen, gibt es insgesamt 255.168 verschiedene Spielverläufe \cite{Kaplan2017}. Diese sind von heutigen Computern in akzeptabler Zeit berechen- und auswertbar.
 
@@ -325,7 +317,7 @@ In Abbildung \ref{fig:alpha_beta_chess} kann dies nochmal anhand eines realen Be
 
 Gehen wir dabei aus, dass zuerst der rechte Zweig (1.) vollständig evaluiert wurde, wofür zunächst alle Knoten dieses Zweigs (2.-5.) betrachtet wurden. Nach diesen Berechnungen wird Knoten 1 das Minimum aller Zweige von 1 zugewiesen. Dieses beträgt -50. Danach soll der linke Zweig (6.) evaluiert werden. Dabei wird zuerst Knoten 7 betrachtet und ein Ergebnis für -80 ermittelt. Da Knoten 6 das Minimum aller seiner Zweige ermitteln wird, wird das Ergebnis kleiner oder gleich -80 sein. Der Ursprungsknoten wird später also das Maximum aus -50 und $z   z \leq -80$ ermitteln, das unabhängig vom endgültigen Wert für z auf jeden Fall -50 betragen wird. Deshalb müssen alle anderen Zweige von 6 gar nicht mehr betrachtet werden, da diese ohnehin kein Einfluss auf das Ergebnis hätten.
 
-Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positionen und erhöht die Performanz des Minimax Algorithmus dadurch deutlich. In Abbildung \ref{fig:chess_example} würde bei einer Tiefe von 4 ein herkömmlichen Minimax Algorithmus 879.750 Positionen evaluieren. Durch die Verbesserung des Algorithmus mittels Alpha-Beta-Pruning sinkt diese Zahl der zu evaluierenden Positionen um ein beachtliches auf lediglich noch 61.721, und somit um mehr als ein zehnfaches \cite{Hartikka}.
+Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positionen und erhöht die Performanz des Minimax Algorithmus dadurch deutlich. In Abbildung \ref{fig:chess_example} würde bei einer Tiefe von 4 ein herkömmlichen Minimax Algorithmus 879.750 Positionen evaluieren. Durch die Verbesserung des Algorithmus mittels Alpha-Beta-Pruning sinkt diese Zahl der zu evaluierenden Positionen um ein beachtliches auf, abhängig von der Reihenfolge der evaluierten Züge, durchschnittlich noch 61.721, und somit um mehr als ein zehnfaches \cite{Hartikka}.
 
 \begin{figure}[h]
 \centering
@@ -337,8 +329,8 @@ Diese Methode führt zu einer erheblichen Einsparung an zu evaluierenden Positio
 
 Zur Umsetzung eines solchen Algorithmuses werden zwei Werte benötigt - $\alpha$ und $\beta$:
 
-$\alpha$ gleicht dabei dem bisher besten (sprich höchsten) Wert in dem $\max$ Pfad des Minimax-Baums.\\
-$\beta$ gleicht dagegen dem bisher besten (sprich niedrigsten) Wert in dem $\min$ Pfad des Minimax-Baums \cite{Russell2010}.
+$\alpha$ gleicht dabei dem bisher besten (sprich höchsten) Wert in dem $\max$ Pfad, sprich dem Pfad des Minimax Baums, der stets den best möglichen, erreichbaren Zug sucht.\\
+$\beta$ gleicht dagegen dem bisher besten (sprich niedrigsten) Wert in dem $\min$ Pfad, sprich dem Pfad des Minimax Baums, der stehts den schlechtest möglichen, erreichbaren Zug sucht. \cite{Russell2010}.
 
 Diese Werte werden kontinuierlich aktualisiert und sobald bekannt ist, dass der Wert eines Knoten schlechter als das aktuelle $\alpha$ (bei $\max$ Ebenen) beziehungsweise $\beta$ (bei $\min$ Ebenen) sein wird, werden die restlichen Zweige dieses Knotens nicht mehr in Betracht gezogen und somit übersprungen \cite{Russell2010}.
 
