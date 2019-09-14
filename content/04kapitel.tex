@@ -1169,7 +1169,7 @@ der \texttt{player/ai.py} implementiert ist.
 			\PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{,} 
 			\PY{n}{end\PYZus{}time}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} 
 			\PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
-			  \PY{n}{board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
+		     \PY{n}{board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
                      \PY{k}{if} \PY{n}{value} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
                          \PY{n}{value} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}inf}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
                      \PY{n}{move\PYZus{}val\PYZus{}dict}\PY{p}{[}\PY{n}{move}\PY{p}{]} \PY{o}{=} \PY{n}{value}
@@ -1244,16 +1244,15 @@ Werte erstellt. Zudem werden Anfangswerte für die besten Züge und dessen
 Wert festgelegt. Der Anfangswert des besten Zugs wird auf den ersten Zug
 festgesetzt. Der Wert dieses wird auf den Wert ``- Unendlich`` gesetzt.
 
-Nun wird über alle legalen Züge iteriert und für jeden Zug ein
-temporäres "board'' angelegt, das den erreichbaren Zustand widerspiegelt. Nun
-wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
-Dabei wird als Alpha ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben.
+Nun wird über alle legalen Züge iteriert und jeder Zug einmal ausgeführt. 
+Nun wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
+Dabei wird als Alpha  ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben. 
 Was die Werte Alpha und Beta aussagen, wird im Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}
-beschrieben. Zudem wird die Tiefe auf einen Wert festgelegt, der um
-einen Wert geringer ist als die maximale Tiefe, da durch Aufruf der
-Funktion in die erste Tiefe hineingegangen wurde. Zudem wird die Zeit
-mitgegeben, zu der der Algorithmus enden muss, damit der Minimax
-Algorithmus dementsprechend endet und das Zeitlimit nicht überschreitet.
+beschrieben. Zudem wird die Tiefe auf einen Wert festgelegt, der um einen Wert geringer 
+ist als die maximale Tiefe, da durch Aufruf der Funktion in die erste Tiefe 
+hineingegangen wurde. Zudem wird die Zeit mitgegeben, zu der der Algorithmus 
+enden muss, damit der Minimax Algorithmus dementsprechend endet und das
+Zeitlimit nicht überschreitet.
 
 Nachdem der Minimax-Algorithmus fertig durchlaufen ist, wird der Wert
 mit dem Zug zu dem Dictionary hinzugefügt. Dazu wird zuvor jedoch noch überprüft, ob der Wert 'False' zurückgegeben wurde. Ist dies der Fall, ist das Zeitlimit abgelaufen und der Zug somit ungültig. In dem Fall wird dem Zug der maximal schlechteste Wert zugewiesen. 
@@ -1310,12 +1309,12 @@ folgendem Code-Snippet zu sehen.
                  \PY{k}{return} \PY{k+kc}{False}
          
              \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-         
-                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{max\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} 
+
+                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{max\PYZus{}value}\PY{p}{(}\PY{p}{board}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} 
 		   \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} 
 		   \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
+		 \PY{n}{board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
                  \PY{k}{if} \PY{n}{deeper\PYZus{}val} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
                      \PY{k}{return} \PY{k+kc}{False}            
                  \PY{n}{v} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{deeper\PYZus{}val}\PY{p}{)}  
@@ -1326,7 +1325,7 @@ folgendem Code-Snippet zu sehen.
              \PY{k}{return} \PY{n}{v}
 \end{Verbatim}
 
-    Neben des aktuellen Zustands des Spiels in FEN-Notation und dem Spieler,
+    Neben des aktuellen Zustands des Spiels und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
 sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
 Beta sind dabei, wie in Kapitel \ref{alpha_beta} erklärt, dazu da, um den
@@ -1336,22 +1335,20 @@ als irrelevant betrachtet werden können, da ohnehin bereits ein
 besserrer (im Fall von \texttt{min\_value}) bzw. schlechterer (im Fall
 von \texttt{max\_value}) Wert gefunden wurde.
 
-Nachdem das Schachbrett über die FEN-Notation erstellt wurde, wird
-überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe
-auf 0 liegt. In beiden Fällen wird der aktuelle Zustand direkt evaluiert
-und zurückgegeben. Ansonsten wird geprüft, ob das übergebene Zeitlimit
-bereits erreicht wurde. In dem Fall wird der Wert 'False' 
-zurückgegeben, damit dieser Zug später automatisch den maximal negativen Wert zugewiesen bekommen kann (siehe iterative Tiefensuche).
+Zunächst wird überprüft, ob das Spiel bereits vorbei ist oder die mitgegebene Tiefe auf 0 liegt. 
+In beiden Fällen wird der aktuelle Zustand direkt evaluiert und zurückgegeben. Ansonsten 
+wird geprüft, ob das übergebene Zeitlimit bereits erreicht wurde. In dem Fall wird der
+maximal negative Wert zurück gegeben, damit dieser Zug keine weitere Beachtung 
+mehr bei der endgültigen Auswahl findet.
 
-Ist auch dies nicht der Fall, werden alle von dem gegebenen Zustand aus
-erreichbaren Zustände durchgegangen. Dazu wird zunächst ein temporäres
-Schachbrett erstellt und der Zug auf diesem ausgeführt.
-Dies ist dann der neue, erreichbare Zustand. Dieser wird dann in die
-nächsttieferen Iteration gegeben, bei der nun der maximale Wert gesucht
-wird. Dabei wird auch der Spieler mitgegeben sowie die Werte Alpha und
-Beta und das Zeitlimit ebenso wie die um eins reduzierte Tiefe. Ist
-dabei ein Wert dabei, der kleiner ist als das aktuelle v, wird dieser
-Wert als das neue v genommen. Andernfalls bleibt v beim aktuellen Wert.
+Ist auch dies nicht der Fall, werden alle von dem gegebenen Zustand aus 
+erreichbaren Zustände durchgegangen. Dazu wird der Zug temporär ausgeführt 
+und später wieder rückgängig gemacht. Dieser neue, temporäre Zustand wird 
+dann in die nächst tiefere Iteration gegeben, bei der nun der maximale Wert 
+gesucht wird. Dabei wird auch der Spieler mitgegeben sowie die Werte Alpha 
+und Beta und das Zeitlimit ebenso wie die um eins reduzierte Tiefe.
+Ist dabei ein Wert dabei, der kleiner ist als das aktuelle v, wird dieser Wert als
+das neue v genommen. Andernfalls bleibt v beim akteullen Wert.
 
 Anschließend wird überprüft, ob der Wert v kleiner ist als der aktuelle
 Alpha Wert. Ist dies der Fall, muss der Pfad keine weitere Beachtung
@@ -1381,12 +1378,11 @@ unverändert.
                  \PY{k}{return} \PY{k+kc}{False}
          
              \PY{k}{for} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n}{board\PYZus{}fen}\PY{p}{)}
-                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
-         
-                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{min\PYZus{}value}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} 
+                 \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{move}\PY{p}{)}
+                 \PY{n}{deeper\PYZus{}val} \PY{o}{=} \PY{n}{min\PYZus{}value}\PY{p}{(}\PY{p}{board}\PY{p}{,} \PY{n}{player}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} 
 		   \PY{n}{beta}\PY{p}{,} \PY{n}{depth} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{time\PYZus{}limit}\PY{p}{,} \PY{n}{evaluation\PYZus{}func}\PY{p}{,} 
 		   \PY{n}{best\PYZus{}possible\PYZus{}result}\PY{p}{,} \PY{n}{evaluation\PYZus{}funcs\PYZus{}dict}\PY{p}{)}
+		 \PY{n}{board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
                  \PY{k}{if} \PY{n}{deeper\PYZus{}val} \PY{o+ow}{is} \PY{k+kc}{False}\PY{p}{:}
                      \PY{k}{return} \PY{k+kc}{False}
                  \PY{n}{v} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{n}{deeper\PYZus{}val}\PY{p}{)}
@@ -1874,9 +1870,9 @@ Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
              \PY{k}{else}\PY{p}{:}
                  \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{=} \PY{l+m+mi}{0}
                  \PY{k}{for} \PY{n}{action} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{:}
-                     \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-                     \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{action}\PY{p}{)}
-                     \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                     \PY{n}{board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n}{action}\PY{p}{)}
+                     \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{+}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                     \PY{n}{board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
                  \PY{k}{return} \PY{n}{overall\PYZus{}legal\PYZus{}moves} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
              
          \PY{k}{def} \PY{n+nf}{calculate\PYZus{}mobility\PYZus{}value}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{color}\PY{p}{)}\PY{p}{:}
@@ -1884,9 +1880,9 @@ Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
              \PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
          
              \PY{k}{if} \PY{n}{current\PYZus{}turn\PYZus{}len} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{:}
-                 \PY{n}{tmp\PYZus{}board} \PY{o}{=} \PY{n}{chess}\PY{o}{.}\PY{n}{Board}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{fen}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-                 \PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
-                 \PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{tmp\PYZus{}board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{\PYZus{}board}\PY{o}{.}\PY{n}{push}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+                 \PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{board}\PY{o}{.}\PY{n}{legal\PYZus{}moves}\PY{p}{)}\PY{p}{)}
+                 \PY{n}{\PYZus{}board}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{}\PY{p}{)}
              \PY{k}{else}\PY{p}{:}
                  \PY{n}{next\PYZus{}turn\PYZus{}len} \PY{o}{=} \PY{l+m+mi}{0}
              
@@ -1925,8 +1921,8 @@ kann, wurde in Kapitel \ref{verwalten-des-schachspiels-und-pflege-des-spielverla
 
     Abgefragt werden kann diese, indem zunächst die Daten aus der Datei
 geladen werden. Dann wird die Reihe abstrahiert, dessen Wert in der
-Spalte ``board`` dem mitgegebenen Zustand (in FEN-Notation konvertiert)
-gleicht. Dazu wird der entsprechende Wert ausgelesen und zurückgegeben.
+Spalte ``board`` dem mitgegebenen Zustand gleicht. Dazu wird der 
+entsprechende Wert ausgelesen und zurückgegeben.
 Beim Zurückgeben wird der Wert noch negiert, falls der angegebene
 Spieler der der schwarzen Steine ist, da in der Historie die Werte aus
 Sicht des Spielers der weißen Figuren gespeichert wird.
