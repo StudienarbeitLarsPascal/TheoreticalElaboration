@@ -1121,7 +1121,7 @@ Evaluierungsfunktionen bewertet.
 Die KI geht dabei dann wie folgt vor: Alle möglichen Züge werden
 durchgegangen. Die daraus entstehenden Zustände werden analysiert und
 evaluiert. Dabei jedoch zählt nicht nur der direkt erreichbare Zustand,
-sondern auch die aus diesem Zustand erreichbaren Zustände und so weiter.
+sondern auch die aus diesem Zustand erreichbaren Zustände etc..
 Aus diesem Grund wird immer bis zu einer bestimmten Tiefe in die Züge
 hineingeschaut und die sich daraus ergebenden Zustände evaluiert.
 
@@ -1245,7 +1245,7 @@ Wert festgelegt. Der Anfangswert des besten Zugs wird auf den ersten Zug
 festgesetzt. Der Wert dieses wird auf den Wert ``- Unendlich`` gesetzt.
 
 Nun wird über alle legalen Züge iteriert und jeder Zug einmal ausgeführt. 
-Nun wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
+Daraufhin wird mittels des Minimax-Algorithmus der Wert dieses boards ermittelt.
 Dabei wird als Alpha  ``- Unendlich`` und als Beta ``Unendlich`` mitgegeben. 
 Was die Werte Alpha und Beta aussagen, wird im Kapitel \ref{implementierung-des-minimax-algorithmus-mit-alpha-beta-pruning}
 beschrieben. Zudem wird die Tiefe auf einen Wert festgelegt, der um einen Wert geringer 
@@ -1267,11 +1267,10 @@ Zug auf den der aktuellen Iteration gesetzt wird.
 Nachdem alle Züge durchlaufen wurden, wird die Liste aller legalen Züge
 anhand der berechneten Werte sortiert, damit im nächsten Durchlauf die
 Züge in dieser Reihenfolge durchlaufen werden. Dies verbessert den
-Durchsatz beim Alpha Beta Pruning, wie in Kapitel \ref{alpha_beta} beschrieben und
-garantiert zudem, dass der beste Wert der vergangenen Runde gewählt
-wird, falls der Minimax-Algorithmus beim Durchlaufen der nächst tieferen
-Tiefe das Zeitlimit erreicht, bevor die Runde komplett evaluiert werden
-konnte.
+Durchsatz beim Alpha Beta Pruning, wie in Kapitel \ref{alpha_beta} beschrieben. Zudem 
+garantiert es, dass der beste Wert der vergangenen Runde gewählt
+wird, falls der Minimax-Algorithmus beim Durchlaufen die nächs tiefere Tiefe
+nicht vollständig evaluieren kann.
 
 Abschließend wird noch die Tiefe um 1 erhöht und die aktuelle Zeit auf
 die Systemzeit gesetzt, damit anhand dieser entschieden werden kann, ob
@@ -1327,7 +1326,7 @@ folgendem Code-Snippet zu sehen.
 
     Neben des aktuellen Zustands des Spiels und dem Spieler,
 für den es den Zustand zu evaluieren gilt, wird außerdem eine Tiefe
-sowie ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
+und ein Zeitlimit mitgegeben sowie die Werte Alpha und Beta. Alpha und
 Beta sind dabei, wie in Kapitel \ref{alpha_beta} erklärt, dazu da, um den
 Minimax-Algorithmus zu beschleunigen, indem nicht jeder mögliche Zustand
 betrachtet wird. Durch diese Werte fallen nämlich solche weg, die direkt
@@ -1348,11 +1347,11 @@ dann in die nächst tiefere Iteration gegeben, bei der nun der maximale Wert
 gesucht wird. Dabei wird auch der Spieler mitgegeben sowie die Werte Alpha 
 und Beta und das Zeitlimit ebenso wie die um eins reduzierte Tiefe.
 Ist dabei ein Wert dabei, der kleiner ist als das aktuelle v, wird dieser Wert als
-das neue v genommen. Andernfalls bleibt v beim akteullen Wert.
+das neue v genommen. Andernfalls bleibt v beim aktuellen Wert.
 
 Anschließend wird überprüft, ob der Wert v kleiner ist als der aktuelle
 Alpha Wert. Ist dies der Fall, muss der Pfad keine weitere Beachtung
-finden und es kann direkt v zurückgegeben werden. ist dies nicht der
+finden und es kann direkt v zurückgegeben werden. Ist dies nicht der
 Fall, so wird Beta auf v gesetzt, falls dieser Wert kleiner als das
 aktuelle Beta ist. Nach Durchgang aller legalen Züge wird dann der sich
 aus allen diesen Iterationen ergebende Wert v zurückgegeben.
@@ -1532,8 +1531,8 @@ Figurentypen zusammengezählt und zurückgegeben.
     \subsection{Materialbewertung attackierter
 Figuren}\label{materialbewertung-attackierter-figuren}
 
-Die Berechnung der attackierten Figuren ist ähnlich zu dem Vorgehen bei
-der Berechnung des Brettwerts. Dabei werden erst die Werte, der vom
+Die Berechnung der attackierten Figuren ist ähnlich zur Berechnung
+des Brettwerts. Dabei werden erst die Werte, der vom
 weißen Spieler attackierten Figuren berechnet und davon die Werte der
 vom schwarzen Spieler attackierten Figuren abgezogen. Auch hierbei ist
 ein positives Ergebnis zum Vorteil des angegebenen Spielers und ein
@@ -1585,7 +1584,7 @@ abschließend aufsummiert.
 Um die Positionen der einzelnen Figuren zu bewerten, werden zunächst für
 jeden Figurentypen Matrizen benötigt, die über jedes Feld eine Aussage
 über den Wert der Position der Figur geben. Diese sind in Kapitel \ref{material_evaluation}
-einsehbar. An Hand dieser Matrizen wird dann Aussage über den Wert
+einsehbar. Anhand dieser Matrizen wird dann Aussage über den Wert
 getroffen.
 
     Dabei wird zunächst jedes Feld auf dem Schachbrett durchgegangen und die
@@ -1771,7 +1770,7 @@ Farbe gefunden wurde. Dann wird Reihe sowie Spalte zurückgegeben:
 
     Nun werden alle Felder der Königszone einzeln durchgegangen und zu der
 Menge an Feldern hinzugefügt. Dabei werden bei den Spalten alle Felder
-bis 3 Felder in Richtung des Gegners durchgegangen und für jede Spalte
+bis drei Felder in Richtung des Gegners durchgegangen und für jede Spalte
 ein Feld links bis zu einem Feld rechts von dem König mitgezählt. Hierfür
 wird zuvor jeweils überprüft, ob sich die Spalte beziehungsweise die
 Reihe noch auf dem Spielfeld befindet. Ist dies der Fall, wird das Feld
@@ -1855,9 +1854,9 @@ Differenz der legalen Züge von Spieler schwarz und Spieler weiß
 festgemacht. Dazu wird zunächst überprüft, ob es überhaupt möglich ist
 einen Zug auszuführen. Ist dies nicht der Fall ist sowohl die Anzahl der
 Züge des Spielers, der am Zug ist, als auch die des nachfolgenden
-Spielers 0. Andernfalls wird ein zufälliger (hier: der erste) legaler
+Spielers null. Andernfalls wird ein zufälliger (hier: der erste) legaler
 Zug ausgeführt und der Wert der legalen Züge von diesem berechnet. Dabei
-wird aus Performanz Gründen nicht der Durchschnitt aller möglichen Züge
+wird aus Performanzgründen nicht der Durchschnitt aller möglichen Züge
 berechnet, sondern ein zufälliger Wert. Andernfalls hätte diese einzelne
 Evaluierungsfunktion so viel Zeit in Anspruch genommen, dass die
 Gesamtzahl an evaluierbaren Zügen um knapp ein Zehntel sinkt.
@@ -1902,10 +1901,10 @@ aus der Sicht des Spielers zurückgegeben, der als nächstes am Zug ist.
 So wird gewährleistet, dass das Ergebnis stets aus Sicht des Spielers
 berechnet wird, aus dessen Sicht der Zustand evaluiert werden soll.
 
-    \subsection{Bewertung an Hand angelegter
+    \subsection{Bewertung anhand angelegter
 Historie}\label{bewertung-an-hand-angelegter-historie}
 
-Besonders am Anfang des Spiels ist es oft unschlüssig, wie man ein
+Besonders am Anfang des Spiels ist es oft schwierig, wie man ein
 Schachbrett bewerten kann, da noch sehr viele Optionen des Spielverlaufs
 offen sind. Dabei kann eine angelegte Historie helfen, die Aufschluss
 über Siegchancen geben kann. Wie eine solche Historie angelegt werden

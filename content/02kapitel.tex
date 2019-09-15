@@ -118,9 +118,9 @@ An diesem Punkt endet die Entwicklung von immer besser werdenden KIs jedoch nich
 
 \section{Minimax-Algorithmus}\label{minimax}
 
-Der Minimax Algorithmus basiert auf dem ``Minimax-Theorem'' von John von Neumann.
+Der auf dem von "Minimax-Theorem" von John von Neumann basierende Minimax Algorithmus beschäftigt sich mit Zwei-Spieler Nullsummenspielen bei nicht vollständiger Informationslage (siehe Definition aus Kapitel \ref{game_types}
 
-Das Spiel, um das sich der Algorithmus dreht, ist dabei ein Zwei-Spieler Nullsummenspiel bei nicht vollständiger Informationslage handelt nach der Definition aus Kapitel \ref{game_types}. Es wird davon ausgegangen, dass das Spiel von Spieler A gestartet wird, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler A davon ausgeht, dass Spieler B stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler A den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler A also eine Menge $S$ an erreichbaren Spielzuständen zur Auswahl, werden alle Szenarien von jedem Zustand $s \in S$ evaluiert. Dazu bedarf es folgender Informationen:
+Es wird davon ausgegangen, dass das Spiel von Spieler $p1$ gestartet wird, der somit zuerst einen Zug wählt. Die Annahme dabei ist, dass Spieler $p1$ davon ausgeht, dass Spieler $p2$ stets den für ihn besten Zug spielen wird. Das bedeutet, dass Spieler $p1$ den Zug wählt, bei der unter dieser Annahme dennoch das beste Endergebnis zu erreichen ist. Hat Spieler $p1$ also eine Menge $S$ an erreichbaren Spielzuständen zur Auswahl, werden alle Szenarien von jedem Zustand $s \in S$ evaluiert. Dazu bedarf es folgender Informationen:
 
 \begin{itemize}
 \item \textbf{$\mathtt{States}$}: Alle möglichen Zustände des Spiels
